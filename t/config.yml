@@ -1,0 +1,17 @@
+appname: "TestProject"
+
+charset: "UTF-8"
+
+logger: "console"
+log: "core"
+warnings: 1
+show_errors: 1
+
+plugins:
+    "RPC::XMLRPC":
+        package:
+            TestProject::SystemCalls:
+                admin.ping: do_ping
+                admin.version: do_version
+            TestProject::ApiCalls:
+                admin.uppercase: do_uppercase
