@@ -1,4 +1,4 @@
-package Dancer::Plugin::RPC::XMLRPC;
+package Dancer::Plugin::RPC::JSONRPC;
 use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
@@ -9,23 +9,19 @@ no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
-use Params::Validate ':all';
-use Pod::Simple::PullParser;
-use RPC::XML::ParserFactory;
 
 my %dispatch_builder_map = (
     pod    => \&build_dispatcher_from_pod,
     config => \&build_dispatcher_from_config,
 );
 
-register xmlrpc => sub {
-    my($self, $endpoint, $arguments) = plugin_args(@_);
+register jsonrpc => sub {
+    my ($self, $endpoint, $arguments) = plugin_args(@_);
 
     my $publisher;
     given ($arguments->{publish} // 'pod') {
         when (exists $dispatch_builder_map{$_}) {
             $publisher = $dispatch_builder_map{$_};
-
             $arguments->{arguments} = plugin_setting() if $_ eq 'config';
         }
         default {
@@ -41,71 +37,110 @@ register xmlrpc => sub {
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
 
     my $handle_call = sub {
-        if (request->content_type ne 'text/xml') {
+        if (request->content_type ne 'application/json') {
             pass();
         }
-        debug("[handle_xmlrpc_call] Processing: ", request->body);
 
-        local $RPC::XML::ENCODING = $RPC::XML::ENCODING ='UTF-8';
-        my $p = RPC::XML::ParserFactory->new();
-        my $request = $p->parse(request->body);
-        debug("[handle_xmlrpc_call] Parsed request: ", $request);
+        my @requests = unjson(request->body);
 
-        my $method_name = $request->name;
-        if (! exists $dispatcher->{$method_name}) {
-            pass();
-        }
-        my $continue = $callback
-            ? $callback->(request(), $method_name)
-            : {success => 1};
+        my @responses;
+        for my $request (@requests) {
+            my $method_name = $request->{method};
+            debug("[handle_jsonrpc_call] $method_name ", $request);
 
-        my $response;
-        if (!$continue->{success}) {
-            $response->{faultCode} = $continue->{error_code};
-            $response->{faultString} = $continue->{error_message};
-        }
-        else {
-            my @method_args = map $_->value, @{$request->args};
+            if (!exists $dispatcher->{$method_name}) {
+                push @responses, jsonrpc_error_response(
+                    -32601,
+                    "Method '$method_name' not found",
+                    $request->{id}
+                );
+                next;
+            }
+
+            my $continue = $callback
+                ? $callback->(request(), $method_name)
+                : {success => 1};
+
+            if (!$continue->{success}) {
+                push @responses, jsonrpc_error_response(
+                    $continue->{error_code},
+                    $continue->{error_message},
+                    $request->{id}
+                );
+                next;
+            }
+
+            my @method_args = $request->{params};
             my $handler = $dispatcher->{$method_name};
 
-            $response = eval {
+            my $result = eval {
                 $code_wrapper->($handler, $method_name, @method_args);
             };
 
+            debug("[handeled_jsonrpc_call] ", $result);
             if (my $error = $@) {
-                $response = {
-                    faultCode => 500,
-                    faultString => $error,
-                }
+                push @responses, jsonrpc_error_response(
+                    500,
+                    $error,
+                    $request->{id}
+                );
+                next;
             }
+            push @responses, {
+                jsonrpc => '2.0',
+                result => $result,
+                exists $request->{id}
+                    ? (id => $request->{id})
+                    : (),
+            };
         }
-        content_type 'text/xml';
-        return xmlrpc_response($response);
+
+        # create response
+        my $response;
+        if (@responses == 1) {
+            $response = to_json($responses[0]);
+        }
+        else {
+            $response = to_json(\@responses);
+        }
+
+        content_type 'application/json';
+        return $response;
     };
 
     post $endpoint, $handle_call;
 };
 
-sub xmlrpc_response {
-    my ($data) = @_;
+sub unjson {
+    my ($body) = @_;
 
-    my $response;
-    if (ref $data eq 'HASH' && exists $data->{faultCode}) {
-        $response = RPC::XML::response->new(RPC::XML::fault->new(%$data));
-    }
-    elsif (grep /^faultCode$/, grep defined $_, @_) {
-        $response = RPC::XML::response->new(RPC::XML::fault->new(@_));
+    my @requests;
+    my $unjson = from_json($body, {utf8 => 1});
+    if (ref($unjson) ne 'ARRAY') {
+        @requests = ($unjson);
     }
     else {
-        $response = RPC::XML::response->new(@_);
+        @requests = @$unjson;
     }
-    debug("[xmlrpc_response] ", $response->as_string);
-    return $response->as_string;
+    return @requests;
+}
+
+sub jsonrpc_error_response {
+    my ($code, $message, $id) = @_;
+    return {
+        json => '2.0',
+        error => {
+            code    => $code,
+            message => $message,
+            },
+        defined $id ? (id => $id) : (),
+    };
 }
 
 sub build_dispatcher_from_pod {
     my ($pkgs) = @_;
     debug("[build_dispatcher_from_pod]");
+
     return dispatch_table_from_pod(
         packages => $pkgs,
         label    => 'xmlrpc',
@@ -114,28 +149,27 @@ sub build_dispatcher_from_pod {
 
 sub build_dispatcher_from_config {
     my ($config, $endpoint) = @_;
-    debug("[build_dispatcher_from_config] ");
+    debug("[build_dispatcher_from_config] $endpoint");
 
     return dispatch_table_from_config(
-        key      => 'xmlrpc',
+        key      => 'jsonrpc',
         config   => $config,
         endpoint => $endpoint,
     );
 }
-
-register_plugin();
-true;
+register_plugin;
+1;
 
 =head1 NAME
 
-Dancer::Plugin::RPC::XMLRPC - XMLRPC Plugin for Dancer
+Dancer::Plugin::RPC::JSONRPC - Dancer Plugin to register jsonrpc2 methods.
 
-=head2 SYNOPSIS
+=head1 SYNOPSIS
 
 In the Controler-bit:
 
-    use Dancer::Plugin::RPC::XMLRPC;
-    xmlrpc '/endpoint' => {
+    use Dancer::Plugin::RPC::JSONRPC;
+    jsonrpc '/endpoint' => {
         publish   => 'pod',
         arguments => ['MyProject::Admin']
     };
@@ -144,7 +178,7 @@ and in the Model-bit (B<MyProject::Admin>):
 
     package MyProject::Admin;
     
-    =for xmlrpc rpc.abilities rpc_show_abilities
+    =for jsonrpc rpc.abilities rpc_show_abilities
     
     =cut
     
@@ -155,11 +189,12 @@ and in the Model-bit (B<MyProject::Admin>):
     }
     1;
 
+
 =head1 DESCRIPTION
 
-This plugin lets one bind an endpoint to a set of modules with the new B<xmlrpc> keyword.
+This plugin lets one bind an endpoint to a set of modules with the new B<jsonrpc> keyword.
 
-=head2 xmlrpc '/endpoint' => \%publisher_arguments;
+=head2 jsonrpc '/endpoint' => \%publisher_arguments;
 
 =head3 C<\%publisher_arguments>
 
@@ -221,11 +256,11 @@ The publiser key determines the way one connects the rpc-method name with the ac
 
 =item publisher => 'pod'
 
-This way of publishing enables one to use a special POD directive C<=for xmlrpc>
+This way of publishing enables one to use a special POD directive C<=for jsonrpc>
 to connect the rpc-method name to the actual code. The directive must be in the
 same file as where the code resides.
 
-    =for xmlrpc admin.someFunction rpc_admin_some_function_name
+    =for jsonrpc admin.someFunction rpc_admin_some_function_name
 
 The POD-publisher needs the C<arguments> value to be an arrayref with package names in it.
 
@@ -234,7 +269,7 @@ The POD-publisher needs the C<arguments> value to be an arrayref with package na
 This way of publishing requires you to create a dispatch-table in the app's config YAML:
 
     plugins:
-        "RPC::XMLRPC":
+        "RPC::JSONRPC":
             '/endpoint':
                 'MyProject::Admin':
                     admin.someFunction: rpc_admin_some_function_name
@@ -256,16 +291,20 @@ The value of this key depends on the publisher-method chosen.
 
 =back
 
-=head2 =for xmlrpc xmlrpc-method-name sub-name
+=head2 =for jsonrpc jsonrpc-method-name sub-name
 
-This special POD-construct is used for coupling the xmlrpc-methodname to the
+This special POD-construct is used for coupling the jsonrpc-methodname to the
 actual sub-name in the current package.
 
 =head1 INTERNAL
 
-=head2 xmlrpc_response
+=head2 unjson
 
-Serializes the data passed as an xmlrpc response.
+Deserializes the string as Perl-datastructure.
+
+=head2 jsonrpc_error_response
+
+Returns a jsonrpc error response as a hashref.
 
 =head2 build_dispatcher_from_config
 
@@ -277,6 +316,6 @@ Creates a (partial) dispatch table from data provided in POD.
 
 =head1 COPYRIGHT
 
-(c) MMXV - Abe Timmerman <abeltje@cpan.org>
+(c) MMXIII-MMXVI - Abe Timmerman <abeltje@cpan.org>.
 
 =cut

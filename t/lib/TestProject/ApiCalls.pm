@@ -12,6 +12,10 @@ Returns the uppercased version of the argument.
 
 =for xmlrpc api.uppercase do_uppercase
 
+=head3 JSONRPC: api.uppercase
+
+=for jsonrpc api.uppercase do_uppercase
+
 =head3 Arguments
 
 Named, Struct:

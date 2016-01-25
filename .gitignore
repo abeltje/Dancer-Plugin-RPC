@@ -1,1 +1,5 @@
+.*.swp
 t/logs
+blib/
+pm_to_blib
+cover_db/
