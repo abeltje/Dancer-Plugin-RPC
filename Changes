@@ -5,6 +5,15 @@ Changes on 2016-01-25 for repository at:
 Enjoy!
 
 ________________________________________________________________________________
+[6d01f01] by abeltje on Mon, 25 Jan 2016 09:53:45 +0100
+
+     Add Changes after running deployment script.
+
+
+A	Changes
+M	MANIFEST
+M	lib/Dancer/Plugin/RPC.pm
+________________________________________________________________________________
 [cb7f185] by abeltje on Mon, 25 Jan 2016 07:37:51 +0100
 
      First real commit.
