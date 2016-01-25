@@ -1,3 +1,4 @@
+Changes
 lib/Dancer/Plugin/RPC.pm
 lib/Dancer/Plugin/RPC/JSONRPC.pm
 lib/Dancer/Plugin/RPC/XMLRPC.pm

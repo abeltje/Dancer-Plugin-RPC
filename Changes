@@ -1,0 +1,53 @@
+Changes on 2016-01-25 for repository at:
+  Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+  Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+
+Enjoy!
+
+________________________________________________________________________________
+[cb7f185] by abeltje on Mon, 25 Jan 2016 07:37:51 +0100
+
+     First real commit.
+
+        Both plugins now have the same interface.
+
+
+M	.gitignore
+A	MANIFEST
+A	MANIFEST.SKIP
+A	Makefile.PL
+A	lib/Dancer/Plugin/RPC.pm
+A	lib/Dancer/Plugin/RPC/JSONRPC.pm
+D	lib/Dancer/Plugin/RPC/JSONRPC2.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+A	lib/Dancer/RPCPlugin/DispatchFromConfig.pm
+A	lib/Dancer/RPCPlugin/DispatchFromPOD.pm
+A	t/010-dispatch-from-config.t
+A	t/015-dispatch-from-pod.t
+M	t/100-xmlrpc.t
+A	t/150-jsonrpc.t
+A	t/200-register-xmlrpc.t
+A	t/250-register-jsonrpc.t
+M	t/config.yml
+M	t/lib/TestProject.pm
+M	t/lib/TestProject/ApiCalls.pm
+M	t/lib/TestProject/SystemCalls.pm
+A	xt/00-manifest.t
+A	xt/01-compile.t
+A	xt/02-pod_syntax.t
+A	xt/03-pod-coverage.t
+________________________________________________________________________________
+[99373c1] by abeltje on Mon, 15 Jun 2015 09:07:42 +0200
+
+     Initial commit, working XMLRPC code...
+
+
+A	.gitignore
+A	lib/Dancer/Plugin/RPC/JSONRPC2.pm
+A	lib/Dancer/Plugin/RPC/XMLRPC.pm
+A	t/100-xmlrpc.t
+A	t/bin/app.pl
+A	t/config.yml
+A	t/lib/TestProject.pm
+A	t/lib/TestProject/ApiCalls.pm
+A	t/lib/TestProject/SystemCalls.pm
