@@ -1,9 +1,26 @@
-Changes on 2016-01-25 for repository at:
+Changes on 2016-01-26 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[1047d3a] by abeltje on Tue, 26 Jan 2016 09:35:03 +0100
+
+     Renamed lib/Dancer/RPCPlugin/DispatchFromPod.pm
+
+
+M	MANIFEST
+D	lib/Dancer/RPCPlugin/DispatchFromPOD.pm
+A	lib/Dancer/RPCPlugin/DispatchFromPod.pm
+________________________________________________________________________________
+[6993bdc] by abeltje on Mon, 25 Jan 2016 12:22:42 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_01 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [6d01f01] by abeltje on Mon, 25 Jan 2016 09:53:45 +0100
 
