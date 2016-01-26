@@ -16,6 +16,7 @@ t/250-register-jsonrpc.t
 t/bin/app.pl
 t/config.yml
 t/lib/TestProject.pm
+t/lib/TestProject/Bogus.pm
 t/lib/TestProject/ApiCalls.pm
 t/lib/TestProject/SystemCalls.pm
 t/logs/development.log
