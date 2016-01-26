@@ -3,12 +3,12 @@ use strict;
 use lib 't/lib';
 
 use Test::More;
+use Test::Exception;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DispatchFromPod;
 
 {
-    pass("test");
     my $dispatch = dispatch_table_from_pod(
         label    => 'jsonrpc',
         packages => [qw/
@@ -21,6 +21,19 @@ use Dancer::RPCPlugin::DispatchFromPod;
             'api.uppercase' => \&TestProject::ApiCalls::do_uppercase,
         },
         "Dispatch table from POD"
+    );
+
+    throws_ok(
+        sub {
+            dispatch_table_from_pod(
+                label    => 'jsonrpc',
+                packages => [qw/
+                    TestProject::Bogus
+                /],
+            )
+        },
+        qr/Handler not found for bogus.nonexistent: TestProject::Bogus::nonexistent doesn't seem to exist/,
+        "Setting a non-existent dispatch target throws an exception"
     );
 }
 

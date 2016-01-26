@@ -70,7 +70,12 @@ sub _parse_file {
         my ($if_name, $code_name) = split " ", $ntoken->text;
         debug("[build_dispatcher] $args->{package}\::$code_name => $if_name");
 
-        $dispatch->{$if_name} = $args->{package}->can($code_name);
+        my $pkg = $args->{package};
+        if (my $handler = $pkg->can($code_name)) {
+            $dispatch->{$if_name} = $handler;
+        } else {
+            die "Handler not found for $if_name: $pkg\::$code_name doesn't seem to exist.\n";
+        }
     }
     return $dispatch;
 }
