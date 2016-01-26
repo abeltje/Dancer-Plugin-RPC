@@ -5,6 +5,53 @@ Changes on 2016-01-26 for repository at:
 Enjoy!
 
 ________________________________________________________________________________
+[562f1fe] by abeltje on Tue, 26 Jan 2016 18:50:59 +0100
+
+     Fix MANIFEST after pull-request.
+
+
+M	MANIFEST
+________________________________________________________________________________
+[75fa313] by abeltje on Tue, 26 Jan 2016 18:48:53 +0100
+
+     Merge remote-tracking branch
+        'larion/bugfix_dont_call_nonexistent_handler' into
+        feature/die_on_bad_dispatch
+
+________________________________________________________________________________
+[e950e26] by Larion Garaczi on Tue, 26 Jan 2016 17:30:53 +0100
+
+     Replace Test::Exception with Test::Fatal
+
+
+M	Makefile.PL
+M	t/010-dispatch-from-config.t
+M	t/015-dispatch-from-pod.t
+________________________________________________________________________________
+[9ea3b32] by Larion Garaczi on Tue, 26 Jan 2016 15:27:25 +0100
+
+     Bail out early when given an non-existing target function in the
+        dispatch table
+
+        This prevents strange runtime errors ("use of uninitialized value on 
+        subroutine entry") resulting from trying to call a non-function.
+
+
+M	Makefile.PL
+M	lib/Dancer/RPCPlugin/DispatchFromConfig.pm
+M	lib/Dancer/RPCPlugin/DispatchFromPod.pm
+M	t/010-dispatch-from-config.t
+M	t/015-dispatch-from-pod.t
+A	t/lib/TestProject/Bogus.pm
+________________________________________________________________________________
+[9159494] by abeltje on Tue, 26 Jan 2016 14:24:13 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_02 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
+________________________________________________________________________________
 [1047d3a] by abeltje on Tue, 26 Jan 2016 09:35:03 +0100
 
      Renamed lib/Dancer/RPCPlugin/DispatchFromPod.pm
