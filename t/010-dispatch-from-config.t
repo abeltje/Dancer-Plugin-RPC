@@ -3,7 +3,7 @@ use strict;
 use lib 't/lib';
 
 use Test::More;
-use Test::Exception;
+use Test::Fatal;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DispatchFromConfig;
@@ -30,8 +30,8 @@ use Dancer::RPCPlugin::DispatchFromConfig;
         "Dispatch from YAML-config"
     );
 
-    throws_ok(
-        sub {
+    like(
+        exception {
             dispatch_table_from_config(
                 key      => 'xmlrpc',
                 endpoint => '/xmlrpc',

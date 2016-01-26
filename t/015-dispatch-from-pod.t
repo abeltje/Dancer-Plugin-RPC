@@ -3,7 +3,7 @@ use strict;
 use lib 't/lib';
 
 use Test::More;
-use Test::Exception;
+use Test::Fatal;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DispatchFromPod;
@@ -23,8 +23,8 @@ use Dancer::RPCPlugin::DispatchFromPod;
         "Dispatch table from POD"
     );
 
-    throws_ok(
-        sub {
+    like(
+        exception {
             dispatch_table_from_pod(
                 label    => 'jsonrpc',
                 packages => [qw/
