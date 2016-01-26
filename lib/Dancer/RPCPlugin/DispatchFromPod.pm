@@ -79,7 +79,7 @@ sub _parse_file {
 
 =head1 NAME
 
-Dancer::RPCPlugin::DispatchFromConfig - Build dispatch-table from the Dancer Config
+Dancer::RPCPlugin::DispatchFromPod - Build dispatch-table from POD
 
 =head1 SYNOPSIS
 

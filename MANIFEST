@@ -3,7 +3,7 @@ lib/Dancer/Plugin/RPC.pm
 lib/Dancer/Plugin/RPC/JSONRPC.pm
 lib/Dancer/Plugin/RPC/XMLRPC.pm
 lib/Dancer/RPCPlugin/DispatchFromConfig.pm
-lib/Dancer/RPCPlugin/DispatchFromPOD.pm
+lib/Dancer/RPCPlugin/DispatchFromPod.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
