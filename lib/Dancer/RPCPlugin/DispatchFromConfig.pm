@@ -30,7 +30,12 @@ sub dispatch_table_from_config {
         for my $rpc_method (@rpc_methods) {
             my $subname = $config->{$pkg}{$rpc_method};
             debug("[bdfc] $args->{endpoint}: $rpc_method => $subname");
-            $dispatch->{$rpc_method} = $pkg->can($subname);
+            if (my $handler = $pkg->can($subname)) {
+                $dispatch->{$rpc_method} = $handler;
+            }
+            else {
+                die "Handler not found for $rpc_method: $pkg\::$subname doesn't seem to exist.\n";
+            }
         }
     }
 

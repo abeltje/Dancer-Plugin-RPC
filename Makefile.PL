@@ -21,7 +21,8 @@ WriteMakefile(
     },
 
     BUILD_REQUIRES => {
-        'Test::More'      => 0.88, # done_testing()
+        'Test::More'  => 0.88, # done_testing()
+        'Test::Fatal' => 0.014,
     },
     META_ADD => {
         'meta-spec' => {
