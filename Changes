@@ -1,9 +1,24 @@
-Changes on 2016-01-26 for repository at:
+Changes on 2016-01-27 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[0f59a00] by abeltje on Wed, 27 Jan 2016 17:44:36 +0100
+
+     Add dependency: Params::Validate
+
+
+M	Makefile.PL
+________________________________________________________________________________
+[303b015] by abeltje on Tue, 26 Jan 2016 18:54:01 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_03 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [562f1fe] by abeltje on Tue, 26 Jan 2016 18:50:59 +0100
 
