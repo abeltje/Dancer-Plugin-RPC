@@ -11,10 +11,11 @@ WriteMakefile(
     AUTHOR        => 'Abe Timmerman <abeltje@cpan.org>',
 
     PREREQ_PM => {
-        'Dancer'   => 1.3,
-        'RPC::XML' => '1.0',
-        'JSON'     => '2.0',
-    },
+        'Dancer'           => '1.3',
+        'Params::Validate' => '1.0',
+        'RPC::XML'         => '1.0',
+        'JSON'             => '2.0',
+        },
 
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => 6.56,
