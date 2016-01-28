@@ -5,6 +5,23 @@ Changes on 2016-01-29 for repository at:
 Enjoy!
 
 ________________________________________________________________________________
+[6e1391d] by abeltje on Fri, 29 Jan 2016 00:13:26 +0100
+
+     FIX: use the Dancer json-(de)serializer
+
+        No explicit use of JSON.pm; Dancer knows what to do.
+
+
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[b3a0012] by abeltje on Fri, 29 Jan 2016 00:07:12 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_06 (same)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
+________________________________________________________________________________
 [6da426d] by abeltje on Fri, 29 Jan 2016 00:04:47 +0100
 
      FIX: remove test problem with JSON.pm
