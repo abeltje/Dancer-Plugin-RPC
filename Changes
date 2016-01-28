@@ -1,9 +1,27 @@
-Changes on 2016-01-27 for repository at:
+Changes on 2016-01-28 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[9c2a1f9] by abeltje on Thu, 28 Jan 2016 23:11:10 +0100
+
+     FIX: jsonrpc_error_response must return «jsonrpc => '2.0'
+
+        jsonrpc_error_response() did not return the correct key for
+        'jsonrpc'
+
+
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+________________________________________________________________________________
+[2e32854] by abeltje on Wed, 27 Jan 2016 17:45:25 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_04 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [0f59a00] by abeltje on Wed, 27 Jan 2016 17:44:36 +0100
 
