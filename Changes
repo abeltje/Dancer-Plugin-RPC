@@ -1,9 +1,26 @@
-Changes on 2016-01-28 for repository at:
+Changes on 2016-01-29 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[6da426d] by abeltje on Fri, 29 Jan 2016 00:04:47 +0100
+
+     FIX: remove test problem with JSON.pm
+
+        JSON 2.90 serializes booleans different from v2.61 :(
+
+
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[4310179] by abeltje on Thu, 28 Jan 2016 23:31:59 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_05 (same)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [9c2a1f9] by abeltje on Thu, 28 Jan 2016 23:11:10 +0100
 
