@@ -9,8 +9,6 @@ use Dancer::Plugin::RPC::JSONRPC;
 
 use Dancer::Test;
 
-use JSON qw(encode_json decode_json);
-
 { # default publish => 'pod' ; Batch-mode
     jsonrpc '/endpoint' => {
         arguments => ['TestProject::SystemCalls'],
@@ -43,7 +41,7 @@ use JSON qw(encode_json decode_json);
     is_deeply(
         \@results,
         [
-            decode_json(encode_json(\1)),
+            from_json(to_json(\1)),
             {software_version => '1.0'},
         ],
         "system.ping"
