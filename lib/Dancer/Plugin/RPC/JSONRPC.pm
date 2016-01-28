@@ -128,11 +128,11 @@ sub unjson {
 sub jsonrpc_error_response {
     my ($code, $message, $id) = @_;
     return {
-        json => '2.0',
+        jsonrpc => '2.0',
         error => {
             code    => $code,
             message => $message,
-            },
+        },
         defined $id ? (id => $id) : (),
     };
 }
