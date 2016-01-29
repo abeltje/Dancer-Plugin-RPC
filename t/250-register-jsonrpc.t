@@ -80,7 +80,7 @@ use Dancer::Test;
 
     is_deeply(
         from_json($response->{content})->{result},
-        'true',
+        from_json(to_json(\1)),
         "code.ping"
     );
 }
