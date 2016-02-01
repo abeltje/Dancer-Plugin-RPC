@@ -2,7 +2,7 @@ package Dancer::Plugin::RPC;
 use warnings;
 use strict;
 
-our $VERSION = '0.99_08';
+our $VERSION = '0.99_09';
 
 1;
 

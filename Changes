@@ -1,9 +1,40 @@
-Changes on 2016-01-29 for repository at:
+Changes on 2016-02-01 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[39ff23f] by abeltje on Mon, 1 Feb 2016 21:12:07 +0100
+
+     Introduce DispatchItem and CallbackResult
+
+        * CallbackResult: callback_success(), callback_fail()
+        * DispatchItem: dispatch_item()
+        * 'config' is now the default publishing-method
+
+
+M	MANIFEST
+M	Makefile.PL
+M	lib/Dancer/Plugin/RPC.pm
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+A	lib/Dancer/RPCPlugin/CallbackResult.pm
+M	lib/Dancer/RPCPlugin/DispatchFromConfig.pm
+M	lib/Dancer/RPCPlugin/DispatchFromPod.pm
+A	lib/Dancer/RPCPlugin/DispatchItem.pm
+M	t/010-dispatch-from-config.t
+M	t/015-dispatch-from-pod.t
+M	t/200-register-xmlrpc.t
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[7431695] by abeltje on Fri, 29 Jan 2016 13:14:34 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_08 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [ca24658] by abeltje on Fri, 29 Jan 2016 13:13:49 +0100
 
