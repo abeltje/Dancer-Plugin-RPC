@@ -7,10 +7,12 @@ our $VERSION = '0.10';
 
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
+use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
+use Dancer::RPCPlugin::DispatchItem;
+
 use Params::Validate ':all';
-use Pod::Simple::PullParser;
 use RPC::XML::ParserFactory;
 
 my %dispatch_builder_map = (
@@ -22,7 +24,7 @@ register xmlrpc => sub {
     my($self, $endpoint, $arguments) = plugin_args(@_);
 
     my $publisher;
-    given ($arguments->{publish} // 'pod') {
+    given ($arguments->{publish} // 'config') {
         when (exists $dispatch_builder_map{$_}) {
             $publisher = $dispatch_builder_map{$_};
 
@@ -35,6 +37,7 @@ register xmlrpc => sub {
 
     my $code_wrapper = $arguments->{code_wrapper} // sub {
         my $code = shift;
+        my $pkg  = shift;
         $code->(@_);
     };
     my $callback = $arguments->{callback};
@@ -55,21 +58,23 @@ register xmlrpc => sub {
         if (! exists $dispatcher->{$method_name}) {
             pass();
         }
-        my $continue = $callback
+        my Dancer::RPCPlugin::CallbackResult $continue = $callback
             ? $callback->(request(), $method_name)
-            : {success => 1};
+            : callback_success();
 
         my $response;
-        if (!$continue->{success}) {
-            $response->{faultCode} = $continue->{error_code};
-            $response->{faultString} = $continue->{error_message};
+        if (! $continue->success) {
+            $response->{faultCode} = $continue->error_code;
+            $response->{faultString} = $continue->error_message;
         }
         else {
             my @method_args = map $_->value, @{$request->args};
-            my $handler = $dispatcher->{$method_name};
+            my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
+            my $handler = $di->code;
+            my $package = $di->package;
 
             $response = eval {
-                $code_wrapper->($handler, $method_name, @method_args);
+                $code_wrapper->($handler, $package, $method_name, @method_args);
             };
 
             if (my $error = $@) {
@@ -247,6 +252,19 @@ The Config-publisher doesn't use the C<arguments> value of the C<%publisher_argu
 
 This way of publishing requires you to write your own way of building the dispatch-table.
 The code_ref you supply, gets the C<arguments> value of the C<%publisher_arguments> hash.
+
+A dispatch-table looks like:
+
+    return {
+        'admin.someFuncion' => dispatch_item(
+            package => 'MyProject::Admin',
+            code    => MyProject::Admin->can('rpc_admin_some_function_name'),
+        ),
+        'user.otherFunction' => dispatch_item(
+            package => 'MyProject::User',
+            code    => MyProject::User->can('rpc_user_other_function_name'),
+        ),
+    }
 
 =back
 

@@ -11,6 +11,8 @@ WriteMakefile(
     AUTHOR        => 'Abe Timmerman <abeltje@cpan.org>',
 
     PREREQ_PM => {
+        'overload'         => '1.07',
+        'Plack'            => '1.003',
         'Dancer'           => '1.3',
         'Params::Validate' => '1.0',
         'RPC::XML'         => '1.0',
@@ -22,9 +24,12 @@ WriteMakefile(
     },
 
     BUILD_REQUIRES => {
-        'Test::More'  => 0.88, # done_testing()
-        'Test::Fatal' => 0.014,
+        'Test::More'  => '0.88', # done_testing()
+        'Test::Fatal' => '0.010',
     },
+
+    MIN_PERL_VERSION => '5.010001',
+
     META_ADD => {
         'meta-spec' => {
             version    => 2,

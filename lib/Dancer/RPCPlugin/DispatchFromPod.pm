@@ -6,6 +6,7 @@ our @EXPORT = qw/dispatch_table_from_pod/;
 
 use Dancer qw/error warning info debug/;
 
+use Dancer::RPCPlugin::DispatchItem;
 use Params::Validate ':all';
 use Pod::Simple::PullParser;
 
@@ -72,7 +73,10 @@ sub _parse_file {
 
         my $pkg = $args->{package};
         if (my $handler = $pkg->can($code_name)) {
-            $dispatch->{$if_name} = $handler;
+            $dispatch->{$if_name} = dispatch_item(
+                package => $pkg,
+                code    => $handler
+            );
         } else {
             die "Handler not found for $if_name: $pkg\::$code_name doesn't seem to exist.\n";
         }

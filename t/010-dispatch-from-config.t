@@ -7,6 +7,7 @@ use Test::Fatal;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DispatchFromConfig;
+use Dancer::RPCPlugin::DispatchItem;
 
 {
     my $dispatch = dispatch_table_from_config(
@@ -24,8 +25,14 @@ use Dancer::RPCPlugin::DispatchFromConfig;
     is_deeply(
         $dispatch,
         {
-            'system.ping'    => \&TestProject::SystemCalls::do_ping,
-            'system.version' => \&TestProject::SystemCalls::do_version,
+            'system.ping'    => dispatch_item(
+                code => TestProject::SystemCalls->can('do_ping'),
+                package => 'TestProject::SystemCalls',
+            ),
+            'system.version' => dispatch_item(
+                code => TestProject::SystemCalls->can('do_version'),
+                package => 'TestProject::SystemCalls',
+            ),
         },
         "Dispatch from YAML-config"
     );

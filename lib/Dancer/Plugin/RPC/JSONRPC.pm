@@ -7,8 +7,10 @@ our $VERSION = '0.10';
 
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
+use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
+use Dancer::RPCPlugin::DispatchItem;
 
 my %dispatch_builder_map = (
     pod    => \&build_dispatcher_from_pod,
@@ -19,7 +21,7 @@ register jsonrpc => sub {
     my ($self, $endpoint, $arguments) = plugin_args(@_);
 
     my $publisher;
-    given ($arguments->{publish} // 'pod') {
+    given ($arguments->{publish} // 'config') {
         when (exists $dispatch_builder_map{$_}) {
             $publisher = $dispatch_builder_map{$_};
             $arguments->{arguments} = plugin_setting() if $_ eq 'config';
@@ -31,6 +33,7 @@ register jsonrpc => sub {
 
     my $code_wrapper = $arguments->{code_wrapper} // sub {
         my $code = shift;
+        my $pkg  = shift;
         $code->(@_);
     };
     my $callback = $arguments->{callback};
@@ -57,24 +60,26 @@ register jsonrpc => sub {
                 next;
             }
 
-            my $continue = $callback
+            my Dancer::RPCPlugin::CallbackResult $continue = $callback
                 ? $callback->(request(), $method_name)
-                : {success => 1};
+                : callback_success();
 
-            if (!$continue->{success}) {
+            if (!$continue->success) {
                 push @responses, jsonrpc_error_response(
-                    $continue->{error_code},
-                    $continue->{error_message},
+                    $continue->error_code,
+                    $continue->error_message,
                     $request->{id}
                 );
                 next;
             }
 
             my @method_args = $request->{params};
-            my $handler = $dispatcher->{$method_name};
+            my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
+            my $handler = $di->code;
+            my $package = $di->package;
 
             my $result = eval {
-                $code_wrapper->($handler, $method_name, @method_args);
+                $code_wrapper->($handler, $package, $method_name, @method_args);
             };
 
             debug("[handeled_jsonrpc_call] ", $result);
@@ -282,6 +287,19 @@ The Config-publisher doesn't use the C<arguments> value of the C<%publisher_argu
 
 This way of publishing requires you to write your own way of building the dispatch-table.
 The code_ref you supply, gets the C<arguments> value of the C<%publisher_arguments> hash.
+
+A dispatch-table looks like:
+
+    return {
+        'admin.someFuncion' => dispatch_item(
+            package => 'MyProject::Admin',
+            code    => MyProject::Admin->can('rpc_admin_some_function_name'),
+        ),
+        'user.otherFunction' => dispatch_item(
+            package => 'MyProject::User',
+            code    => MyProject::User->can('rpc_user_other_function_name'),
+        ),
+    }
 
 =back
 

@@ -30,18 +30,9 @@ the endpoint and the arguments to configure the jsonrpc-calls at this endpoint.
 
 The dispatch table is build by endpoint.
 
-=head3 publish => <pod|config|$coderef>
+=head3 publish => <config|pod|$coderef>
 
 =over
-
-=item publish => B<pod>
-
-The dispatch table is build by parsing the POD for C<=for xmlrpc> or C<=for jsonrpc>.
-
-    =for xmlrpc <method_name> <sub_name>
-
-The B<arguments> argument must be an Arrayref with module names. The
-POD-directive must be in the same file as the code!
 
 =item publish => B<config>
 
@@ -61,14 +52,33 @@ The dispatch table is build from the YAML-config:
 
 The B<arguments> argument should be empty for this publishing type.
 
+=item publish => B<pod>
+
+The dispatch table is build by parsing the POD for C<=for xmlrpc> or C<=for jsonrpc>.
+
+    =for xmlrpc <method_name> <sub_name>
+
+The B<arguments> argument must be an Arrayref with module names. The
+POD-directive must be in the same file as the code!
+
 =item publish => B<$coderef>
 
 With this publishing type, you will need to build your own dispatch table and return it.
 
+    use Dancer::RPCPlugin::DispatchItem;
     return {
-        method1 => \&Module::Name1::sub1,
-        method2 => \&Module::Name1::sub2,
-        method3 => \&Module::Name2::sub2,
+        method1 => dispatch_item(
+            package => 'Module::Name1',
+            code => Module::Name1->can('sub1'),
+        ),
+        method2 => dispatch_item(
+            package => 'Module::Name1',
+            code    => Module::Name1->can('sub2'),
+        ),
+        method3 => dispatch_item(
+            pacakage => 'Module::Name2',
+            code     => Module::Name2->can('sub3'),
+        ),
     };
 
 =back
@@ -80,13 +90,14 @@ module names that contain the pod (and code).
 
 =head3 callback => $coderef
 
-The B<callback> argument may contain a C<$coderef> that does additional checks and should return a hashref with at least the B<success> key.
+The B<callback> argument may contain a C<$coderef> that does additional checks
+and should return a L<Dancer::RPCPlugin::CallbackResult> object.
 
     $callback->($request, $method_name);
 
-Returns for success: C<< {success => 1} >>
+Returns for success: C<< callback_success() >>
 
-Returns for failure: C<< {success => 0, error_code => $code, error_message => $msg} >>
+Returns for failure: C<< callback_fail(error_code => $code, error_message => $msg) >>
 
 This is useful for ACL checking.
 

@@ -6,6 +6,7 @@ our @EXPORT = qw/dispatch_table_from_config/;
 
 use Dancer qw/error warning info debug/;
 
+use Dancer::RPCPlugin::DispatchItem;
 use Params::Validate ':all';
 
 sub dispatch_table_from_config {
@@ -31,7 +32,10 @@ sub dispatch_table_from_config {
             my $subname = $config->{$pkg}{$rpc_method};
             debug("[bdfc] $args->{endpoint}: $rpc_method => $subname");
             if (my $handler = $pkg->can($subname)) {
-                $dispatch->{$rpc_method} = $handler;
+                $dispatch->{$rpc_method} = dispatch_item(
+                    package => $pkg,
+                    code    => $handler
+                );
             }
             else {
                 die "Handler not found for $rpc_method: $pkg\::$subname doesn't seem to exist.\n";

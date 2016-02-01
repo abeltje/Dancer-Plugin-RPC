@@ -7,6 +7,7 @@ use Test::Fatal;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DispatchFromPod;
+use Dancer::RPCPlugin::DispatchItem;
 
 {
     my $dispatch = dispatch_table_from_pod(
@@ -18,7 +19,10 @@ use Dancer::RPCPlugin::DispatchFromPod;
     is_deeply(
         $dispatch,
         {
-            'api.uppercase' => \&TestProject::ApiCalls::do_uppercase,
+            'api.uppercase' => dispatch_item(
+                code => TestProject::ApiCalls->can('do_uppercase'),
+                package => 'TestProject::ApiCalls',
+            ),
         },
         "Dispatch table from POD"
     );

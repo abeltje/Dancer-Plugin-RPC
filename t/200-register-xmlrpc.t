@@ -6,6 +6,8 @@ use Test::More;
 
 use Dancer qw/:syntax !pass/;
 use Dancer::Plugin::RPC::XMLRPC;
+use Dancer::RPCPlugin::CallbackResult;
+use Dancer::RPCPlugin::DispatchItem;
 
 use Dancer::Test;
 
@@ -13,10 +15,18 @@ use RPC::XML;
 use RPC::XML::ParserFactory;
 my $p = RPC::XML::ParserFactory->new();
 
-{ # default publish
-    xmlrpc '/endpoint' => {
-        arguments => ['TestProject::SystemCalls'],
-    };
+{ # default publish (config)
+    set(plugins => {
+        'RPC::XMLRPC' => {
+            '/endpoint' => {
+                'TestProject::SystemCalls' => {
+                    'system.ping' => 'do_ping',
+                    'system.version' => 'do_version',
+                },
+            },
+        }
+    });
+    xmlrpc '/endpoint' => { };
 
     route_exists([POST => '/endpoint'], "/endpoint registered");
 
@@ -47,10 +57,13 @@ my $p = RPC::XML::ParserFactory->new();
             eval { require TestProject::SystemCalls; };
             error("Cannot load: $@") if $@;
             return {
-                'code.ping' => \&TestProject::SystemCalls::do_ping,
+                'code.ping' => dispatch_item(
+                    code => TestProject::SystemCalls->can('do_ping'),
+                    package => 'TestProject::SystemCalls',
+                ),
             };
         },
-        callback => sub { return {success => 1}; },
+        callback => sub { return callback_success(); },
     };
 
     route_exists([POST => '/endpoint2'], "/endpoint2 registered");
@@ -82,15 +95,17 @@ my $p = RPC::XML::ParserFactory->new();
             eval { require TestProject::SystemCalls; };
             error("Cannot load: $@") if $@;
             return {
-                'fail.ping' => \&TestProject::SystemCalls::do_ping,
+                'fail.ping' => dispatch_item(
+                    code => TestProject::SystemCalls->can('do_ping'),
+                    package => 'TestProject::SystemCalls',
+                ),
             };
         },
         callback => sub {
-            return {
-                success       => 0,
+            return callback_fail(
                 error_code    => -500,
                 error_message => "Force callback error",
-            };
+            );
         },
     };
 
@@ -119,7 +134,10 @@ my $p = RPC::XML::ParserFactory->new();
     xmlrpc '/endpoint_error' => {
         publish => sub {
             return {
-                'fail.error' => sub { die "Example error code\n" },
+                'fail.error' => dispatch_item(
+                    code => sub { die "Example error code\n" },
+                    package => __PACKAGE__,
+                ),
             };
         },
     };
