@@ -3,8 +3,6 @@ use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
 
-our $VERSION = '0.10';
-
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
 use Dancer::RPCPlugin::CallbackResult;
@@ -58,8 +56,10 @@ register xmlrpc => sub {
         if (! exists $dispatcher->{$method_name}) {
             pass();
         }
+
+        my @method_args = map $_->value, @{$request->args};
         my Dancer::RPCPlugin::CallbackResult $continue = $callback
-            ? $callback->(request(), $method_name)
+            ? $callback->(request(), $method_name, @method_args)
             : callback_success();
 
         my $response;
@@ -68,7 +68,6 @@ register xmlrpc => sub {
             $response->{faultString} = $continue->error_message;
         }
         else {
-            my @method_args = map $_->value, @{$request->args};
             my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
             my $handler = $di->code;
             my $package = $di->package;
@@ -175,25 +174,24 @@ This plugin lets one bind an endpoint to a set of modules with the new B<xmlrpc>
 The callback will be called just before the actual rpc-code is called from the
 dispatch table. The arguments are positional: (full_request, method_name).
 
-    my $continue = $callback ? $callback->(request(), $method_name) : 1;
+    my Dancer::RPCPlugin::CallbackResult $continue = $callback
+        ? $callback->(request(), $method_name, @method_args)
+        : callback_success();
 
-The callback should return a HashRef:
+The callback should return a L<Dancer::RPCPlugin::CallbackResult> instance:
 
 =over 8
 
-=item on_success
+=item * on_success
 
-The HashRef should have 1 key:
+    callback_success()
 
-  - success => 1
+=item * on_failure
 
-=item on_failure
-
-The HashRef should have 3 keys:
-
-  - success       => 0
-  - error_code    => <numeric_code>
-  - error_message => <error message>
+    callback_fail(
+        error_code    => <numeric_code>,
+        error_message => <error message>
+    )
 
 =back
 
@@ -205,9 +203,11 @@ The codewrapper will be called with these positional arguments:
 
 =item 1. $call_coderef
 
-=item 2. $method_name
+=item 2. $package (where $call_coderef is)
 
-=item 3. @arguments
+=item 3. $method_name
+
+=item 4. @arguments
 
 =back
 
@@ -215,24 +215,15 @@ The default code_wrapper-sub is:
 
     sub {
         my $code = shift;
+        my $pkg  = shift;
         $code->(@_);
     };
 
-=item publisher => <pod | config | \&code_ref>
+=item publisher => <config | pod | \&code_ref>
 
 The publiser key determines the way one connects the rpc-method name with the actual code.
 
 =over
-
-=item publisher => 'pod'
-
-This way of publishing enables one to use a special POD directive C<=for xmlrpc>
-to connect the rpc-method name to the actual code. The directive must be in the
-same file as where the code resides.
-
-    =for xmlrpc admin.someFunction rpc_admin_some_function_name
-
-The POD-publisher needs the C<arguments> value to be an arrayref with package names in it.
 
 =item publisher => 'config'
 
@@ -247,6 +238,16 @@ This way of publishing requires you to create a dispatch-table in the app's conf
                     user.otherFunction: rpc_user_other_function_name
 
 The Config-publisher doesn't use the C<arguments> value of the C<%publisher_arguments> hash.
+
+=item publisher => 'pod'
+
+This way of publishing enables one to use a special POD directive C<=for xmlrpc>
+to connect the rpc-method name to the actual code. The directive must be in the
+same file as where the code resides.
+
+    =for xmlrpc admin.someFunction rpc_admin_some_function_name
+
+The POD-publisher needs the C<arguments> value to be an arrayref with package names in it.
 
 =item publisher => \&code_ref
 

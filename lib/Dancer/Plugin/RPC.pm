@@ -93,7 +93,7 @@ module names that contain the pod (and code).
 The B<callback> argument may contain a C<$coderef> that does additional checks
 and should return a L<Dancer::RPCPlugin::CallbackResult> object.
 
-    $callback->($request, $method_name);
+    $callback->($request, $method_name, @method_args);
 
 Returns for success: C<< callback_success() >>
 
@@ -105,11 +105,12 @@ This is useful for ACL checking.
 
 The B<code_wrapper> argument can be used to wrap the code (from the dispatch table).
 
-    my $xmlrpc_handle = Some::Module->new(...);
     my $wrapper = sub {
-        my $code = shift;
+        my $code   = shift;
+        my $pkg    = shift;
         my $method = shift;
-        $xmlrpc_handle->$code(@_);
+        my $instance = $pkg->new();
+        $instance->$code(@_);
     };
 
 =head1 COPYRIGHT

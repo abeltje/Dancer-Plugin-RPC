@@ -29,3 +29,18 @@ jsonrpc '/jsonrpc/api' => {
 jsonrpc '/jsonrpc/admin' => { publish => 'config' };
 
 true;
+
+__END__
+xmlrpc:
+    /system        system.ping
+    /system        system.version
+    /api           api.uppercase (argument)
+    /config/system system.ping
+    /config/system system.version
+    /config/api    api.uppercase (argument)
+
+jsonrpc:
+    /jsonrpc/api   api.uppercase (argument)
+    /jsonrpc/admin ping
+    /jsonrpc/admin version
+    /jsonrpc/admin uppercase (argument)

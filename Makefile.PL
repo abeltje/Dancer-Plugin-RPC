@@ -13,7 +13,7 @@ WriteMakefile(
     PREREQ_PM => {
         'overload'         => '1.07',
         'Plack'            => '1.003',
-        'Dancer'           => '1.3',
+        'Dancer'           => '1.32',
         'Params::Validate' => '1.0',
         'RPC::XML'         => '1.0',
         'JSON'             => '2.0',
