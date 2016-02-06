@@ -1,9 +1,31 @@
-Changes on 2016-02-01 for repository at:
+Changes on 2016-02-06 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[da14f89] by abeltje on Tue, 2 Feb 2016 08:20:15 +0100
+
+     Last POD fixes
+
+        * POD fixes
+        * Depend on higher version of Dancer (1.32)
+
+
+M	Makefile.PL
+M	lib/Dancer/Plugin/RPC.pm
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+M	t/lib/TestProject.pm
+________________________________________________________________________________
+[66bed13] by abeltje on Mon, 1 Feb 2016 21:15:13 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_09 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [39ff23f] by abeltje on Mon, 1 Feb 2016 21:12:07 +0100
 
