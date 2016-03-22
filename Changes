@@ -1,9 +1,31 @@
-Changes on 2016-02-06 for repository at:
+Changes on 2016-03-22 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[93d85f7] by Larion Garaczi on Tue, 22 Mar 2016 13:58:55 +0100
+
+     Handle unhandled exceptions in callbacks
+
+        Runtime exceptions in the 'callback' functions were not caught. Now
+        we handle them the same way as runtime exceptions in the actual
+        methods.
+
+
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+M	t/200-register-xmlrpc.t
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[77f07bf] by abeltje on Sat, 6 Feb 2016 09:36:21 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 0.99_10 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [da14f89] by abeltje on Tue, 2 Feb 2016 08:20:15 +0100
 
