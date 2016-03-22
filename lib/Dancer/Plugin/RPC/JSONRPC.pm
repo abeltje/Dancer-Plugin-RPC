@@ -59,10 +59,20 @@ register jsonrpc => sub {
             }
 
             my @method_args = $request->{params};
-            my Dancer::RPCPlugin::CallbackResult $continue = $callback
-                ? $callback->(request(), $method_name, @method_args)
-                : callback_success();
+            my Dancer::RPCPlugin::CallbackResult $continue = eval {
+                $callback
+                    ? $callback->(request(), $method_name, @method_args)
+                    : callback_success();
+            };
 
+            if (my $error = $@) {
+                push @responses, jsonrpc_error_response(
+                    500,
+                    $error,
+                    $request->{id}
+                );
+                next;
+            }
             if (!$continue->success) {
                 push @responses, jsonrpc_error_response(
                     $continue->error_code,

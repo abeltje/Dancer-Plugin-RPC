@@ -57,12 +57,22 @@ register xmlrpc => sub {
             pass();
         }
 
-        my @method_args = map $_->value, @{$request->args};
-        my Dancer::RPCPlugin::CallbackResult $continue = $callback
-            ? $callback->(request(), $method_name, @method_args)
-            : callback_success();
-
+        content_type 'text/xml';
         my $response;
+        my @method_args = map $_->value, @{$request->args};
+        my Dancer::RPCPlugin::CallbackResult $continue = eval {
+            $callback
+                ? $callback->(request(), $method_name, @method_args)
+                : callback_success();
+        };
+
+        if (my $error = $@) {
+            $response = {
+                faultCode => 500,
+                faultString => $error,
+            };
+            return xmlrpc_response($response);
+        }
         if (! $continue->success) {
             $response->{faultCode} = $continue->error_code;
             $response->{faultString} = $continue->error_message;
@@ -80,10 +90,9 @@ register xmlrpc => sub {
                 $response = {
                     faultCode => 500,
                     faultString => $error,
-                }
+                };
             }
         }
-        content_type 'text/xml';
         return xmlrpc_response($response);
     };
 

@@ -143,6 +143,49 @@ use Dancer::Test;
     );
 }
 
+{ # callback dies
+    jsonrpc '/endpoint_fail2' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            die "terrible death\n";
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail2'], "/endpoint_fail registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail2',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+            body => to_json(
+                {
+                    jsonrpc => '2.0',
+                    method  => 'fail.ping',
+                    id      => 42,
+                }
+            ),
+        }
+    );
+
+    is_deeply(
+        from_json($response->{content})->{error},
+        {code => 500, message =>"terrible death\n"},
+        "fail.ping"
+    );
+}
+
+
 { # rpc-call fails
     jsonrpc '/endpoint_error' => {
         publish => sub {
