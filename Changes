@@ -1,9 +1,32 @@
-Changes on 2016-03-22 for repository at:
+Changes on 2016-06-07 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[2fb6dd2] by abeltje on Tue, 7 Jun 2016 21:00:34 +0200
+
+     Try to fix test-failures
+
+        * Comments from Henk to help build a FreeBSD port
+        * Do not return a single value from the RPC-procedure
+
+
+M	.gitignore
+M	Makefile.PL
+M	lib/Dancer/Plugin/RPC.pm
+M	t/200-register-xmlrpc.t
+M	t/250-register-jsonrpc.t
+M	t/lib/TestProject/SystemCalls.pm
+________________________________________________________________________________
+[7e62f40] by abeltje on Tue, 22 Mar 2016 21:35:21 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.00 (minor)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [93d85f7] by Larion Garaczi on Tue, 22 Mar 2016 13:58:55 +0100
 
