@@ -46,7 +46,7 @@ my $p = RPC::XML::ParserFactory->new();
 
     is_deeply(
         $result->value,
-        1,
+        { response => 1 },
         "system.ping"
     );
 }
@@ -84,7 +84,7 @@ my $p = RPC::XML::ParserFactory->new();
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
-        1,
+        { response => 1 },
         "code.ping"
     );
 }

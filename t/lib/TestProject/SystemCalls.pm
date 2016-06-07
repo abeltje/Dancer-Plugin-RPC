@@ -19,7 +19,7 @@ Returns true
 =cut
 
 sub do_ping {
-    return \1;
+    return { response => \1 };
 }
 
 =head2 do_version()
@@ -33,8 +33,6 @@ Returns the current version
 =cut
 
 sub do_version {
-    return {
-        software_version => $VERSION,
-    };
+    return { software_version => $VERSION };
 }
 1;

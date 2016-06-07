@@ -2,25 +2,25 @@
 use strict;
 use v5.10.1;
 
-use ExtUtils::MakeMaker;
+use ExtUtils::MakeMaker '6.55_02';
 
 WriteMakefile(
     NAME          => 'Dancer::Plugin::RPC',
     VERSION_FROM  => 'lib/Dancer/Plugin/RPC.pm',
     ABSTRACT_FROM => 'lib/Dancer/Plugin/RPC.pm',
     AUTHOR        => 'Abe Timmerman <abeltje@cpan.org>',
+    LICENSE       => 'perl',
 
     PREREQ_PM => {
         'overload'         => '1.07',
-        'Plack'            => '1.003',
-        'Dancer'           => '1.32',
+        'Dancer'           => '1.31',
         'Params::Validate' => '1.0',
-        'RPC::XML'         => '1.0',
+        'RPC::XML'         => '0.56',
         'JSON'             => '2.0',
-        },
+    },
 
     CONFIGURE_REQUIRES => {
-        'ExtUtils::MakeMaker' => 6.56,
+        'ExtUtils::MakeMaker' => '6.55_02',
     },
 
     BUILD_REQUIRES => {

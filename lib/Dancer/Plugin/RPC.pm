@@ -8,7 +8,7 @@ our $VERSION = '1.00';
 
 =head1 NAME
 
-Dancer::Plugin::RPC - Placeholder for the Version-number
+Dancer::Plugin::RPC - Configure endpoints for XMLRPC and JSONRPC procedures
 
 =head1 DESCRIPTION
 
@@ -112,6 +112,25 @@ The B<code_wrapper> argument can be used to wrap the code (from the dispatch tab
         my $instance = $pkg->new();
         $instance->$code(@_);
     };
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+See:
+
+=over 4
+
+=item * L<http://www.perl.com/perl/misc/Artistic.html>
+
+=item * L<http://www.gnu.org/copyleft/gpl.html>
+
+=back
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =head1 COPYRIGHT
 
