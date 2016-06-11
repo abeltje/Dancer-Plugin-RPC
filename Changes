@@ -1,9 +1,27 @@
-Changes on 2016-06-07 for repository at:
+Changes on 2016-06-11 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[0730d5c] by abeltje on Sat, 11 Jun 2016 16:32:18 +0200
+
+     Fix faulty test.
+
+        the representation of 'True' may vary throughout versions of
+        from_json()
+
+
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[8385c04] by abeltje on Tue, 7 Jun 2016 21:11:39 +0200
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.00_01 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [2fb6dd2] by abeltje on Tue, 7 Jun 2016 21:00:34 +0200
 
