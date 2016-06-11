@@ -51,7 +51,7 @@ use Dancer::Test;
     is_deeply(
         \@results,
         [
-            {response => 'true'},
+            from_json('{"response": "true"}'),
             {software_version => '1.0'},
         ],
         "system.ping"
@@ -93,7 +93,7 @@ use Dancer::Test;
 
     is_deeply(
         from_json($response->{content})->{result},
-        {response => 'true'},
+        from_json('{"response": "true"}'),
         "code.ping"
     );
 }
