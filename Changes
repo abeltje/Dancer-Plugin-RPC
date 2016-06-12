@@ -1,9 +1,26 @@
-Changes on 2016-06-11 for repository at:
+Changes on 2016-06-12 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[9549fb5] by abeltje on Sun, 12 Jun 2016 17:04:18 +0200
+
+     Fix test 250 for JSON 2.90
+
+        JSON 2.90 changed its redering of JSON::true, fix test
+
+
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[e972dbd] by abeltje on Sat, 11 Jun 2016 16:36:59 +0200
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.00_02 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [0730d5c] by abeltje on Sat, 11 Jun 2016 16:32:18 +0200
 
