@@ -47,15 +47,21 @@ use Dancer::Test;
         }
     );
 
+    my $ping = from_json('{"response": true}');
+    if (JSON->VERSION >= 2.90) {
+        my $t = 1;
+        $ping->{response} = bless \$t, 'JSON::PP::Boolean';
+    }
+
     my @results = map $_->{result}, @{from_json($response->{content})};
     is_deeply(
         \@results,
         [
-            from_json('{"response": "true"}'),
+            $ping,
             {software_version => '1.0'},
         ],
         "system.ping"
-    );
+    ) or diag(explain(\@results));
 }
 
 { # publish is code that returns the dispatch-table
@@ -91,9 +97,15 @@ use Dancer::Test;
         }
     );
 
+    my $ping = from_json('{"response": true}');
+    if (JSON->VERSION >= 2.90) {
+        my $t = 1;
+        $ping->{response} = bless \$t, 'JSON::PP::Boolean';
+    }
+
     is_deeply(
         from_json($response->{content})->{result},
-        from_json('{"response": "true"}'),
+        $ping,
         "code.ping"
     );
 }
