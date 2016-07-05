@@ -9,6 +9,7 @@ use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
+use Dancer::RPCPlugin::DispatchMethodList;
 
 use Params::Validate ':all';
 use RPC::XML::ParserFactory;
@@ -40,6 +41,13 @@ register xmlrpc => sub {
     };
     my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
+
+    my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
+    $lister->set_partial(
+        protocol => 'xmlrpc',
+        endpoint => $endpoint,
+        methods  => [ sort keys %{ $dispatcher } ],
+    );
 
     my $handle_call = sub {
         if (request->content_type ne 'text/xml') {

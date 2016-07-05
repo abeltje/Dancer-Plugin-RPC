@@ -9,6 +9,7 @@ use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
+use Dancer::RPCPlugin::DispatchMethodList;
 
 my %dispatch_builder_map = (
     pod    => \&build_dispatcher_from_pod,
@@ -36,6 +37,13 @@ register jsonrpc => sub {
     };
     my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
+
+    my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
+    $lister->set_partial(
+        protocol => 'jsonrpc',
+        endpoint => $endpoint,
+        methods  => [ sort keys %{ $dispatcher } ],
+    );
 
     my $handle_call = sub {
         if (request->content_type ne 'application/json') {

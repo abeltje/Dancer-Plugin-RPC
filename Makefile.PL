@@ -12,7 +12,6 @@ WriteMakefile(
     LICENSE       => 'perl',
 
     PREREQ_PM => {
-        'overload'         => '1.07',
         'Dancer'           => '1.31',
         'Params::Validate' => '1.0',
         'RPC::XML'         => '0.56',
