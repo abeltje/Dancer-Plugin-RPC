@@ -1,9 +1,33 @@
-Changes on 2016-06-12 for repository at:
+Changes on 2016-07-08 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[bb209a0] by abeltje on Tue, 5 Jul 2016 23:48:08 +0200
+
+     Add a mechanism to allow for listMethods
+
+        Add a singleton class Dancer::RPCPlugin::DispatchMethodList to
+        manage a full view of the dispatch table from a client side view.
+
+
+M	MANIFEST
+M	Makefile.PL
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+A	lib/Dancer/RPCPlugin/DispatchMethodList.pm
+A	t/300-methodlist.t
+A	t/400-list_methods.t
+________________________________________________________________________________
+[dcd5949] by abeltje on Sun, 12 Jun 2016 17:09:13 +0200
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.00_03 (same)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [9549fb5] by abeltje on Sun, 12 Jun 2016 17:04:18 +0200
 
