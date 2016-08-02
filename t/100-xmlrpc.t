@@ -3,6 +3,9 @@ use strict;
 use lib 't/lib';
 
 use Test::More;
+
+use Dancer qw/:syntax !pass/;
+use Dancer::Plugin::RPC::XMLRPC;
 use TestProject;
 use Dancer::Test;
 
