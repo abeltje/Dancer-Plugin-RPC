@@ -1,9 +1,24 @@
-Changes on 2016-07-08 for repository at:
+Changes on 2016-08-03 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[650aa58] by abeltje on Tue, 2 Aug 2016 19:13:18 +0200
+
+     Dunno why :(
+
+
+M	t/100-xmlrpc.t
+________________________________________________________________________________
+[96c34a7] by abeltje on Fri, 8 Jul 2016 00:19:31 +0200
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.00_04 (same)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [bb209a0] by abeltje on Tue, 5 Jul 2016 23:48:08 +0200
 
