@@ -2,6 +2,7 @@ package Dancer::Plugin::RPC::XMLRPC;
 use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
+use Scalar::Util 'blessed';
 
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
@@ -99,6 +100,9 @@ register xmlrpc => sub {
                     faultCode => 500,
                     faultString => $error,
                 };
+            }
+            if (blessed($response) && $response->can('as_xmlrpc_fault')) {
+                $response = $response->as_xmlrpc_fault;
             }
         }
         return xmlrpc_response($response);

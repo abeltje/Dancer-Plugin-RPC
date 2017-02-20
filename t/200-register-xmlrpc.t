@@ -8,6 +8,7 @@ use Dancer qw/:syntax !pass/;
 use Dancer::Plugin::RPC::XMLRPC;
 use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchItem;
+use Dancer::RPCPlugin::ErrorResponse;
 
 use Dancer::Test;
 
@@ -197,6 +198,38 @@ my $p = RPC::XML::ParserFactory->new();
         {faultCode => 500, faultString =>"Example error code\n"},
         "fail.error"
     );
+}
+
+{ # return an error_response()
+    xmlrpc '/endpoint_fault' => {
+        publish => sub {
+            return {
+                'fail.error' => dispatch_item(
+                    code => sub { error_response(error_code => 42, error_message => "Boo!") },
+                    package => __PACKAGE__,
+                ),
+            };
+        },
+    };
+
+    route_exists([POST => '/endpoint_fault'], "/endpoint_fault registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fault',
+        {
+            headers => [
+                'Content-Type' => 'text/xml',
+            ],
+            body => RPC::XML::request->new('fail.error')->as_string,
+        }
+    );
+
+    my $result = $p->parse($response->{content})->value;
+    is_deeply(
+        $result->value,
+        {faultCode => 42, faultString =>"Boo!"},
+        "fail.error"
+    ) or diag(explain($result->value));
 }
 
 done_testing();

@@ -2,6 +2,7 @@ package Dancer::Plugin::RPC::JSONRPC;
 use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
+use Scalar::Util 'blessed';
 
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
@@ -58,10 +59,15 @@ register jsonrpc => sub {
             debug("[handle_jsonrpc_call] $method_name ", $request);
 
             if (!exists $dispatcher->{$method_name}) {
-                push @responses, jsonrpc_error_response(
-                    -32601,
-                    "Method '$method_name' not found",
-                    $request->{id}
+                push(
+                    @responses,
+                    jsonrpc_error_response(
+                        $request->{id},
+                        {
+                            code    => -32601,
+                            message => "Method '$method_name' not found",
+                        }
+                    )
                 );
                 next;
             }
@@ -74,18 +80,28 @@ register jsonrpc => sub {
             };
 
             if (my $error = $@) {
-                push @responses, jsonrpc_error_response(
-                    500,
-                    $error,
-                    $request->{id}
+                push(
+                    @responses,
+                    jsonrpc_error_response(
+                        $request->{id},
+                        {
+                            code    => 500,
+                            message => $error,
+                        }
+                    )
                 );
                 next;
             }
             if (!$continue->success) {
-                push @responses, jsonrpc_error_response(
-                    $continue->error_code,
-                    $continue->error_message,
-                    $request->{id}
+                push(
+                    @responses,
+                    jsonrpc_error_response(
+                        $request->{id},
+                        {
+                            code    => $continue->error_code,
+                            message => $continue->error_message,
+                        }
+                    )
                 );
                 next;
             }
@@ -100,20 +116,17 @@ register jsonrpc => sub {
 
             debug("[handeled_jsonrpc_call] ", $result);
             if (my $error = $@) {
-                push @responses, jsonrpc_error_response(
-                    500,
-                    $error,
-                    $request->{id}
-                );
-                next;
+                $result = {
+                    error => {
+                        code => 500,
+                        message => $error,
+                    }
+                };
             }
-            push @responses, {
-                jsonrpc => '2.0',
-                result => $result,
-                exists $request->{id}
-                    ? (id => $request->{id})
-                    : (),
-            };
+            if (blessed($result) && $result->can('as_jsonrpc_error')) {
+                $result = $result->as_jsonrpc_error;
+            }
+            push @responses, jsonrpc_response($request->{id}, $result);
         }
 
         # create response
@@ -146,15 +159,25 @@ sub unjson {
     return @requests;
 }
 
-sub jsonrpc_error_response {
-    my ($code, $message, $id) = @_;
+sub jsonrpc_response {
+    my ($id, $data) = @_;
+
+    if (exists $data->{error}) {
+        return jsonrpc_error_response($id => $data->{error});
+    }
     return {
         jsonrpc => '2.0',
-        error => {
-            code    => $code,
-            message => $message,
-        },
-        defined $id ? (id => $id) : (),
+        id      => $id,
+        result  => $data,
+    };
+}
+
+sub jsonrpc_error_response {
+    my ($id, $error) = @_;
+    return {
+        jsonrpc => '2.0',
+        id      => $id,
+        error   => $error,
     };
 }
 
@@ -341,6 +364,10 @@ Deserializes the string as Perl-datastructure.
 =head2 jsonrpc_error_response
 
 Returns a jsonrpc error response as a hashref.
+
+=head2 jsonrpc_response
+
+Returns a jsonrpc response as a hashref.
 
 =head2 build_dispatcher_from_config
 

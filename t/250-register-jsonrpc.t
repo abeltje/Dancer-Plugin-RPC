@@ -8,6 +8,7 @@ use Dancer qw/:syntax !pass/;
 use Dancer::Plugin::RPC::JSONRPC;
 use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchItem;
+use Dancer::RPCPlugin::ErrorResponse;
 
 use Dancer::Test;
 
@@ -152,7 +153,7 @@ use Dancer::Test;
         from_json($response->{content})->{error},
         {code => -500, message =>"Force callback error"},
         "fail.ping"
-    );
+    ) or diag($response->{content});
 }
 
 { # callback dies
@@ -233,6 +234,43 @@ use Dancer::Test;
         {code => 500, message =>"Example error code\n"},
         "fail.error"
     );
+}
+
+{ # return an error_response()
+    jsonrpc '/endpoint_fault' => {
+        publish => sub {
+            return {
+                'fail.error' => dispatch_item(
+                    code => sub { error_response(error_code => 42, error_message => "Boo!") },
+                    package => __PACKAGE__,
+                ),
+            };
+        },
+    };
+
+    route_exists([POST => '/endpoint_fault'], "/endpoint_fault registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fault',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+            body => to_json(
+                {
+                    jsonrpc => '2.0',
+                    method  => 'fail.error',
+                    id      => 42,
+                }
+            ),
+        }
+    );
+
+    is_deeply(
+        from_json($response->{content})->{error},
+        {code => 42, message =>"Boo!"},
+        "fail.error"
+    ) or diag(explain($response));
 }
 
 done_testing();
