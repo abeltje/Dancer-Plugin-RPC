@@ -1,9 +1,37 @@
-Changes on 2016-08-03 for repository at:
+Changes on 2017-02-20 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[30af79c] by abeltje on Mon, 20 Feb 2017 21:14:21 +0100
+
+     Introduce a general way to return a complete error-response
+
+        Dancer::RPCPlugin::ErrorResponse should be a way to return a full 
+        error-response as valid response without knowlage of the protocol.
+
+
+M	.gitignore
+M	MANIFEST
+M	MANIFEST.SKIP
+M	Makefile.PL
+M	lib/Dancer/Plugin/RPC/JSONRPC.pm
+M	lib/Dancer/Plugin/RPC/XMLRPC.pm
+A	lib/Dancer/RPCPlugin/ErrorResponse.pm
+A	t/020-error-response.t
+A	t/030-callback-result.t
+M	t/200-register-xmlrpc.t
+M	t/250-register-jsonrpc.t
+________________________________________________________________________________
+[084ef5f] by abeltje on Wed, 3 Aug 2016 18:40:56 +0200
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.01 (minor)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [650aa58] by abeltje on Tue, 2 Aug 2016 19:13:18 +0200
 
@@ -314,8 +342,7 @@ ________________________________________________________________________________
 
 
 M	MANIFEST
-D	lib/Dancer/RPCPlugin/DispatchFromPOD.pm
-A	lib/Dancer/RPCPlugin/DispatchFromPod.pm
+R096	lib/Dancer/RPCPlugin/DispatchFromPOD.pm	lib/Dancer/RPCPlugin/DispatchFromPod.pm
 ________________________________________________________________________________
 [6993bdc] by abeltje on Mon, 25 Jan 2016 12:22:42 +0100
 
