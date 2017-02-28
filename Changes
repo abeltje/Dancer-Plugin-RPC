@@ -1,9 +1,17 @@
-Changes on 2017-02-20 for repository at:
+Changes on 2017-02-28 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
+________________________________________________________________________________
+[7496a72] by abeltje on Mon, 20 Feb 2017 21:18:38 +0100
+
+     Autocommit for distribution Dancer::Plugin::RPC 1.01_01 (test)
+
+
+M	Changes
+M	lib/Dancer/Plugin/RPC.pm
 ________________________________________________________________________________
 [30af79c] by abeltje on Mon, 20 Feb 2017 21:14:21 +0100
 
