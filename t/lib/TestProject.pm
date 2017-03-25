@@ -2,6 +2,7 @@ package TestProject;
 use Dancer ':syntax';
 use Dancer::Plugin::RPC::JSONRPC;
 use Dancer::Plugin::RPC::XMLRPC;
+use Dancer::Plugin::RPC::RESTRPC;
 
 # Register calls directly via POD
 xmlrpc '/system' => {
@@ -28,6 +29,12 @@ jsonrpc '/jsonrpc/api' => {
 # Register calls via YAML-config
 jsonrpc '/jsonrpc/admin' => { publish => 'config' };
 
+
+restrpc '/rest/system' => {
+    publish   => 'pod',
+    arguments => ['TestProject::SystemCalls'],
+};
+
 true;
 
 __END__
@@ -44,3 +51,8 @@ jsonrpc:
     /jsonrpc/admin ping
     /jsonrpc/admin version
     /jsonrpc/admin uppercase (argument)
+
+restrpc:
+    /rest/system/ping
+    /rest/system/version
+

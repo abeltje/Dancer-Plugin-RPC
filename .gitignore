@@ -7,3 +7,6 @@ MYMETA.*
 Makefile
 Makefile.bak
 tags
+example/local
+example/cpanfile.snapshot
+example/carton.lock

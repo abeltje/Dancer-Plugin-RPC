@@ -50,6 +50,20 @@ sub as_jsonrpc_error {
     };
 }
 
+sub as_restrpc_error {
+    my $self = shift;
+
+    my $data = $self->error_data;
+    return {
+        error => {
+            code => $self->error_code,
+            message => $self->error_message,
+            ($data ? (data => $data) : ()),
+        }
+    };
+}
+
+
 1;
 
 =head1 NAME
@@ -127,6 +141,10 @@ Returns a data-structure for the use in the C<error> field of a jsonrpc response
 =head2 $er->as_xmlrpc_fault
 
 Returns a data-structure for the use as a C<fault> response in XMLRPC.
+
+=head2 $er->as_restrpc_error
+
+Returns a data-structure like the C<error-field> in a JSONRPC2 error response.
 
 =head1 COPYRIGHT
 

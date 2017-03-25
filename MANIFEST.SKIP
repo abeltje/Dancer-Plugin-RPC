@@ -6,3 +6,5 @@ MYMETA\..*
 cover_db/
 Makefile
 tags
+example/local
+example/cpanfile.snapshot

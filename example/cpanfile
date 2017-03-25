@@ -1,0 +1,10 @@
+requires 'Dancer'     => '1.32';
+requires 'Moo'        => '2.0';
+requires 'HTTP::Tiny' => '0.070';
+requires 'JSON'       => '2.90';
+requires 'URI'        => '1.60';
+
+# do-rpc
+requires 'RPC::XML'                    => '0.57';
+requires 'Log::Log4perl'               => '1.49';
+requires 'MooseX::Log::Log4perl::Easy' => '0.47';

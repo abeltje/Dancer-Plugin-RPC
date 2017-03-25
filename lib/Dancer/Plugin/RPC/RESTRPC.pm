@@ -1,4 +1,4 @@
-package Dancer::Plugin::RPC::JSONRPC;
+package Dancer::Plugin::RPC::RESTRPC;
 use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
@@ -7,6 +7,7 @@ use Scalar::Util 'blessed';
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
 use Dancer::RPCPlugin::CallbackResult;
+use Dancer::RPCPlugin::ErrorResponse;
 use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
@@ -17,13 +18,14 @@ my %dispatch_builder_map = (
     config => \&build_dispatcher_from_config,
 );
 
-register jsonrpc => sub {
-    my ($self, $endpoint, $arguments) = plugin_args(@_);
+register restrpc => sub {
+    my($self, $base_url, $arguments) = plugin_args(@_);
 
     my $publisher;
     given ($arguments->{publish} // 'config') {
         when (exists $dispatch_builder_map{$_}) {
             $publisher = $dispatch_builder_map{$_};
+
             $arguments->{arguments} = plugin_setting() if $_ eq 'config';
         }
         default {
@@ -37,12 +39,12 @@ register jsonrpc => sub {
         $code->(@_);
     };
     my $callback = $arguments->{callback};
-    my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
+    my $dispatcher = $publisher->($arguments->{arguments}, $base_url);
 
     my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
     $lister->set_partial(
-        protocol => 'jsonrpc',
-        endpoint => $endpoint,
+        protocol => 'restrpc',
+        endpoint => $base_url,
         methods  => [ sort keys %{ $dispatcher } ],
     );
 
@@ -51,169 +53,97 @@ register jsonrpc => sub {
             pass();
         }
 
-        my @requests = unjson(request->body);
+        # method_name should exist
+        my ($method_name) = request->path =~ m{$base_url/(\w+)};
+        if (! exists $dispatcher->{$method_name}) {
+            pass();
+        }
 
-        my @responses;
-        for my $request (@requests) {
-            my $method_name = $request->{method};
-            debug("[handle_jsonrpc_call] $method_name ", $request);
+        content_type 'application/json';
+        my $method_args = request->body
+            ? from_json(request->body)
+            : undef;
+        my Dancer::RPCPlugin::CallbackResult $continue = eval {
+            $callback
+                ? $callback->(request(), $method_name, $method_args)
+                : callback_success();
+        };
 
-            if (!exists $dispatcher->{$method_name}) {
-                push(
-                    @responses,
-                    jsonrpc_error_response(
-                        $request->{id},
-                        {
-                            code    => -32601,
-                            message => "Method '$method_name' not found",
-                        }
-                    )
-                );
-                next;
-            }
-
-            my @method_args = $request->{params};
-            my Dancer::RPCPlugin::CallbackResult $continue = eval {
-                $callback
-                    ? $callback->(request(), $method_name, @method_args)
-                    : callback_success();
-            };
-
-            if (my $error = $@) {
-                push(
-                    @responses,
-                    jsonrpc_error_response(
-                        $request->{id},
-                        {
-                            code    => 500,
-                            message => $error,
-                        }
-                    )
-                );
-                next;
-            }
-            if (!$continue->success) {
-                push(
-                    @responses,
-                    jsonrpc_error_response(
-                        $request->{id},
-                        {
-                            code    => $continue->error_code,
-                            message => $continue->error_message,
-                        }
-                    )
-                );
-                next;
-            }
-
+        my $response;
+        if (my $error = $@) {
+            $response = Dancer::RPCPlugin::ErrorResponse->new(
+                error_code => 500,
+                error_message => $error,
+            )->as_restrpc_error;
+        }
+        elsif (! $continue->success) {
+            $response = Dancer::RPCPlugin::ErrorResponse->new(
+                error_code    => $continue->error_code,
+                error_message => $continue->error_message,
+            )->as_restrpc_error;
+        }
+        else {
             my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
             my $handler = $di->code;
             my $package = $di->package;
 
-            my $result = eval {
-                $code_wrapper->($handler, $package, $method_name, @method_args);
+            $response = eval {
+                $code_wrapper->($handler, $package, $method_name, $method_args);
             };
 
-            debug("[handeled_jsonrpc_call] ", $result);
             if (my $error = $@) {
-                $result = {
-                    error => {
-                        code => 500,
-                        message => $error,
-                    }
-                };
+                $response = Dancer::RPCPlugin::ErrorResponse->new(
+                    error_code => 500,
+                    error_message => $error,
+                )->as_restrpc_error;
             }
-            if (blessed($result) && $result->can('as_jsonrpc_error')) {
-                $result = $result->as_jsonrpc_error;
+            if (blessed($response) && $response->can('as_restrpc_error')) {
+               $response = $response->as_restrpc_error;
             }
-            push @responses, jsonrpc_response($request->{id}, $result);
         }
-
-        # create response
-        my $response;
-        if (@responses == 1) {
-            $response = to_json($responses[0]);
-        }
-        else {
-            $response = to_json(\@responses);
-        }
-
-        content_type 'application/json';
-        return $response;
+        $response = { result => $response } if !ref($response);
+        return to_json($response);
     };
 
-    post $endpoint, $handle_call;
+    for my $call (keys %{ $dispatcher }) {
+        my $endpoint = "$base_url/$call";
+        post $endpoint, $handle_call;
+    }
 };
-
-sub unjson {
-    my ($body) = @_;
-
-    my @requests;
-    my $unjson = from_json($body, {utf8 => 1});
-    if (ref($unjson) ne 'ARRAY') {
-        @requests = ($unjson);
-    }
-    else {
-        @requests = @$unjson;
-    }
-    return @requests;
-}
-
-sub jsonrpc_response {
-    my ($id, $data) = @_;
-
-    if (ref($data) eq 'HASH' && exists $data->{error}) {
-        return jsonrpc_error_response($id => $data->{error});
-    }
-    return {
-        jsonrpc => '2.0',
-        id      => $id,
-        result  => $data,
-    };
-}
-
-sub jsonrpc_error_response {
-    my ($id, $error) = @_;
-    return {
-        jsonrpc => '2.0',
-        id      => $id,
-        error   => $error,
-    };
-}
 
 sub build_dispatcher_from_pod {
     my ($pkgs) = @_;
     debug("[build_dispatcher_from_pod]");
-
     return dispatch_table_from_pod(
         packages => $pkgs,
-        label    => 'jsonrpc',
+        label    => 'restrpc',
     );
 }
 
 sub build_dispatcher_from_config {
     my ($config, $endpoint) = @_;
-    debug("[build_dispatcher_from_config] $endpoint");
+    debug("[build_dispatcher_from_config] ");
 
     return dispatch_table_from_config(
-        key      => 'jsonrpc',
+        key      => 'restrpc',
         config   => $config,
         endpoint => $endpoint,
     );
 }
-register_plugin;
-1;
+
+register_plugin();
+true;
 
 =head1 NAME
 
-Dancer::Plugin::RPC::JSONRPC - Dancer Plugin to register jsonrpc2 methods.
+Dancer::Plugin::RPC::RESTRPC - RESTRPC Plugin for Dancer
 
-=head1 SYNOPSIS
+=head2 SYNOPSIS
 
 In the Controler-bit:
 
-    use Dancer::Plugin::RPC::JSONRPC;
-    jsonrpc '/endpoint' => {
+    use Dancer::Plugin::RPC::RESTRPC;
+    restrpc '/base_url' => {
         publish   => 'pod',
         arguments => ['MyProject::Admin']
     };
@@ -222,7 +152,7 @@ and in the Model-bit (B<MyProject::Admin>):
 
     package MyProject::Admin;
     
-    =for jsonrpc rpc.abilities rpc_show_abilities
+    =for restrpc rpc_abilities rpc_show_abilities
     
     =cut
     
@@ -233,12 +163,15 @@ and in the Model-bit (B<MyProject::Admin>):
     }
     1;
 
-
 =head1 DESCRIPTION
 
-This plugin lets one bind an endpoint to a set of modules with the new B<jsonrpc> keyword.
+RESTRPC is a simple protocol that uses HTTP-POST to post a JSON-string (with
+C<Content-Type: application/json> to an endpoint. This endpoint is the
+C<base_url> concatenated with the rpc-method name.
 
-=head2 jsonrpc '/endpoint' => \%publisher_arguments;
+This plugin lets one bind a base_url to a set of modules with the new B<restrpc> keyword.
+
+=head2 restrpc '/base_url' => \%publisher_arguments;
 
 =head3 C<\%publisher_arguments>
 
@@ -289,8 +222,9 @@ The codewrapper will be called with these positional arguments:
 The default code_wrapper-sub is:
 
     sub {
-        my $code = shift;
-        my $pkg  = shift;
+        my $code   = shift;
+        my $pkg    = shift;
+        my $method = shift;
         $code->(@_);
     };
 
@@ -305,8 +239,8 @@ The publiser key determines the way one connects the rpc-method name with the ac
 This way of publishing requires you to create a dispatch-table in the app's config YAML:
 
     plugins:
-        "RPC::JSONRPC":
-            '/endpoint':
+        "RPC::RESTRPC":
+            '/base_url':
                 'MyProject::Admin':
                     admin.someFunction: rpc_admin_some_function_name
                 'MyProject::User':
@@ -316,11 +250,11 @@ The Config-publisher doesn't use the C<arguments> value of the C<%publisher_argu
 
 =item publisher => 'pod'
 
-This way of publishing enables one to use a special POD directive C<=for jsonrpc>
+This way of publishing enables one to use a special POD directive C<=for restrpc>
 to connect the rpc-method name to the actual code. The directive must be in the
 same file as where the code resides.
 
-    =for jsonrpc admin.someFunction rpc_admin_some_function_name
+    =for restrpc admin_someFunction rpc_admin_some_function_name
 
 The POD-publisher needs the C<arguments> value to be an arrayref with package names in it.
 
@@ -332,11 +266,11 @@ The code_ref you supply, gets the C<arguments> value of the C<%publisher_argumen
 A dispatch-table looks like:
 
     return {
-        'admin.someFuncion' => dispatch_item(
+        'admin_someFuncion' => dispatch_item(
             package => 'MyProject::Admin',
             code    => MyProject::Admin->can('rpc_admin_some_function_name'),
         ),
-        'user.otherFunction' => dispatch_item(
+        'user_otherFunction' => dispatch_item(
             package => 'MyProject::User',
             code    => MyProject::User->can('rpc_user_other_function_name'),
         ),
@@ -350,24 +284,12 @@ The value of this key depends on the publisher-method chosen.
 
 =back
 
-=head2 =for jsonrpc jsonrpc-method-name sub-name
+=head2 =for restrpc restrpc-method-name sub-name
 
-This special POD-construct is used for coupling the jsonrpc-methodname to the
+This special POD-construct is used for coupling the restrpc-methodname to the
 actual sub-name in the current package.
 
 =head1 INTERNAL
-
-=head2 unjson
-
-Deserializes the string as Perl-datastructure.
-
-=head2 jsonrpc_error_response
-
-Returns a jsonrpc error response as a hashref.
-
-=head2 jsonrpc_response
-
-Returns a jsonrpc response as a hashref.
 
 =head2 build_dispatcher_from_config
 
@@ -379,6 +301,6 @@ Creates a (partial) dispatch table from data provided in POD.
 
 =head1 COPYRIGHT
 
-(c) MMXVI - Abe Timmerman <abeltje@cpan.org>.
+(c) MMXVII - Abe Timmerman <abeltje@cpan.org>
 
 =cut

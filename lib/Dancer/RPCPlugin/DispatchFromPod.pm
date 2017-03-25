@@ -14,7 +14,7 @@ sub dispatch_table_from_pod {
     my $args = validate(
         @_,
         {
-            label    => { regex => qr/^(xmlrpc|jsonrpc)$/ },
+            label    => { regex => qr/^(xmlrpc|jsonrpc|restrpc)$/ },
             packages => { type  => ARRAYREF },
         }
     );

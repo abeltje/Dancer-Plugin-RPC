@@ -13,7 +13,7 @@ sub dispatch_table_from_config {
     my $args = validate(
         @_,
         {
-            key      => { regex => qr/^(xmlrpc|jsonrpc)$/ },
+            key      => { regex => qr/^(xmlrpc|jsonrpc|restrpc)$/ },
             config   => { type  => HASHREF },
             endpoint => { type  => SCALAR, optional => 0 },
         }

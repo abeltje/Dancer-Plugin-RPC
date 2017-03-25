@@ -75,7 +75,7 @@ sub set_partial {
     my $args = validate_with(
         params => \@_,
         spec   => {
-            protocol => {regex => qr/^(?:json|xml)rpc$/, optional => 0},
+            protocol => {regex => qr/^(?:json|xml|rest)rpc$/, optional => 0},
             endpoint => {regex => qr/^.*$/, optional => 0},
             methods  => {type => ARRAYREF},
         },
