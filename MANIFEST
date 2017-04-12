@@ -40,7 +40,6 @@ t/lib/TestProject.pm
 t/lib/TestProject/Bogus.pm
 t/lib/TestProject/ApiCalls.pm
 t/lib/TestProject/SystemCalls.pm
-t/logs/development.log
 xt/00-manifest.t
 xt/01-compile.t
 xt/02-pod_syntax.t
