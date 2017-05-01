@@ -11,6 +11,7 @@ use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
+use Dancer::RPCPlugin::FlattenData;
 
 use Params::Validate ':all';
 use RPC::XML::ParserFactory;
@@ -35,11 +36,13 @@ register xmlrpc => sub {
         }
     }
 
-    my $code_wrapper = $arguments->{code_wrapper} // sub {
-        my $code = shift;
-        my $pkg  = shift;
-        $code->(@_);
-    };
+    my $code_wrapper = $arguments->{code_wrapper}
+        ? $arguments->{code_wrapper}
+        : sub {
+            my $code = shift;
+            my $pkg  = shift;
+            $code->(@_);
+        };
     my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
 
@@ -82,7 +85,13 @@ register xmlrpc => sub {
             };
             return xmlrpc_response($response);
         }
-        if (! $continue->success) {
+        if (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
+            $response = {
+                faultCode   => 500,
+                faultString => "Internal error: 'callback_result' wrong class " . blessed($continue),
+            };
+        }
+        elsif (blessed($continue) && !$continue->success) {
             $response->{faultCode} = $continue->error_code;
             $response->{faultString} = $continue->error_message;
         }
@@ -103,6 +112,9 @@ register xmlrpc => sub {
             }
             if (blessed($response) && $response->can('as_xmlrpc_fault')) {
                 $response = $response->as_xmlrpc_fault;
+            }
+            elsif (blessed($response)) {
+                $response = flatten_data($response);
             }
         }
         return xmlrpc_response($response);

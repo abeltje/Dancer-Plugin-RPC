@@ -12,6 +12,7 @@ use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
+use Dancer::RPCPlugin::FlattenData;
 
 my %dispatch_builder_map = (
     pod    => \&build_dispatcher_from_pod,
@@ -33,11 +34,13 @@ register restrpc => sub {
         }
     }
 
-    my $code_wrapper = $arguments->{code_wrapper} // sub {
-        my $code = shift;
-        my $pkg  = shift;
-        $code->(@_);
-    };
+    my $code_wrapper = $arguments->{code_wrapper}
+        ? $arguments->{code_wrapper}
+        : sub {
+            my $code = shift;
+            my $pkg  = shift;
+            $code->(@_);
+        };
     my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $base_url);
 
@@ -76,7 +79,13 @@ register restrpc => sub {
                 error_message => $error,
             )->as_restrpc_error;
         }
-        elsif (! $continue->success) {
+        elsif (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
+            $response = Dancer::RPCPlugin::ErrorResponse->new(
+                error_code    => 500,
+                error_message => "Internal error: 'callback_result' wrong class " . blessed($continue),
+            )->as_restrpc_error;
+        }
+        elsif (blessed($continue) && !$continue->success) {
             $response = Dancer::RPCPlugin::ErrorResponse->new(
                 error_code    => $continue->error_code,
                 error_message => $continue->error_message,
@@ -99,6 +108,9 @@ register restrpc => sub {
             }
             if (blessed($response) && $response->can('as_restrpc_error')) {
                $response = $response->as_restrpc_error;
+            }
+            elsif (blessed($response)) {
+                $response = flatten_data($response);
             }
         }
         $response = { result => $response } if !ref($response);

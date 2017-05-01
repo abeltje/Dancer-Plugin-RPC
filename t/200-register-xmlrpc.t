@@ -168,6 +168,129 @@ my $p = RPC::XML::ParserFactory->new();
     );
 }
 
+{ # code_wrapper dies
+    xmlrpc '/endpoint_fail3' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            die "code_wrapper died\n";
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail3'], "/endpoint_fail3 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail3',
+        {
+            headers => [
+                'Content-Type' => 'text/xml',
+            ],
+            body => RPC::XML::request->new('fail.ping')->as_string,
+        }
+    );
+
+    my $result = $p->parse($response->{content})->value;
+    is_deeply(
+        $result->value,
+        {faultCode => 500, faultString =>"code_wrapper died\n"},
+        "fail.ping (code_wrapper)"
+    );
+}
+
+{ # callback returns unknown object
+    xmlrpc '/endpoint_fail4' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        },
+        code_wrapper => sub {
+            return 'pang';
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail4'], "/endpoint_fail4 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail4',
+        {
+            headers => [
+                'Content-Type' => 'text/xml',
+            ],
+            body => RPC::XML::request->new('fail.ping')->as_string,
+        }
+    );
+
+    my $result = $p->parse($response->{content})->value;
+    is_deeply(
+        $result->value,
+        {
+            faultCode   => 500,
+            faultString => "Internal error: 'callback_result' wrong class SomeRandomClass"
+        },
+        "fail.ping (callback wrong class)"
+    ) or diag(explain($result->value));
+}
+
+{ # code_wrapper returns unknown object
+    xmlrpc '/endpoint_fail5' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail5'], "/endpoint_fail5 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail5',
+        {
+            headers => [
+                'Content-Type' => 'text/xml',
+            ],
+            body => RPC::XML::request->new('fail.ping')->as_string,
+        }
+    );
+
+    my $result = $p->parse($response->{content})->value;
+    is_deeply(
+        $result->value,
+        {easter => 'egg'},
+        "fail.ping (code_wrapper object)"
+    ) or diag(explain($result->value));
+}
+
 { # rpc-call fails
     xmlrpc '/endpoint_error' => {
         publish => sub {

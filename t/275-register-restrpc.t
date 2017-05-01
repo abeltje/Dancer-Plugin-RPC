@@ -162,6 +162,128 @@ use Dancer::Test;
     );
 }
 
+{ # code_wrapper dies
+    restrpc '/rest/fail3' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            die "code_wrapper died\n";
+        }
+    };
+
+    route_exists([POST => '/rest/fail3/ping'], "/rest/fail3/ping registered");
+
+    my $response = dancer_response(
+        POST => '/rest/fail3/ping',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+        }
+    );
+
+    my $result = from_json($response->{content});
+    is_deeply(
+        $result,
+        {error => {code => 500, message =>"code_wrapper died\n"}},
+        "/rest/fail3/ping (code_wrapper died)"
+    ) or diag(explain($result));
+}
+
+{ # callback returns unknown object
+    restrpc '/rest/fail4' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        },
+        code_wrapper => sub {
+            return 'pang';
+        }
+    };
+
+    route_exists([POST => '/rest/fail4/ping'], "/rest/fail4/ping registered");
+
+    my $response = dancer_response(
+        POST => '/rest/fail4/ping',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+        }
+    );
+
+    my $result = from_json($response->{content});
+    is_deeply(
+        $result,
+        {
+            error => {
+                code    => 500,
+                message => "Internal error: 'callback_result' wrong class SomeRandomClass"
+            }
+        },
+        "/rest/fail4/ping (callback wrong class)"
+    ) or diag(explain($result));
+}
+
+{ # code_wrapper returns unknown object
+    restrpc '/rest/fail5' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        }
+    };
+
+    route_exists([POST => '/rest/fail5/ping'], "/rest/fail5/ping registered");
+
+    my $response = dancer_response(
+        POST => '/rest/fail5/ping',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+        }
+    );
+
+    my $result = from_json($response->{content});
+    is_deeply(
+        $result,
+        {easter => 'egg'},
+        "/rest/fail5/ping (code_wrapper object)"
+    ) or diag(explain($result));
+}
+
 { # rpc-call fails
     restrpc '/rest/error' => {
         publish => sub {

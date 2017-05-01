@@ -11,6 +11,7 @@ use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
+use Dancer::RPCPlugin::FlattenData;
 
 my %dispatch_builder_map = (
     pod    => \&build_dispatcher_from_pod,
@@ -31,11 +32,13 @@ register jsonrpc => sub {
         }
     }
 
-    my $code_wrapper = $arguments->{code_wrapper} // sub {
-        my $code = shift;
-        my $pkg  = shift;
-        $code->(@_);
-    };
+    my $code_wrapper = $arguments->{code_wrapper}
+        ? $arguments->{code_wrapper}
+        : sub {
+            my $code = shift;
+            my $pkg  = shift;
+            $code->(@_);
+        };
     my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
 
@@ -92,6 +95,17 @@ register jsonrpc => sub {
                 );
                 next;
             }
+            if (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
+                push @responses, jsonrpc_error_response(
+                    $request->{id},
+                    {
+                        code    => -32603,
+                        message => "Internal error: 'callback_result' wrong class " . blessed($continue),
+                    }
+                );
+                next;
+            }
+
             if (!$continue->success) {
                 push(
                     @responses,
@@ -113,18 +127,28 @@ register jsonrpc => sub {
             my $result = eval {
                 $code_wrapper->($handler, $package, $method_name, @method_args);
             };
+            my $error = $@;
 
             debug("[handeled_jsonrpc_call] ", $result);
-            if (my $error = $@) {
-                $result = {
-                    error => {
-                        code => 500,
+            if ($error) {
+                push @responses, jsonrpc_error_response(
+                    $request->{id},
+                    {
+                        code    => 500,
                         message => $error,
                     }
-                };
+                );
+                next;
             }
             if (blessed($result) && $result->can('as_jsonrpc_error')) {
-                $result = $result->as_jsonrpc_error;
+                push @responses, jsonrpc_error_response(
+                    $request->{id},
+                    $result->as_jsonrpc_error->{error}
+                );
+                next
+            }
+            elsif (blessed($result)) {
+                $result = flatten_data($result);
             }
             push @responses, jsonrpc_response($request->{id}, $result);
         }
@@ -162,9 +186,6 @@ sub unjson {
 sub jsonrpc_response {
     my ($id, $data) = @_;
 
-    if (ref($data) eq 'HASH' && exists $data->{error}) {
-        return jsonrpc_error_response($id => $data->{error});
-    }
     return {
         jsonrpc => '2.0',
         id      => $id,
@@ -201,6 +222,7 @@ sub build_dispatcher_from_config {
         endpoint => $endpoint,
     );
 }
+
 register_plugin;
 1;
 

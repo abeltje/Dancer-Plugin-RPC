@@ -198,6 +198,147 @@ use Dancer::Test;
     );
 }
 
+{ # code_wrapper dies
+    jsonrpc '/endpoint_fail3' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            die "code_wrapper died\n";
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail3'], "/endpoint_fail3 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail3',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+            body => to_json(
+                {
+                    jsonrpc => '2.0',
+                    method  => 'fail.ping',
+                    id      => 42,
+                }
+            ),
+        }
+    );
+
+    my $error = from_json($response->{content})->{error};
+    is_deeply(
+        $error,
+        {code => 500, message =>"code_wrapper died\n"},
+        "fail.ping (code_wrapper died)"
+    ) or diag(explain($error));
+}
+
+{ # callback returns unknown object
+    jsonrpc '/endpoint_fail4' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        },
+        code_wrapper => sub {
+            return 'pang';
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail4'], "/endpoint_fail4 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail4',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+            body => to_json(
+                {
+                    jsonrpc => '2.0',
+                    method  => 'fail.ping',
+                    id      => 42,
+                }
+            ),
+        }
+    );
+
+    my $error = from_json($response->{content})->{error};
+    is_deeply(
+        $error,
+        {
+            code    => -32603,
+            message => "Internal error: 'callback_result' wrong class SomeRandomClass",
+        },
+        "fail.ping (callback wrong class)"
+    ) or diag(explain($error));
+}
+
+{ # code_wrapper returns unknown object
+    jsonrpc '/endpoint_fail5' => {
+        publish => sub {
+            eval { require TestProject::SystemCalls; };
+            error("Cannot load: $@") if $@;
+            return {
+                'fail.ping' => dispatch_item(
+                    code => \&TestProject::SystemCalls::do_ping,
+                    package => 'TestProject::SystemCalls',
+                ),
+            };
+        },
+        callback => sub {
+            return callback_success();
+        },
+        code_wrapper => sub {
+            bless {easter => 'egg'}, 'SomeRandomClass';
+        },
+    };
+
+    route_exists([POST => '/endpoint_fail5'], "/endpoint_fail5 registered");
+
+    my $response = dancer_response(
+        POST => '/endpoint_fail5',
+        {
+            headers => [
+                'Content-Type' => 'application/json',
+            ],
+            body => to_json(
+                {
+                    jsonrpc => '2.0',
+                    method  => 'fail.ping',
+                    id      => 42,
+                }
+            ),
+        }
+    );
+
+    my $error = from_json($response->{content})->{result};
+    is_deeply(
+        $error,
+        {easter => 'egg'},
+        "fail.ping (code_wrapper object)"
+    ) or diag(explain($error));
+}
+
 
 { # rpc-call fails
     jsonrpc '/endpoint_error' => {
