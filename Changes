@@ -1,10 +1,23 @@
-Changes on 2017-04-12 for repository at:
+Changes on 2017-05-01 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
    Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.02_000004 2017-04-12T14:32:12+02:00 (1575df8 => abeltje)
+1.03_000003 2017-05-01T22:53:44+02:00 (b73abe8 => abeltje)
+ - Better checks on callback and code_wrapper results - callback-result
+   must be a 'Dancer::RPCPlugin::CallbackResult', otherwise  it is
+   considered an error. - code_wrapper should return a plain
+   data-structure. In case it returns an  object we must flatten it to a
+   plain data-structure. - Introduce a data-flattener.
+
+1.03_000002 2017-04-13T23:06:50+02:00 (40de39e => abeltje)
+ - Merge branch 'master' of github.com:abeltje/Dancer-Plugin-RPC
+
+1.03 2017-04-12T14:30:08+02:00 (530d715 => abeltje)
+ - Autocommit for distribution Dancer::Plugin::RPC 1.03 (minor)
+
+1.02_000004 2017-04-12T14:32:12+02:00 (d7dd17b => abeltje)
  - Autocommit for distribution Dancer::Plugin::RPC 1.03 (minor)
 
 1.02_000003 2017-04-12T14:27:29+02:00 (a88b563 => abeltje)
