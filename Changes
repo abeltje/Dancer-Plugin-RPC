@@ -1,8 +1,14 @@
-Changes on 2017-05-02 for repository at:
+Changes on 2017-05-08 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
    Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
+
+1.04 2017-05-08T19:48:30+02:00 (32c934a => abeltje)
+ - Autocommit for distribution Dancer::Plugin::RPC 1.04 (minor)
+
+1.03_010001 2017-05-08T19:26:17+02:00 (6e5d523 => abeltje)
+ - Update Changes file
 
 1.03_01 2017-05-02T14:52:24+02:00 (6114ed2 => abeltje)
  - Commit for Dancer-Plugin-RPC 1.03_01
