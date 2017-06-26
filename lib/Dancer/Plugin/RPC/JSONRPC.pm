@@ -159,7 +159,7 @@ register jsonrpc => sub {
             $response = to_json($responses[0]);
         }
         else {
-            $response = to_json(\@responses);
+            $response = to_json([grep {defined($_->{id})} @responses]);
         }
 
         content_type 'application/json';

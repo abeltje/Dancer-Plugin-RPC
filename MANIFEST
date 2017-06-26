@@ -1,6 +1,7 @@
 Changes
 example/bin/app.psgi
 example/bin/do-rpc
+example/bin/example.pl
 example/config.yml
 example/cpanfile
 example/lib/Example.pm
