@@ -28,22 +28,12 @@ register xmlrpc => sub {
     given ($arguments->{publish} // 'config') {
         when (exists $dispatch_builder_map{$_}) {
             $publisher = $dispatch_builder_map{$_};
-
             $arguments->{arguments} = plugin_setting() if $_ eq 'config';
         }
         default {
             $publisher = $_;
         }
     }
-
-    my $code_wrapper = $arguments->{code_wrapper}
-        ? $arguments->{code_wrapper}
-        : sub {
-            my $code = shift;
-            my $pkg  = shift;
-            $code->(@_);
-        };
-    my $callback = $arguments->{callback};
     my $dispatcher = $publisher->($arguments->{arguments}, $endpoint);
 
     my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
@@ -53,19 +43,30 @@ register xmlrpc => sub {
         methods  => [ sort keys %{ $dispatcher } ],
     );
 
+    my $code_wrapper = $arguments->{code_wrapper}
+        ? $arguments->{code_wrapper}
+        : sub {
+            my $code = shift;
+            my $pkg  = shift;
+            $code->(@_);
+        };
+    my $callback = $arguments->{callback};
+
+    debug("Starting xmlrpc-handler build: ", $lister);
     my $handle_call = sub {
         if (request->content_type ne 'text/xml') {
             pass();
         }
-        debug("[handle_xmlrpc_call] Processing: ", request->body);
+        debug("[handle_xmlrpc_request] Processing: ", request->body);
 
         local $RPC::XML::ENCODING = $RPC::XML::ENCODING ='UTF-8';
         my $p = RPC::XML::ParserFactory->new();
         my $request = $p->parse(request->body);
-        debug("[handle_xmlrpc_call] Parsed request: ", $request);
-
         my $method_name = $request->name;
+        debug("[handle_xmlrpc_call($method_name)] ", $request->args);
+
         if (! exists $dispatcher->{$method_name}) {
+            warning("$endpoint/#$method_name not found, pass()");
             pass();
         }
 
@@ -92,8 +93,10 @@ register xmlrpc => sub {
             };
         }
         elsif (blessed($continue) && !$continue->success) {
-            $response->{faultCode} = $continue->error_code;
-            $response->{faultString} = $continue->error_message;
+            $response = {
+                faultCode   => $continue->error_code,
+                faultString => $continue->error_message,
+            };
         }
         else {
             my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
@@ -104,6 +107,7 @@ register xmlrpc => sub {
                 $code_wrapper->($handler, $package, $method_name, @method_args);
             };
 
+            debug("[handling_xmlrpc_response($method_name)] ", $response);
             if (my $error = $@) {
                 $response = {
                     faultCode => 500,
@@ -120,6 +124,7 @@ register xmlrpc => sub {
         return xmlrpc_response($response);
     };
 
+    debug("setting route (xmlrpc): $endpoint ", $lister);
     post $endpoint, $handle_call;
 };
 
