@@ -1,4 +1,5 @@
 .*.swp
+tags
 t/logs
 blib/
 pm_to_blib
@@ -6,7 +7,8 @@ cover_db/
 MYMETA.*
 Makefile
 Makefile.bak
-tags
 example/local
-example/cpanfile.snapshot
 example/carton.lock
+example/cpanfile.snapshot
+example/example.*
+example/logs
