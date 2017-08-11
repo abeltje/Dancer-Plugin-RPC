@@ -125,7 +125,7 @@ In case of specified C<$protocol>:
 sub list_methods {
     my ($protocol) = validate_pos(
         @_,
-        {default => 'any', regex => qr/^any|jsonrpc|xmlrpc$/, optional => 1}
+        {default => 'any', regex => qr/^(?:any|(?:json|rest|xml)rpc)$/, optional => 1}
     );
     if ($protocol eq 'any') {
         return $singleton->{protocols};
