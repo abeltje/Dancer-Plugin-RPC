@@ -7,24 +7,24 @@ our @EXPORT = qw/dispatch_table_from_pod/;
 use Dancer qw/error warning info debug/;
 
 use Dancer::RPCPlugin::DispatchItem;
-use Params::Validate ':all';
 use Pod::Simple::PullParser;
+use Types::Standard qw/ StrMatch ArrayRef Object /;
+use Params::ValidationCompiler 'validation_for';
 
 sub dispatch_table_from_pod {
-    my $args = validate(
-        @_,
-        {
-            label    => { regex => qr/^(xmlrpc|jsonrpc|restrpc)$/ },
-            packages => { type  => ARRAYREF },
+    my %args = validation_for(
+        params => {
+            label    => { type => StrMatch[ qr/^(xmlrpc|jsonrpc|restrpc)$/ ] },
+            packages => { type  => ArrayRef },
         }
-    );
+    )->(@_);
 
     my $pp = Pod::Simple::PullParser->new();
-    $pp->accept_targets($args->{label});
-    debug("[dispatch_table_from_pod] for $args->{label}");
+    $pp->accept_targets($args{label});
+    debug("[dispatch_table_from_pod] for $args{label}");
 
     my %dispatch;
-    for my $package (@{ $args->{packages} }) {
+    for my $package (@{ $args{packages} }) {
         eval "require $package;";
         if (my $error = $@) {
             error("Cannot load '$package': $error");
@@ -42,19 +42,19 @@ sub dispatch_table_from_pod {
 }
 
 sub _parse_file {
-    my $args = validate(
-        @_,
-        {
-            package => { regex => qr/^\w[\w:]*$/ },
-            parser  => { type  => OBJECT },
-        }
-    );
-    (my $pkg_as_file = "$args->{package}.pm") =~ s{::}{/}g;
+    my %args = validation_for(
+        params => [
+            package => { type => StrMatch[ qr/^\w[\w:]*$/ ] },
+            parser  => { type  => Object },
+        ]
+    )->(@_);
+
+    (my $pkg_as_file = "$args{package}.pm") =~ s{::}{/}g;
     my $pkg_file = $INC{$pkg_as_file};
     use autodie;
     open my $fh, '<', $pkg_file;
 
-    my $p = $args->{parser};
+    my $p = $args{parser};
     $p->set_source($fh);
 
     my $dispatch;
@@ -69,9 +69,9 @@ sub _parse_file {
 
         debug("=for-token $label => ", $ntoken->text);
         my ($if_name, $code_name) = split " ", $ntoken->text;
-        debug("[build_dispatcher] $args->{package}\::$code_name => $if_name");
+        debug("[build_dispatcher] $args{package}\::$code_name => $if_name");
 
-        my $pkg = $args->{package};
+        my $pkg = $args{package};
         if (my $handler = $pkg->can($code_name)) {
             $dispatch->{$if_name} = dispatch_item(
                 package => $pkg,

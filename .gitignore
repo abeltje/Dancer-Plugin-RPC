@@ -12,3 +12,4 @@ example/carton.lock
 example/cpanfile.snapshot
 example/example.*
 example/logs
+example/*.log

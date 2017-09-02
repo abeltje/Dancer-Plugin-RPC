@@ -10,5 +10,6 @@ example/carton.lock
 example/cpanfile.snapshot
 example/example.+
 example/local
+example/.*\.log
 pm_to_blib
 tags

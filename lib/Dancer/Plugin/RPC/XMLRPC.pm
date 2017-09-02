@@ -13,7 +13,6 @@ use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
 use Dancer::RPCPlugin::FlattenData;
 
-use Params::Validate ':all';
 use RPC::XML::ParserFactory;
 
 my %dispatch_builder_map = (

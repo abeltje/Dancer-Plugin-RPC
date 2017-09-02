@@ -27,8 +27,9 @@ my $p = RPC::XML::ParserFactory->new();
                     code => sub {
                         my ($method, $args) = @_;
                         require Dancer::RPCPlugin::DispatchMethodList;
-                        return Dancer::RPCPlugin::DispatchMethodList::list_methods(
-                            $args->{protocol} // 'any'
+                        my $ml = Dancer::RPCPlugin::DispatchMethodList->new();
+                        return $ml->list_methods(
+                            { protocol => $args->{protocol} // 'any' }
                         );
                     },
                 ),

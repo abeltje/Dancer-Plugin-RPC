@@ -7,18 +7,18 @@ our @EXPORT = qw/dispatch_table_from_config/;
 use Dancer qw/error warning info debug/;
 
 use Dancer::RPCPlugin::DispatchItem;
-use Params::Validate ':all';
+use Types::Standard qw/ Int Str StrMatch Any /;
+use Params::ValidationCompiler 'validation_for';
 
 sub dispatch_table_from_config {
-    my $args = validate(
-        @_,
-        {
-            key      => { regex => qr/^(xmlrpc|jsonrpc|restrpc)$/ },
-            config   => { type  => HASHREF },
-            endpoint => { type  => SCALAR, optional => 0 },
+    my %args = validation_for(
+        params => {
+            key      => { type => StrMatch[ qr/^(xmlrpc|jsonrpc|restrpc)$/ ] },
+            config   => { type  => Any },
+            endpoint => { type  => Str, optional => 0 },
         }
-    );
-    my $config = $args->{config}{ $args->{endpoint} };
+    )->(@_);
+    my $config = $args{config}{ $args{endpoint} };
 
     my @pkgs = keys %$config;
 
@@ -30,7 +30,7 @@ sub dispatch_table_from_config {
         my @rpc_methods = keys %{ $config->{$pkg} };
         for my $rpc_method (@rpc_methods) {
             my $subname = $config->{$pkg}{$rpc_method};
-            debug("[bdfc] $args->{endpoint}: $rpc_method => $subname");
+            debug("[bdfc] $args{endpoint}: $rpc_method => $subname");
             if (my $handler = $pkg->can($subname)) {
                 $dispatch->{$rpc_method} = dispatch_item(
                     package => $pkg,
@@ -46,7 +46,7 @@ sub dispatch_table_from_config {
     # we don't want "Encountered CODE ref, using dummy placeholder"
     # thus we use Data::Dumper::Dumper().
     debug(
-        "[build_dispatcher_from_config]->{$args->{key}} ",
+        "[build_dispatcher_from_config]->{$args{key}} ",
         Data::Dumper::Dumper($dispatch)
     );
 

@@ -1,10 +1,12 @@
 package Dancer::RPCPlugin::DispatchMethodList;
 use warnings;
 use strict;
-use Params::Validate ':all';
 
 use Exporter 'import';
 our @EXPORT = ('list_methods');
+
+use Types::Standard qw/ StrMatch ArrayRef /;
+use Params::ValidationCompiler 'validation_for';
 
 =head1 NAME
 
@@ -16,13 +18,13 @@ Dancer::RPCPlugin::DispatchMethodList - Class for maintaining a global methodlis
     my $methods = Dancer::RPCPlugin::DispatchMethodList->new();
 
     $methods->set_partial(
-        protocol => <jsonrpc|xmlrpc>,
+        protocol => <jsonrpc|restrpc|xmlrpc>,
         endpoint => </configured>,
         methods  => [ @method_names ],
     );
 
     # ....
-    my $methods = list_methods(<any|jsonrpc|xmlrpc>);
+    my $method_list = $methods->list_methods(protocol => <any|jsonrpc|restrpc|xmlrpc>);
 
 =head1 DESCRIPTION
 
@@ -56,9 +58,9 @@ Named, list:
 
 =over
 
-=item protocol => <jsonrpc|xmlrpc>
+=item protocol => <jsonrpc|restrpc|xmlrpc> (required)
 
-=item endpoint => $endpoint
+=item endpoint => $endpoint                (required)
 
 =item methods => \@method_list
 
@@ -72,15 +74,14 @@ Named, list:
 
 sub set_partial {
     my $self = shift;
-    my $args = validate_with(
-        params => \@_,
-        spec   => {
-            protocol => {regex => qr/^(?:json|xml|rest)rpc$/, optional => 0},
-            endpoint => {regex => qr/^.*$/, optional => 0},
-            methods  => {type => ARRAYREF},
+    my %args = validation_for(
+        params => {
+            protocol => {type => StrMatch[ qr/^(?:json|xml|rest)rpc$/ ], optional => 0},
+            endpoint => {type => StrMatch[ qr/^.*$/] , optional => 0},
+            methods  => {type => ArrayRef},
         },
-    );
-    $self->{protocols}{$args->{protocol}}{$args->{endpoint}} = $args->{methods};
+    )->(@_);
+    $self->{protocols}{$args{protocol}}{$args{endpoint}} = $args{methods};
     return $self;
 }
 
@@ -90,11 +91,11 @@ This is not a method, but an exported function.
 
 =head3 Parameters
 
-Positional, list:
+Named, list
 
 =over
 
-=item $protocol => undef || <any|jsonrpc|xmlrpc>
+=item protocol => <any|jsonrpc|restrpc|xmlrpc>  (optional)
 
 =back
 
@@ -123,15 +124,21 @@ In case of specified C<$protocol>:
 =cut
 
 sub list_methods {
-    my ($protocol) = validate_pos(
-        @_,
-        {default => 'any', regex => qr/^(?:any|(?:json|rest|xml)rpc)$/, optional => 1}
-    );
-    if ($protocol eq 'any') {
-        return $singleton->{protocols};
+    my $self = shift;
+    my %args = validation_for(
+        params => {
+            protocol => {
+                type     => StrMatch [qr/^(?:any|(?:json|rest|xml)rpc)$/],
+                default  => 'any',
+            },
+        }
+    )->(%{$_[0]});
+
+    if ($args{protocol} eq 'any') {
+        return $self->{protocols};
     }
     else {
-        return $singleton->{protocols}{$protocol};
+        return $self->{protocols}{$args{protocol}};
     }
 }
 
