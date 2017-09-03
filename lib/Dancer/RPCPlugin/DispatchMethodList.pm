@@ -87,15 +87,15 @@ sub set_partial {
 
 =head2 list_methods(@parameters)
 
-This is not a method, but an exported function.
+Method that returns information about the dispatch-table.
 
 =head3 Parameters
 
-Named, list
+Positional, list
 
 =over
 
-=item protocol => <any|jsonrpc|restrpc|xmlrpc>  (optional)
+=item 1. $protocol => undef || <any|jsonrpc|restrpc|xmlrpc>  (optional)
 
 =back
 
@@ -125,20 +125,20 @@ In case of specified C<$protocol>:
 
 sub list_methods {
     my $self = shift;
-    my %args = validation_for(
-        params => {
-            protocol => {
+    my ($protocol) = validation_for(
+        params => [
+            {
                 type     => StrMatch [qr/^(?:any|(?:json|rest|xml)rpc)$/],
                 default  => 'any',
             },
-        }
-    )->(%{$_[0]});
+        ],
+    )->(@_);
 
-    if ($args{protocol} eq 'any') {
+    if ($protocol eq 'any') {
         return $self->{protocols};
     }
     else {
-        return $self->{protocols}{$args{protocol}};
+        return $self->{protocols}{$protocol};
     }
 }
 

@@ -14,7 +14,7 @@ use Dancer::RPCPlugin::DispatchMethodList;
         methods  => [qw/get_user update_user remove_user/],
     );
 
-    my $jsonrpc = $l->list_methods({protocol => 'jsonrpc'});
+    my $jsonrpc = $l->list_methods('jsonrpc');
     is_deeply(
         $jsonrpc,
         {
@@ -45,7 +45,7 @@ use Dancer::RPCPlugin::DispatchMethodList;
         methods  => [qw/get_user update_user remove_user/],
     );
 
-    my $xmlrpc = $l->list_methods({protocol => 'xmlrpc'});
+    my $xmlrpc = $l->list_methods('xmlrpc');
     is_deeply(
         $xmlrpc,
         {
