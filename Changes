@@ -1,18 +1,30 @@
-Changes on 2017-09-02 for repository at:
+Changes on 2017-09-04 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.04_05 2017-09-02T20:03:22+02:00 (690e499 => abeltje)
- - (abeltje, 5 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+1.04_06 2017-09-04T18:45:07+02:00 (6b3a58d => abeltje)
+ - (abeltje, 6 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.04_06 (test)
+
+1.04_05 2017-09-02T20:03:22+02:00 (e763554 => abeltje)
+ - (abeltje, 2 days ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_05 (same)
 
+ - (abeltje, 31 hours ago) Fix Dancer::RPCPlugin::MethodList::list_methods
+   interface
+ -     Now it is like the Dancer2 version with positional parameters.
+
+ - (abeltje, 4 minutes ago) Fix agent-identifier in http-client.
+
+ - (abeltje, 3 minutes ago) More places to document RESTRPC
+
 1.04_04 2017-08-16T20:13:04+02:00 (5870202 => abeltje)
- - (abeltje, 2 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_04 (same)
 
- - (abeltje, 11 minutes ago) Use Params::ValidationCompiler rather than
+ - (abeltje, 2 days ago) Use Params::ValidationCompiler rather than
    Params::Validate
  -     As of June 2017 the author recommends this change.
  -     Change the interface of ::DispatchMethodList so it's in sync with
@@ -20,37 +32,37 @@ Enjoy!
  -     Dancer2 version.
 
 1.04_03 2017-08-16T20:11:18+02:00 (cd01b9d => abeltje)
- - (abeltje, 2 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_03 (same)
 
 1.04_02 2017-07-19T21:53:18+02:00 (8db3504 => abeltje)
- - (abeltje, 6 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_02 (test)
 
  - (abeltje, 3 weeks ago) Fix regex for determining protocol
 
 1.04_01 2017-06-26T20:11:57+02:00 (0775c84 => abeltje)
- - (abeltje, 10 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 2 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_01 (test)
 
- - (abeltje, 6 weeks ago) Rename tests to resemble their Dancer2 versions
+ - (abeltje, 7 weeks ago) Rename tests to resemble their Dancer2 versions
  -     This is only done for the base-module tests.
 
- - (abeltje, 6 weeks ago) Changes to meta-files
+ - (abeltje, 7 weeks ago) Changes to meta-files
  -     Manage sorting and ignoring things better.
 
- - (abeltje, 6 weeks ago) Change example-app config to log to file
+ - (abeltje, 7 weeks ago) Change example-app config to log to file
 
- - (abeltje, 6 weeks ago) Bring code between plugins closer
+ - (abeltje, 7 weeks ago) Bring code between plugins closer
  -     Do things in the same order and log at the same moment.
 
- - (abeltje, 6 weeks ago) More meta-file stuff
+ - (abeltje, 7 weeks ago) More meta-file stuff
 
 1.04 2017-05-08T19:48:30+02:00 (1ee79d0 => abeltje)
  - (abeltje, 4 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04 (minor)
 
- - (abeltje, 10 weeks ago) Update the example application
+ - (abeltje, 2 months ago) Update the example application
  -     Keep it in sync with Dancer2::Plugin::RPC
 
 1.03_01 2017-05-02T14:52:24+02:00 (6114ed2 => abeltje)
@@ -72,19 +84,32 @@ Enjoy!
  -     object we must flatten it to a plain data-structure.
  -     - Introduce a data-flattener.
 
-1.02 2017-04-12T14:32:12+02:00 (d7dd17b => abeltje)
+1.02_01 2017-04-12T14:32:12+02:00 (d7dd17b => abeltje)
  - (abeltje, 5 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.03 (minor)
 
-1.01_01 2017-02-20T21:18:38+01:00 (7496a72 => abeltje)
+1.02 2017-02-28T19:51:06+01:00 (2aed027 => abeltje)
  - (abeltje, 6 months ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.02 (minor)
+
+ - (abeltje, 5 months ago) Add support for RESTRPC and an example app
+ -     RESTRPC is a simple protocol that uses HTTP-POST to send a JSON
+   string
+ -     with Content-Type 'application/json'.
+ -     The Examle application shows a way to put your app together. This
+ -     application has simple internal methods and a method to communicate
+   with
+ -     the outside world.
+
+1.01_01 2017-02-20T21:18:38+01:00 (7496a72 => abeltje)
+ - (abeltje, 7 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
  - (abeltje, 1 year, 1 month ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01 (minor)
 
- - (abeltje, 6 months ago) Introduce a general way to return a complete
+ - (abeltje, 7 months ago) Introduce a general way to return a complete
    error-response
  -     Dancer::RPCPlugin::ErrorResponse should be a way to return a full
  -     error-response as valid response without knowlage of the protocol.
