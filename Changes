@@ -1,30 +1,42 @@
-Changes on 2017-09-04 for repository at:
+Changes on 2017-09-05 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.04_06 2017-09-04T18:45:07+02:00 (6b3a58d => abeltje)
+1.04_07 2017-09-05T22:47:42+02:00 (2a1adbd => abeltje)
  - (abeltje, 6 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.04_07 (test)
+
+1.04_06 2017-09-04T18:45:07+02:00 (b8eb5b9 => abeltje)
+ - (abeltje, 28 hours ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_06 (test)
 
+ - (abeltje, 10 minutes ago) Introduce explicit endpoints for
+   POD-publishing.
+ -     The pod-directive for publishing now has a third (optional) part to
+ -     specify an endpoint. This way one  can have code for multiple
+   endpoints
+ -     in the same file.
+ -	   =for <plugin> <rpc-name> <code-name>[ <endpoint>]
+
 1.04_05 2017-09-02T20:03:22+02:00 (e763554 => abeltje)
- - (abeltje, 2 days ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 days ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_05 (same)
 
- - (abeltje, 31 hours ago) Fix Dancer::RPCPlugin::MethodList::list_methods
+ - (abeltje, 2 days ago) Fix Dancer::RPCPlugin::MethodList::list_methods
    interface
  -     Now it is like the Dancer2 version with positional parameters.
 
- - (abeltje, 4 minutes ago) Fix agent-identifier in http-client.
+ - (abeltje, 28 hours ago) Fix agent-identifier in http-client.
 
- - (abeltje, 3 minutes ago) More places to document RESTRPC
+ - (abeltje, 28 hours ago) More places to document RESTRPC
 
 1.04_04 2017-08-16T20:13:04+02:00 (5870202 => abeltje)
  - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_04 (same)
 
- - (abeltje, 2 days ago) Use Params::ValidationCompiler rather than
+ - (abeltje, 3 days ago) Use Params::ValidationCompiler rather than
    Params::Validate
  -     As of June 2017 the author recommends this change.
  -     Change the interface of ::DispatchMethodList so it's in sync with
@@ -39,7 +51,7 @@ Enjoy!
  - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_02 (test)
 
- - (abeltje, 3 weeks ago) Fix regex for determining protocol
+ - (abeltje, 4 weeks ago) Fix regex for determining protocol
 
 1.04_01 2017-06-26T20:11:57+02:00 (0775c84 => abeltje)
  - (abeltje, 2 months ago) Autocommit for distribution Dancer::Plugin::RPC
