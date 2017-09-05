@@ -129,11 +129,12 @@ register restrpc => sub {
 };
 
 sub build_dispatcher_from_pod {
-    my ($pkgs) = @_;
+    my ($pkgs, $endpoint) = @_;
     debug("[build_dispatcher_from_pod]");
     return dispatch_table_from_pod(
+        plugin   => 'restrpc',
         packages => $pkgs,
-        label    => 'restrpc',
+        endpoint => $endpoint,
     );
 }
 
@@ -142,7 +143,7 @@ sub build_dispatcher_from_config {
     debug("[build_dispatcher_from_config] ");
 
     return dispatch_table_from_config(
-        key      => 'restrpc',
+        plugin   => 'restrpc',
         config   => $config,
         endpoint => $endpoint,
     );

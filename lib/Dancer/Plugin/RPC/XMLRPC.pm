@@ -145,11 +145,12 @@ sub xmlrpc_response {
 }
 
 sub build_dispatcher_from_pod {
-    my ($pkgs) = @_;
+    my ($pkgs, $endpoint) = @_;
     debug("[build_dispatcher_from_pod]");
     return dispatch_table_from_pod(
+        plugin   => 'xmlrpc',
         packages => $pkgs,
-        label    => 'xmlrpc',
+        endpoint => $endpoint,
     );
 }
 
@@ -158,7 +159,7 @@ sub build_dispatcher_from_config {
     debug("[build_dispatcher_from_config] ");
 
     return dispatch_table_from_config(
-        key      => 'xmlrpc',
+        plugin   => 'xmlrpc',
         config   => $config,
         endpoint => $endpoint,
     );

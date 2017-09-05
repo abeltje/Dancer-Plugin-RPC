@@ -202,12 +202,13 @@ sub jsonrpc_error_response {
 }
 
 sub build_dispatcher_from_pod {
-    my ($pkgs) = @_;
+    my ($pkgs, $endpoint) = @_;
     debug("[build_dispatcher_from_pod]");
 
     return dispatch_table_from_pod(
+        plugin   => 'jsonrpc',
         packages => $pkgs,
-        label    => 'jsonrpc',
+        endpoint => $endpoint,
     );
 }
 
@@ -216,7 +217,7 @@ sub build_dispatcher_from_config {
     debug("[build_dispatcher_from_config] $endpoint");
 
     return dispatch_table_from_config(
-        key      => 'jsonrpc',
+        plugin   => 'jsonrpc',
         config   => $config,
         endpoint => $endpoint,
     );

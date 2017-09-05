@@ -13,7 +13,7 @@ use Params::ValidationCompiler 'validation_for';
 sub dispatch_table_from_config {
     my %args = validation_for(
         params => {
-            key      => { type => StrMatch[ qr/^(xmlrpc|jsonrpc|restrpc)$/ ] },
+            plugin   => { type => StrMatch[ qr/^(xmlrpc|jsonrpc|restrpc)$/ ] },
             config   => { type  => Any },
             endpoint => { type  => Str, optional => 0 },
         }
@@ -44,9 +44,10 @@ sub dispatch_table_from_config {
     }
 
     # we don't want "Encountered CODE ref, using dummy placeholder"
-    # thus we use Data::Dumper::Dumper().
+    # thus we use Data::Dumper::Dumper() directly.
+    local ($Data::Dumper::Indent, $Data::Dumper::Sortkeys, $Data::Dumper::Terse) =  (0, 1, 1);
     debug(
-        "[build_dispatcher_from_config]->{$args{key}} ",
+        "[build_dispatcher_from_config]->{$args{plugin}} ",
         Data::Dumper::Dumper($dispatch)
     );
 
@@ -72,19 +73,23 @@ Dancer::RPCPlugin::DispatchFromConfig - Build dispatch-table from the Dancer Con
 
 =head2 dispatch_table_from_config(%arguments)
 
-=head3 Arguments
+=head3 Parameters
 
 Named:
 
 =over
 
-=item key => <xmlrpc|jsonrpc>
+=item plugin => <xmlrpc|jsonrpc|restrpc>
 
 =item config => $config_from_plugin
 
+=item endpoint => '/endpoint_for_dispatch_table'
+
 =back
 
-=head3 Returns
+=head3 Responses
+
+A (partial) dispatch-table.
 
 =head1 COPYRIGHT
 
