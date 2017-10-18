@@ -7,14 +7,16 @@ our @EXPORT = qw/dispatch_table_from_pod/;
 use Dancer qw/error warning info debug/;
 
 use Dancer::RPCPlugin::DispatchItem;
+use Dancer::RPCPlugin::PluginNames;
 use Pod::Simple::PullParser;
 use Types::Standard qw/ Str StrMatch ArrayRef Object /;
 use Params::ValidationCompiler 'validation_for';
 
 sub dispatch_table_from_pod {
+    my $pn_re = Dancer::RPCPlugin::PluginNames->new->regex;
     my %args = validation_for(
         params => {
-            plugin   => { type => StrMatch[ qr/^(xmlrpc|jsonrpc|restrpc)$/ ] },
+            plugin   => { type => StrMatch[ qr/^$pn_re$/ ] },
             packages => { type  => ArrayRef },
             endpoint => { type => Str },
         }

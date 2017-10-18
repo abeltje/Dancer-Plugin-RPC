@@ -5,6 +5,7 @@ use strict;
 use Exporter 'import';
 our @EXPORT = ('list_methods');
 
+use Dancer::RPCPlugin::PluginNames;
 use Types::Standard qw/ StrMatch ArrayRef /;
 use Params::ValidationCompiler 'validation_for';
 
@@ -74,9 +75,10 @@ Named, list:
 
 sub set_partial {
     my $self = shift;
+    my $pn_re = Dancer::RPCPlugin::PluginNames->new->regex;
     my %args = validation_for(
         params => {
-            protocol => {type => StrMatch[ qr/^(?:json|xml|rest)rpc$/ ], optional => 0},
+            protocol => {type => StrMatch[ qr/^$pn_re$/ ], optional => 0},
             endpoint => {type => StrMatch[ qr/^.*$/] , optional => 0},
             methods  => {type => ArrayRef},
         },
@@ -125,10 +127,11 @@ In case of specified C<$protocol>:
 
 sub list_methods {
     my $self = shift;
+    my $pn_re = Dancer::RPCPlugin::PluginNames->new->regex;
     my ($protocol) = validation_for(
         params => [
             {
-                type     => StrMatch [qr/^(?:any|(?:json|rest|xml)rpc)$/],
+                type     => StrMatch [qr/^(?:any|$pn_re)$/],
                 default  => 'any',
             },
         ],
