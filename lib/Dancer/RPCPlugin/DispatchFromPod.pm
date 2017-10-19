@@ -28,7 +28,7 @@ sub dispatch_table_from_pod {
 
     my %dispatch;
     for my $package (@{ $args{packages} }) {
-        eval "require $package;";
+        eval "require $package;" if $package ne 'main';
         if (my $error = $@) {
             error("Cannot load '$package': $error");
             die "Stopped";

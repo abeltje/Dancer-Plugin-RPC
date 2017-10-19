@@ -26,7 +26,7 @@ sub dispatch_table_from_config {
 
     my $dispatch;
     for my $pkg (@pkgs) {
-        eval "require $pkg";
+        eval "require $pkg" if $pkg ne 'main';
         error("Loading $pkg: $@") if $@;
 
         my @rpc_methods = keys %{ $config->{$pkg} };
