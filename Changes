@@ -1,18 +1,26 @@
-Changes on 2017-10-18 for repository at:
+Changes on 2017-10-19 for repository at:
   Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
   Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
 
 Enjoy!
 
-1.05_01 2017-10-18T20:04:06+02:00 (47587d1 => abeltje)
- - (abeltje, 4 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+1.05_02 2017-10-19T08:20:31+02:00 (1127a59 => abeltje)
+ - (abeltje, 9 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.05_02 (test)
+
+1.05_01 2017-10-18T20:04:06+02:00 (a54c02f => abeltje)
+ - (abeltje, 12 hours ago) Autocommit for distribution Dancer::Plugin::RPC
    1.05_01 (test)
+
+ - (abeltje, 13 minutes ago) Do not try to load 'main'
+ -     'main.pm' doesn't usually exist. The 'main' namespace is loaded
+   anyway.
 
 1.05 2017-09-25T20:22:52+02:00 (0367b23 => abeltje)
  - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.05 (minor)
 
- - (abeltje, 5 minutes ago) Introduce a way to add to the registered
+ - (abeltje, 12 hours ago) Introduce a way to add to the registered
    plugin-names
  -     By introducing a singleton-class that keeps track of plugin-names we
  -     hope the Dancer::Plugin::RPC and Dancer::RPCPlugin mechanism makes a
@@ -37,7 +45,7 @@ Enjoy!
  - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_05 (same)
 
- - (abeltje, 6 weeks ago) Fix Dancer::RPCPlugin::MethodList::list_methods
+ - (abeltje, 7 weeks ago) Fix Dancer::RPCPlugin::MethodList::list_methods
    interface
  -     Now it is like the Dancer2 version with positional parameters.
 
@@ -131,7 +139,7 @@ Enjoy!
    1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
- - (abeltje, 1 year, 2 months ago) Autocommit for distribution
+ - (abeltje, 1 year, 3 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01 (minor)
 
  - (abeltje, 8 months ago) Introduce a general way to return a complete
