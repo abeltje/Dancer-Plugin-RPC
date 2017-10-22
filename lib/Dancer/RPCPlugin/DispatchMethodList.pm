@@ -6,6 +6,7 @@ use Exporter 'import';
 our @EXPORT = ('list_methods');
 
 use Dancer::RPCPlugin::PluginNames;
+use Scalar::Util 'blessed';
 use Types::Standard qw/ StrMatch ArrayRef /;
 use Params::ValidationCompiler 'validation_for';
 
@@ -39,16 +40,16 @@ None!
 
 =head3 Responses
 
-    $singleton = bless $parameters, $class;
+    $_singleton = bless $parameters, $class;
 
 =cut
 
-my $singleton;
+my $_singleton;
 sub new {
-    return $singleton if $singleton;
+    return $_singleton if $_singleton;
 
     my $class = shift;
-    $singleton = bless {protocol => {}}, $class;
+    $_singleton = bless {protocol => {}}, $class;
 }
 
 =head2 $dml->set_partial(%parameters)
@@ -126,7 +127,13 @@ In case of specified C<$protocol>:
 =cut
 
 sub list_methods {
-    my $self = shift;
+    my $self;
+    if (blessed($_[0])) {
+        $self = shift;
+    }
+    else {
+        $self = $_singleton;
+    }
     my $pn_re = Dancer::RPCPlugin::PluginNames->new->regex;
     my ($protocol) = validation_for(
         params => [
