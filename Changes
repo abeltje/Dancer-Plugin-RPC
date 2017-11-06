@@ -1,47 +1,51 @@
-Changes on 2017-10-22 for repository at:
-  Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
-  Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
+Changes on 2017-11-06 for repository at:
+  Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+  Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.05_03 2017-10-22T10:24:47+02:00 (b39cb06 => abeltje)
- - (abeltje, 14 seconds ago) Autocommit for distribution
-   Dancer::Plugin::RPC 1.05_03 (test)
+1.05_03 2017-10-22T10:24:47+02:00 (9d232c6 => abeltje)
+ - (abeltje, 2 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.05_03 (test)
+
+ - (abeltje, 3 minutes ago) Change mode example/bin/app.psgi to executable
+
+ - (abeltje, 7 seconds ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.06 (minor)
 
 1.05_02 2017-10-19T08:20:31+02:00 (e2a7c45 => abeltje)
- - (abeltje, 3 days ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.05_02 (test)
 
- - (abeltje, 72 seconds ago) Restore backward compatiblity for
-   list_methods()
+ - (abeltje, 2 weeks ago) Restore backward compatiblity for list_methods()
 
 1.05_01 2017-10-18T20:04:06+02:00 (a54c02f => abeltje)
- - (abeltje, 4 days ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.05_01 (test)
 
- - (abeltje, 3 days ago) Do not try to load 'main'
+ - (abeltje, 3 weeks ago) Do not try to load 'main'
  -     'main.pm' doesn't usually exist. The 'main' namespace is loaded
    anyway.
 
 1.05 2017-09-25T20:22:52+02:00 (0367b23 => abeltje)
- - (abeltje, 4 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 6 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.05 (minor)
 
- - (abeltje, 4 days ago) Introduce a way to add to the registered
+ - (abeltje, 3 weeks ago) Introduce a way to add to the registered
    plugin-names
  -     By introducing a singleton-class that keeps track of plugin-names we
  -     hope the Dancer::Plugin::RPC and Dancer::RPCPlugin mechanism makes a
  -     move forward towards extendability.
 
 1.04_07 2017-09-05T22:47:42+02:00 (443eca4 => abeltje)
- - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 9 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_07 (test)
 
 1.04_06 2017-09-04T18:45:07+02:00 (b8eb5b9 => abeltje)
- - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 9 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_06 (test)
 
- - (abeltje, 7 weeks ago) Introduce explicit endpoints for POD-publishing.
+ - (abeltje, 9 weeks ago) Introduce explicit endpoints for POD-publishing.
  -     The pod-directive for publishing now has a third (optional) part to
  -     specify an endpoint. This way one  can have code for multiple
    endpoints
@@ -49,22 +53,22 @@ Enjoy!
  -	   =for <plugin> <rpc-name> <code-name>[ <endpoint>]
 
 1.04_05 2017-09-02T20:03:22+02:00 (e763554 => abeltje)
- - (abeltje, 7 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 9 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_05 (same)
 
- - (abeltje, 7 weeks ago) Fix Dancer::RPCPlugin::MethodList::list_methods
+ - (abeltje, 9 weeks ago) Fix Dancer::RPCPlugin::MethodList::list_methods
    interface
  -     Now it is like the Dancer2 version with positional parameters.
 
- - (abeltje, 7 weeks ago) Fix agent-identifier in http-client.
+ - (abeltje, 9 weeks ago) Fix agent-identifier in http-client.
 
- - (abeltje, 7 weeks ago) More places to document RESTRPC
+ - (abeltje, 9 weeks ago) More places to document RESTRPC
 
 1.04_04 2017-08-16T20:13:04+02:00 (5870202 => abeltje)
- - (abeltje, 10 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_04 (same)
 
- - (abeltje, 7 weeks ago) Use Params::ValidationCompiler rather than
+ - (abeltje, 9 weeks ago) Use Params::ValidationCompiler rather than
    Params::Validate
  -     As of June 2017 the author recommends this change.
  -     Change the interface of ::DispatchMethodList so it's in sync with
@@ -72,31 +76,31 @@ Enjoy!
  -     Dancer2 version.
 
 1.04_03 2017-08-16T20:11:18+02:00 (cd01b9d => abeltje)
- - (abeltje, 10 weeks ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 3 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_03 (same)
 
 1.04_02 2017-07-19T21:53:18+02:00 (8db3504 => abeltje)
- - (abeltje, 3 months ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 4 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_02 (test)
 
- - (abeltje, 2 months ago) Fix regex for determining protocol
+ - (abeltje, 3 months ago) Fix regex for determining protocol
 
 1.04_01 2017-06-26T20:11:57+02:00 (0775c84 => abeltje)
  - (abeltje, 4 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_01 (test)
 
- - (abeltje, 3 months ago) Rename tests to resemble their Dancer2 versions
+ - (abeltje, 4 months ago) Rename tests to resemble their Dancer2 versions
  -     This is only done for the base-module tests.
 
- - (abeltje, 3 months ago) Changes to meta-files
+ - (abeltje, 4 months ago) Changes to meta-files
  -     Manage sorting and ignoring things better.
 
- - (abeltje, 3 months ago) Change example-app config to log to file
+ - (abeltje, 4 months ago) Change example-app config to log to file
 
- - (abeltje, 3 months ago) Bring code between plugins closer
+ - (abeltje, 4 months ago) Bring code between plugins closer
  -     Do things in the same order and log at the same moment.
 
- - (abeltje, 3 months ago) More meta-file stuff
+ - (abeltje, 4 months ago) More meta-file stuff
 
 1.04 2017-05-08T19:48:30+02:00 (1ee79d0 => abeltje)
  - (abeltje, 6 months ago) Autocommit for distribution Dancer::Plugin::RPC
@@ -111,7 +115,7 @@ Enjoy!
  - (abeltje, 6 months ago) Update Changes file
 
 1.03 2017-04-13T23:06:50+02:00 (40de39e => abeltje)
- - (abeltje, 6 months ago) Merge branch 'master' of
+ - (abeltje, 7 months ago) Merge branch 'master' of
    github.com:abeltje/Dancer-Plugin-RPC
 
  - (abeltje, 6 months ago) Better checks on callback and code_wrapper
@@ -125,14 +129,14 @@ Enjoy!
  -     - Introduce a data-flattener.
 
 1.02_01 2017-04-12T14:32:12+02:00 (d7dd17b => abeltje)
- - (abeltje, 6 months ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 7 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.03 (minor)
 
 1.02 2017-02-28T19:51:06+01:00 (2aed027 => abeltje)
  - (abeltje, 8 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.02 (minor)
 
- - (abeltje, 7 months ago) Add support for RESTRPC and an example app
+ - (abeltje, 8 months ago) Add support for RESTRPC and an example app
  -     RESTRPC is a simple protocol that uses HTTP-POST to send a JSON
    string
  -     with Content-Type 'application/json'.
@@ -142,26 +146,26 @@ Enjoy!
  -     the outside world.
 
 1.01_01 2017-02-20T21:18:38+01:00 (7496a72 => abeltje)
- - (abeltje, 8 months ago) Autocommit for distribution Dancer::Plugin::RPC
+ - (abeltje, 9 months ago) Autocommit for distribution Dancer::Plugin::RPC
    1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
  - (abeltje, 1 year, 3 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01 (minor)
 
- - (abeltje, 8 months ago) Introduce a general way to return a complete
+ - (abeltje, 9 months ago) Introduce a general way to return a complete
    error-response
  -     Dancer::RPCPlugin::ErrorResponse should be a way to return a full
  -     error-response as valid response without knowlage of the protocol.
 
 1.00_04 2016-07-08T00:19:31+02:00 (96c34a7 => abeltje)
- - (abeltje, 1 year, 3 months ago) Autocommit for distribution
+ - (abeltje, 1 year, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_04 (same)
 
  - (abeltje, 1 year, 3 months ago) Dunno why :(
 
 1.00_03 2016-06-12T17:09:13+02:00 (dcd5949 => abeltje)
- - (abeltje, 1 year, 4 months ago) Autocommit for distribution
+ - (abeltje, 1 year, 5 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_03 (same)
 
  - (abeltje, 1 year, 4 months ago) Add a mechanism to allow for listMethods
@@ -170,22 +174,22 @@ Enjoy!
  -     full view of the dispatch table from a client side view.
 
 1.00_02 2016-06-11T16:36:59+02:00 (e972dbd => abeltje)
- - (abeltje, 1 year, 4 months ago) Autocommit for distribution
+ - (abeltje, 1 year, 5 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_02 (test)
 
- - (abeltje, 1 year, 4 months ago) Fix test 250 for JSON 2.90
+ - (abeltje, 1 year, 5 months ago) Fix test 250 for JSON 2.90
  -     JSON 2.90 changed its redering of JSON::true, fix test
 
 1.00_01 2016-06-07T21:11:39+02:00 (8385c04 => abeltje)
  - (abeltje, 1 year, 5 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_01 (test)
 
- - (abeltje, 1 year, 4 months ago) Fix faulty test.
+ - (abeltje, 1 year, 5 months ago) Fix faulty test.
  -     the representation of 'True' may vary throughout versions of
    from_json()
 
 1.00 2016-03-22T21:35:21+01:00 (7e62f40 => abeltje)
- - (abeltje, 1 year, 7 months ago) Autocommit for distribution
+ - (abeltje, 1 year, 8 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00 (minor)
 
  - (abeltje, 1 year, 5 months ago) Try to fix test-failures
@@ -196,7 +200,7 @@ Enjoy!
  - (abeltje, 1 year, 9 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_10 (test)
 
- - (Larion Garaczi, 1 year, 7 months ago) Handle unhandled exceptions in
+ - (Larion Garaczi, 1 year, 8 months ago) Handle unhandled exceptions in
    callbacks
  -     Runtime exceptions in the 'callback' functions were not caught. Now
    we
@@ -284,7 +288,7 @@ Enjoy!
    lib/Dancer/RPCPlugin/DispatchFromPod.pm
 
 0.00_00 2015-06-15T09:07:42+02:00 (99373c1 => abeltje)
- - (abeltje, 2 years, 4 months ago) Initial commit, working XMLRPC code...
+ - (abeltje, 2 years, 5 months ago) Initial commit, working XMLRPC code...
 
  - (abeltje, 1 year, 9 months ago) First real commit.
  -     Both plugins now have the same interface.
