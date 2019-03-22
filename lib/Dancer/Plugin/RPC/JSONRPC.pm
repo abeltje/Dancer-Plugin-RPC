@@ -128,7 +128,7 @@ register jsonrpc => sub {
             };
             my $error = $@;
 
-            debug("[handeled_jsonrpc_call($method_name)] ", $result);
+            debug("[handled_jsonrpc_call($method_name)] ", flatten_data($result));
             if ($error) {
                 push @responses, jsonrpc_error_response(
                     $request->{id},
@@ -144,7 +144,7 @@ register jsonrpc => sub {
                     $request->{id},
                     $result->as_jsonrpc_error->{error}
                 );
-                next
+                next;
             }
             elsif (blessed($result)) {
                 $result = flatten_data($result);
