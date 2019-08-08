@@ -1,5 +1,7 @@
-package HTTPClient;
+package Client::HTTP;
 use Moo::Role;
+
+with 'MooseX::Log::Log4perl::Easy';
 
 use Scalar::Util 'blessed';
 use URI;
@@ -7,13 +9,16 @@ use HTTP::Tiny;
 
 our $VERSION = '0.90';
 
-has endpoint => (
+has base_uri => (
     is  => 'ro',
-    isa => sub { blessed($_[0]) eq 'URI' }
+    isa => sub {
+        die "Invalid URI ($_[0])" unless blessed($_[0]) =~ m{^URI::https?$};
+    },
+    coerce => sub { return URI->new($_[0]); }
 );
 has client => (
     is  => 'lazy',
-    isa => sub { blessed($_[0]) eq 'HTTP::Tiny' }
+    isa => sub { die "Invalid user-agent" unless blessed($_[0]) eq 'HTTP::Tiny' },
 );
 has ssl_opts => (
     is      => 'ro',
@@ -26,16 +31,6 @@ has timeout => (
 
 requires 'call';
 
-around BUILDARGS => sub {
-    my $method = shift;
-    my $class  = shift;
-    my %args = @_;
-    if (ref($args{endpoint}) ne 'URI') {
-        $args{endpoint} = URI->new($args{endpoint});
-    }
-    $class->$method(%args);
-};
-
 sub _build_client {
     my $self = shift;
     return HTTP::Tiny->new(
@@ -46,3 +41,9 @@ sub _build_client {
 }
 
 1;
+
+=head1 COPYRIGHT
+
+(c) MMXVII - Abe Timmerman <abeltje@cpan.org>
+
+=cut

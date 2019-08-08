@@ -1,16 +1,16 @@
-package MetaCpanClient;
+package Client::MetaCpan;
 use Moo;
 
 use JSON;
 
-with 'HTTPClient';
+with 'Client::HTTP';
 
 sub call {
     my $self = shift;
     my ($query) = @_;
 
     $query =~ s{::}{-}g;
-    (my $endpoint = $self->endpoint->as_string) =~ s{/+$}{};
+    (my $endpoint = $self->base_uri->as_string) =~ s{/+$}{};
     my $response = $self->client->request(
         GET => $endpoint . "/?q=$query"
     );
@@ -21,3 +21,9 @@ sub call {
 }
 
 1;
+
+=head1 COPYRIGHT
+
+(c) MMXVII - Abe Timmerman <abeltje@cpan.org>
+
+=cut
