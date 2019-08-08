@@ -1,10 +1,12 @@
-package MetaCpan;
+package Example::API::MetaCpan;
 use Moo;
-use Scalar::Util 'blessed';
+use Scalar::Util qw/ blessed /;
 
 has mc_client => (
     is       => 'ro',
-    isa      => sub { blessed($_[0]) eq 'MetaCpanClient' },
+    isa      => sub {
+        die "Invalid MetaCpan-Client" unless blessed($_[0]) eq 'Client::MetaCpan';
+    },
     required => 1
 );
 
@@ -32,6 +34,7 @@ sub mc_search {
     return {hits => [ ]};
 }
 
+use namespace::autoclean;
 1;
 
 =head1 NAME
@@ -43,7 +46,7 @@ MetaCpan - Interface to  MetaCpan (https://fastapi.metacpan.org/v1/release/_sear
     use MetaCpanClient;
     use MetaCpan;
     my $mc_client = MetaCpanClient->new(
-        endpoint => 'https://fastapi.metacpan.org/v1/release/_search',
+        base_uri => 'https://fastapi.metacpan.org/v1/release/_search',
     );
     my $mc = MetaCpan->new(mc_client => $mc_client);
 
