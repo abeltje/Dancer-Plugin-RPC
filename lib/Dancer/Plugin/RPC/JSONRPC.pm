@@ -11,6 +11,7 @@ use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
+use Dancer::RPCPlugin::ErrorResponse;
 use Dancer::RPCPlugin::FlattenData;
 
 my %dispatch_builder_map = (
@@ -51,7 +52,8 @@ register jsonrpc => sub {
 
     debug("Starting jsonrpc-handler build: ", $lister);
     my $handle_call = sub {
-        if (request->content_type ne 'application/json') {
+        my ($ct) = (split /;\s*/, request->content_type, 2);
+        if ($ct ne 'application/json') {
             pass();
         }
         debug("[handle_jsonrpc_request] Processing: ", request->body);
@@ -67,9 +69,9 @@ register jsonrpc => sub {
             if (!exists $dispatcher->{$method_name}) {
                 push(
                     @responses,
-                    jsonrpc_error_response(
+                    jsonrpc_response(
                         $request->{id},
-                        {
+                        error => {
                             code    => -32601,
                             message => "Method '$method_name' not found",
                         }
@@ -88,10 +90,10 @@ register jsonrpc => sub {
             if (my $error = $@) {
                 push(
                     @responses,
-                    jsonrpc_error_response(
+                    jsonrpc_response(
                         $request->{id},
-                        {
-                            code    => 500,
+                        error => {
+                            code    => -32500,
                             message => $error,
                         }
                     )
@@ -99,9 +101,9 @@ register jsonrpc => sub {
                 next;
             }
             if (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
-                push @responses, jsonrpc_error_response(
+                push @responses, jsonrpc_response(
                     $request->{id},
-                    {
+                    error => {
                         code    => -32603,
                         message => "Internal error: 'callback_result' wrong class " . blessed($continue),
                     }
@@ -109,9 +111,9 @@ register jsonrpc => sub {
                 next;
             }
             elsif (blessed($continue) && !$continue->success) {
-                    push @responses, jsonrpc_error_response(
+                    push @responses, jsonrpc_response(
                         $request->{id},
-                        {
+                        error => {
                             code    => $continue->error_code,
                             message => $continue->error_message,
                         }
@@ -130,35 +132,39 @@ register jsonrpc => sub {
 
             debug("[handled_jsonrpc_call($method_name)] ", flatten_data($result));
             if ($error) {
-                push @responses, jsonrpc_error_response(
+                push @responses, jsonrpc_response(
                     $request->{id},
-                    {
-                        code    => 500,
+                    error => {
+                        code    => -32500,
                         message => $error,
                     }
                 );
                 next;
             }
             if (blessed($result) && $result->can('as_jsonrpc_error')) {
-                push @responses, jsonrpc_error_response(
+                push @responses, jsonrpc_response(
                     $request->{id},
-                    $result->as_jsonrpc_error->{error}
+                    %{ $result->as_jsonrpc_error }
                 );
                 next;
             }
             elsif (blessed($result)) {
                 $result = flatten_data($result);
             }
-            push @responses, jsonrpc_response($request->{id}, $result);
+            push @responses, jsonrpc_response($request->{id}, result => $result);
         }
 
         # create response
+        my $jsonise_options = {canonical => 1};
+        if (config->{encoding} && config->{encoding} =~ m{^utf-?8$}i) {
+            $jsonise_options->{utf8} = 1;
+        }
         my $response;
         if (@responses == 1) {
-            $response = to_json($responses[0]);
+            $response = to_json($responses[0], $jsonise_options);
         }
         else {
-            $response = to_json([grep {defined($_->{id})} @responses]);
+            $response = to_json([grep {defined($_->{id})} @responses], $jsonise_options);
         }
 
         return $response;
@@ -183,21 +189,12 @@ sub unjson {
 }
 
 sub jsonrpc_response {
-    my ($id, $data) = @_;
+    my ($id, $type, $data) = @_;
 
     return {
         jsonrpc => '2.0',
         id      => $id,
-        result  => $data,
-    };
-}
-
-sub jsonrpc_error_response {
-    my ($id, $error) = @_;
-    return {
-        jsonrpc => '2.0',
-        id      => $id,
-        error   => $error,
+        $type  => $data,
     };
 }
 
@@ -382,10 +379,6 @@ actual sub-name in the current package.
 =head2 unjson
 
 Deserializes the string as Perl-datastructure.
-
-=head2 jsonrpc_error_response
-
-Returns a jsonrpc error response as a hashref.
 
 =head2 jsonrpc_response
 

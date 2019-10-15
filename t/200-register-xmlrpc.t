@@ -43,6 +43,7 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Success produces HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
 
     is_deeply(
@@ -81,7 +82,7 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
-    # diag(explain($response));
+    is($response->status, 200, "Success produces HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
@@ -122,7 +123,7 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
-    # diag(explain($response));
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
@@ -160,10 +161,11 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
-        {faultCode => 500, faultString =>"terrible death\n"},
+        {faultCode => -32500, faultString =>"terrible death\n"},
         "fail.ping"
     );
 }
@@ -200,10 +202,11 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
-        {faultCode => 500, faultString =>"code_wrapper died\n"},
+        {faultCode => -32500, faultString =>"code_wrapper died\n"},
         "fail.ping (code_wrapper)"
     );
 }
@@ -240,11 +243,12 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
         {
-            faultCode   => 500,
+            faultCode   => -32500,
             faultString => "Internal error: 'callback_result' wrong class SomeRandomClass"
         },
         "fail.ping (callback wrong class)"
@@ -283,6 +287,7 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
@@ -315,10 +320,11 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,
-        {faultCode => 500, faultString =>"Example error code\n"},
+        {faultCode => -32500, faultString =>"Example error code\n"},
         "fail.error"
     );
 }
@@ -347,6 +353,7 @@ my $p = RPC::XML::ParserFactory->new();
         }
     );
 
+    is($response->status, 200, "Errors produce HTTP 200 OK");
     my $result = $p->parse($response->{content})->value;
     is_deeply(
         $result->value,

@@ -11,6 +11,7 @@ use Dancer::RPCPlugin::DispatchFromConfig;
 use Dancer::RPCPlugin::DispatchFromPod;
 use Dancer::RPCPlugin::DispatchItem;
 use Dancer::RPCPlugin::DispatchMethodList;
+use Dancer::RPCPlugin::ErrorResponse;
 use Dancer::RPCPlugin::FlattenData;
 
 use RPC::XML::ParserFactory;
@@ -53,7 +54,8 @@ register xmlrpc => sub {
 
     debug("Starting xmlrpc-handler build: ", $lister);
     my $handle_call = sub {
-        if (request->content_type ne 'text/xml') {
+        my ($ct) = (split /;\s*/, request->content_type, 2);
+        if ($ct !~ m{(text|application)/xml}) {
             pass();
         }
         debug("[handle_xmlrpc_request] Processing: ", request->body);
@@ -79,23 +81,29 @@ register xmlrpc => sub {
         };
 
         if (my $error = $@) {
-            $response = {
-                faultCode => 500,
-                faultString => $error,
-            };
+            my $error_response = error_response(
+                error_code    => -32500,
+                error_message => $error,
+            );
+            status $error_response->return_status('xmlrpc');
+            $response = $error_response->as_xmlrpc_fault;
             return xmlrpc_response($response);
         }
         if (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
-            $response = {
-                faultCode   => 500,
-                faultString => "Internal error: 'callback_result' wrong class " . blessed($continue),
-            };
+            my $error_response = error_response(
+                error_code    => -32500,
+                error_message => "Internal error: 'callback_result' wrong class " . blessed($continue),
+            );
+            status $error_response->return_status('xmlrpc');
+            $response = $error_response->as_xmlrpc_fault;
         }
         elsif (blessed($continue) && !$continue->success) {
-            $response = {
-                faultCode   => $continue->error_code,
-                faultString => $continue->error_message,
-            };
+            my $error_response = error_response(
+                error_code    => $continue->error_code,
+                error_message => $continue->error_message,
+            );
+            status $error_response->return_status('xmlrpc');
+            $response = $error_response->as_xmlrpc_fault;
         }
         else {
             my Dancer::RPCPlugin::DispatchItem $di = $dispatcher->{$method_name};
@@ -108,10 +116,12 @@ register xmlrpc => sub {
 
             debug("[handling_xmlrpc_response($method_name)] ", $response);
             if (my $error = $@) {
-                $response = {
-                    faultCode => 500,
-                    faultString => $error,
-                };
+                my $error_response = error_response(
+                    error_code    => -32500,
+                    error_message => $error,
+                );
+                status $error_response->return_status('xmlrpc');
+                $response = $error_response->as_xmlrpc_fault;
             }
             if (blessed($response) && $response->can('as_xmlrpc_fault')) {
                 $response = $response->as_xmlrpc_fault;

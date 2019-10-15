@@ -53,6 +53,7 @@ t/275-register-restrpc.t
 t/400-list_methods.t
 t/bin/app.pl
 t/config.yml
+t/lib/SOMERPC.pm
 t/lib/TestProject.pm
 t/lib/TestProject/ApiCalls.pm
 t/lib/TestProject/Bogus.pm

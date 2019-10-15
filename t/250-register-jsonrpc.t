@@ -193,7 +193,7 @@ use Dancer::Test;
 
     is_deeply(
         from_json($response->{content})->{error},
-        {code => 500, message =>"terrible death\n"},
+        {code => -32500, message =>"terrible death\n"},
         "fail.ping"
     );
 }
@@ -239,7 +239,7 @@ use Dancer::Test;
     my $error = from_json($response->{content})->{error};
     is_deeply(
         $error,
-        {code => 500, message =>"code_wrapper died\n"},
+        {code => -32500, message =>"code_wrapper died\n"},
         "fail.ping (code_wrapper died)"
     ) or diag(explain($error));
 }
@@ -372,7 +372,7 @@ use Dancer::Test;
 
     is_deeply(
         from_json($response->{content})->{error},
-        {code => 500, message =>"Example error code\n"},
+        {code => -32500, message =>"Example error code\n"},
         "fail.error"
     );
 }
