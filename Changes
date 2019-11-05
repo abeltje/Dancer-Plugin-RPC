@@ -1,18 +1,26 @@
-Changes on 2019-11-04 for repository at:
+Changes on 2019-11-05 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.07_03 2019-11-04T19:53:50+01:00 (cfd6d3f => Abe Timmerman)
+1.07_04 2019-11-05T14:55:42+01:00 (1dd1f8d => Abe Timmerman)
  - (Abe Timmerman, 4 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.07_04 (test)
+
+1.07_03 2019-11-04T19:53:50+01:00 (ed5dd64 => Abe Timmerman)
+ - (Abe Timmerman, 19 hours ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_03 (test)
+
+ - (Abe Timmerman, 3 minutes ago) Handle `die error_response()` correctly
+ -     One should be able to die() with een error_response instead of using
+ -     return(). This case is now handled correctly.
 
 1.07_02 2019-10-15T17:05:00+02:00 (28b2dca => Abe Timmerman)
  - (Abe Timmerman, 3 weeks ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_02 (test)
 
- - (Abe Timmerman, 79 seconds ago) Makefile.PL: add Params::Validate
+ - (Abe Timmerman, 19 hours ago) Makefile.PL: add Params::Validate
  -     Missing dependency
 
 1.07_01 2019-08-08T14:51:20+03:00 (a828753 => Abe Timmerman)
@@ -45,8 +53,8 @@ Enjoy!
  - (abeltje, 2 years ago) Autocommit for distribution Dancer::Plugin::RPC
    1.06 (minor)
 
- - (abeltje, 1 year, 11 months ago)  Add .travis.yml file for automated
-   testing from GitHub
+ - (abeltje, 2 years ago)  Add .travis.yml file for automated testing from
+   GitHub
 
  - (abeltje, 1 year, 11 months ago) Add PREREQ_PM to BUILD_REQUIRES
 
