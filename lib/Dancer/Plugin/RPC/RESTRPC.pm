@@ -112,12 +112,17 @@ register restrpc => sub {
 
             debug("[handling_jsonrpc_response($method_name)] ", $response);
             if (my $error = $@) {
-                $response = Dancer::RPCPlugin::ErrorResponse->new(
-                    error_code => 500,
-                    error_message => $error,
-                )->as_restrpc_error;
+                my $error_response = blessed($error) && $error->can('as_restrpc_error')
+                    ? $error
+                    : error_response(
+                            error_code    => -32500,
+                            error_message => $error,
+                            error_data    => $method_args,
+                    );
+                status $error_response->return_status('restrpc');
+                $response = $error_response->as_restrpc_error;
             }
-            if (blessed($response) && $response->can('as_restrpc_error')) {
+            elsif (blessed($response) && $response->can('as_restrpc_error')) {
                $response = $response->as_restrpc_error;
             }
             elsif (blessed($response)) {

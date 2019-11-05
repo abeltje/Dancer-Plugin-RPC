@@ -132,12 +132,17 @@ register jsonrpc => sub {
 
             debug("[handled_jsonrpc_call($method_name)] ", flatten_data($result));
             if ($error) {
+                my $error_response = blessed($error) && $error->can('as_jsonrpc_error')
+                    ? $error
+                    : error_response(
+                            error_code    => -32500,
+                            error_message => $error,
+                            error_data    => $method_args[0],
+                    );
+                status $error_response->return_status('jsonrpc');
                 push @responses, jsonrpc_response(
                     $request->{id},
-                    error => {
-                        code    => -32500,
-                        message => $error,
-                    }
+                    %{ $error_response->as_jsonrpc_error },
                 );
                 next;
             }

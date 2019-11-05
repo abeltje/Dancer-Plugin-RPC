@@ -196,7 +196,7 @@ use Dancer::Test;
     my $result = from_json($response->{content});
     is_deeply(
         $result,
-        {error => {code => 500, message =>"code_wrapper died\n"}},
+        {error => {code => -32500, message =>"code_wrapper died\n"}},
         "/rest/fail3/ping (code_wrapper died)"
     ) or diag(explain($result));
 }
@@ -310,7 +310,7 @@ use Dancer::Test;
     my $result = from_json($response->{content});
     is_deeply(
         $result,
-        {error => {code => 500, message =>"Example error code\n"}},
+        {error => {code => -32500, message =>"Example error code\n"}},
         "/rest/error/code_fail"
     );
 }

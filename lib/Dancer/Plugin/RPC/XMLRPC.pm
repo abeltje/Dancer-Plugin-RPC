@@ -116,10 +116,13 @@ register xmlrpc => sub {
 
             debug("[handling_xmlrpc_response($method_name)] ", $response);
             if (my $error = $@) {
-                my $error_response = error_response(
-                    error_code    => -32500,
-                    error_message => $error,
-                );
+                my $error_response = blessed($error) && $error->can('as_xmlrpc_fault')
+                    ? $error
+                    : error_response(
+                            error_code    => -32500,
+                            error_message => $error,
+                            error_data    => $method_args[0],
+                    );
                 status $error_response->return_status('xmlrpc');
                 $response = $error_response->as_xmlrpc_fault;
             }
