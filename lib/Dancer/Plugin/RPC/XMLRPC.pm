@@ -4,7 +4,11 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use Scalar::Util 'blessed';
 
+our $VERSION = '1.08';
+
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
+
+use constant PLUGIN_NAME => 'xmlrpc';
 
 use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
@@ -21,7 +25,7 @@ my %dispatch_builder_map = (
     config => \&build_dispatcher_from_config,
 );
 
-register xmlrpc => sub {
+register PLUGIN_NAME ,=> sub {
     my($self, $endpoint, $arguments) = plugin_args(@_);
 
     my $publisher;
@@ -38,7 +42,7 @@ register xmlrpc => sub {
 
     my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
     $lister->set_partial(
-        protocol => 'xmlrpc',
+        protocol => PLUGIN_NAME,
         endpoint => $endpoint,
         methods  => [ sort keys %{ $dispatcher } ],
     );
@@ -75,6 +79,13 @@ register xmlrpc => sub {
         my $response;
         my @method_args = map $_->value, @{$request->args};
         my Dancer::RPCPlugin::CallbackResult $continue = eval {
+            local $Dancer::RPCPlugin::ROUTE_INFO = {
+                plugin        => PLUGIN_NAME,
+                endpoint      => $endpoint,
+                rpc_method    => $method_name,
+                full_path     => request->path,
+                http_method   => uc(request->method),
+            };
             $callback
                 ? $callback->(request(), $method_name, @method_args)
                 : callback_success();
@@ -85,7 +96,7 @@ register xmlrpc => sub {
                 error_code    => -32500,
                 error_message => $error,
             );
-            status $error_response->return_status('xmlrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_xmlrpc_fault;
             return xmlrpc_response($response);
         }
@@ -94,7 +105,7 @@ register xmlrpc => sub {
                 error_code    => -32500,
                 error_message => "Internal error: 'callback_result' wrong class " . blessed($continue),
             );
-            status $error_response->return_status('xmlrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_xmlrpc_fault;
         }
         elsif (blessed($continue) && !$continue->success) {
@@ -102,7 +113,7 @@ register xmlrpc => sub {
                 error_code    => $continue->error_code,
                 error_message => $continue->error_message,
             );
-            status $error_response->return_status('xmlrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_xmlrpc_fault;
         }
         else {
@@ -123,7 +134,7 @@ register xmlrpc => sub {
                             error_message => $error,
                             error_data    => $method_args[0],
                     );
-                status $error_response->return_status('xmlrpc');
+                status $error_response->return_status(PLUGIN_NAME);
                 $response = $error_response->as_xmlrpc_fault;
             }
             if (blessed($response) && $response->can('as_xmlrpc_fault')) {
@@ -161,7 +172,7 @@ sub build_dispatcher_from_pod {
     my ($pkgs, $endpoint) = @_;
     debug("[build_dispatcher_from_pod]");
     return dispatch_table_from_pod(
-        plugin   => 'xmlrpc',
+        plugin   => PLUGIN_NAME,
         packages => $pkgs,
         endpoint => $endpoint,
     );
@@ -172,7 +183,7 @@ sub build_dispatcher_from_config {
     debug("[build_dispatcher_from_config] ");
 
     return dispatch_table_from_config(
-        plugin   => 'xmlrpc',
+        plugin   => PLUGIN_NAME,
         config   => $config,
         endpoint => $endpoint,
     );

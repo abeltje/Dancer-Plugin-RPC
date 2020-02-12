@@ -12,7 +12,8 @@ use Dancer::RPCPlugin::ErrorResponse;
 
 use Dancer::Test;
 
-{ # default publish => 'pod' ; Batch-mode
+{
+    note("default publish => 'pod' ; Batch-mode");
     set(plugins => {
         'RPC::JSONRPC' => {
             '/endpoint' => {
@@ -65,7 +66,8 @@ use Dancer::Test;
     ) or diag(explain(\@results));
 }
 
-{ # publish is code that returns the dispatch-table
+{
+    note("publish is code that returns the dispatch-table");
     jsonrpc '/endpoint2' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -111,7 +113,8 @@ use Dancer::Test;
     );
 }
 
-{ # callback fails
+{
+    note("callback fails");
     jsonrpc '/endpoint_fail' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -156,7 +159,8 @@ use Dancer::Test;
     ) or diag($response->{content});
 }
 
-{ # callback dies
+{
+    note("callback dies");
     jsonrpc '/endpoint_fail2' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -198,7 +202,8 @@ use Dancer::Test;
     );
 }
 
-{ # code_wrapper dies
+{
+    note("code_wrapper dies");
     jsonrpc '/endpoint_fail3' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -244,7 +249,8 @@ use Dancer::Test;
     ) or diag(explain($error));
 }
 
-{ # callback returns unknown object
+{
+    note("callback returns unknown object");
     jsonrpc '/endpoint_fail4' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -293,7 +299,8 @@ use Dancer::Test;
     ) or diag(explain($error));
 }
 
-{ # code_wrapper returns unknown object
+{
+    note("code_wrapper returns unknown object");
     jsonrpc '/endpoint_fail5' => {
         publish => sub {
             eval { require TestProject::SystemCalls; };
@@ -340,7 +347,8 @@ use Dancer::Test;
 }
 
 
-{ # rpc-call fails
+{
+    note("rpc-call fails");
     jsonrpc '/endpoint_error' => {
         publish => sub {
             return {
@@ -377,7 +385,8 @@ use Dancer::Test;
     );
 }
 
-{ # return an error_response()
+{
+    note("return an error_response()");
     jsonrpc '/endpoint_fault' => {
         publish => sub {
             return {

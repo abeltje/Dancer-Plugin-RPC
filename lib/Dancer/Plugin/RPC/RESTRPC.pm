@@ -4,7 +4,11 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use Scalar::Util 'blessed';
 
+our $VERSION = '1.08';
+
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
+
+use constant PLUGIN_NAME => 'restrpc';
 
 use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::ErrorResponse;
@@ -19,7 +23,7 @@ my %dispatch_builder_map = (
     config => \&build_dispatcher_from_config,
 );
 
-register restrpc => sub {
+register PLUGIN_NAME ,=> sub {
     my($self, $base_url, $arguments) = plugin_args(@_);
 
     my $publisher;
@@ -37,7 +41,7 @@ register restrpc => sub {
 
     my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
     $lister->set_partial(
-        protocol => 'restrpc',
+        protocol => PLUGIN_NAME,
         endpoint => $base_url,
         methods  => [ sort keys %{ $dispatcher } ],
     );
@@ -72,6 +76,13 @@ register restrpc => sub {
             ? from_json(request->body)
             : undef;
         my Dancer::RPCPlugin::CallbackResult $continue = eval {
+            local $Dancer::RPCPlugin::ROUTE_INFO = {
+                plugin        => PLUGIN_NAME,
+                endpoint      => $base_url,
+                rpc_method    => $method_name,
+                full_path     => request->path,
+                http_method   => uc(request->method),
+            };
             $callback
                 ? $callback->(request(), $method_name, $method_args)
                 : callback_success();
@@ -82,7 +93,7 @@ register restrpc => sub {
                 error_code => 500,
                 error_message => $error,
             );
-            status $error_response->return_status('restrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_restrpc_error;
         }
         elsif (!blessed($continue) || !$continue->isa('Dancer::RPCPlugin::CallbackResult')) {
@@ -90,7 +101,7 @@ register restrpc => sub {
                 error_code    => 500,
                 error_message => "Internal error: 'callback_result' wrong class " . blessed($continue),
             );
-            status $error_response->return_status('restrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_restrpc_error;
         }
         elsif (blessed($continue) && !$continue->success) {
@@ -98,7 +109,7 @@ register restrpc => sub {
                 error_code    => $continue->error_code,
                 error_message => $continue->error_message,
             );
-            status $error_response->return_status('restrpc');
+            status $error_response->return_status(PLUGIN_NAME);
             $response = $error_response->as_restrpc_error;
         }
         else {
@@ -119,7 +130,7 @@ register restrpc => sub {
                             error_message => $error,
                             error_data    => $method_args,
                     );
-                status $error_response->return_status('restrpc');
+                status $error_response->return_status(PLUGIN_NAME);
                 $response = $error_response->as_restrpc_error;
             }
             elsif (blessed($response) && $response->can('as_restrpc_error')) {

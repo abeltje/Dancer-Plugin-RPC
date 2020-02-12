@@ -4,7 +4,11 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use Scalar::Util 'blessed';
 
+our $VERSION = '1.08';
+
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
+
+use constant PLUGIN_NAME => 'jsonrpc';
 
 use Dancer::RPCPlugin::CallbackResult;
 use Dancer::RPCPlugin::DispatchFromConfig;
@@ -19,7 +23,7 @@ my %dispatch_builder_map = (
     config => \&build_dispatcher_from_config,
 );
 
-register jsonrpc => sub {
+register PLUGIN_NAME ,=> sub {
     my ($self, $endpoint, $arguments) = plugin_args(@_);
 
     my $publisher;
@@ -36,7 +40,7 @@ register jsonrpc => sub {
 
     my $lister = Dancer::RPCPlugin::DispatchMethodList->new();
     $lister->set_partial(
-        protocol => 'jsonrpc',
+        protocol => PLUGIN_NAME,
         endpoint => $endpoint,
         methods  => [ sort keys %{ $dispatcher } ],
     );
@@ -56,9 +60,12 @@ register jsonrpc => sub {
         if ($ct ne 'application/json') {
             pass();
         }
-        debug("[handle_jsonrpc_request] Processing: ", request->body);
-
         my @requests = unjson(request->body);
+        if (!exists($requests[0]->{jsonrpc}) or $requests[0]->{jsonrpc} ne "2.0") {
+            pass();
+        }
+
+        debug("[handle_jsonrpc_request] Processing: ", request->body);
 
         content_type 'application/json';
         my @responses;
@@ -80,10 +87,17 @@ register jsonrpc => sub {
                 next;
             }
 
-            my @method_args = $request->{params};
+            my $method_args = $request->{params};
             my Dancer::RPCPlugin::CallbackResult $continue = eval {
+                local $Dancer::RPCPlugin::ROUTE_INFO = {
+                    plugin        => PLUGIN_NAME,
+                    endpoint      => $endpoint,
+                    rpc_method    => $method_name,
+                    full_path     => request->path,
+                    http_method   => uc(request->method),
+                };
                 $callback
-                    ? $callback->(request(), $method_name, @method_args)
+                    ? $callback->(request(), $method_name, $method_args)
                     : callback_success();
             };
 
@@ -126,7 +140,7 @@ register jsonrpc => sub {
             my $package = $di->package;
 
             my $result = eval {
-                $code_wrapper->($handler, $package, $method_name, @method_args);
+                $code_wrapper->($handler, $package, $method_name, $method_args);
             };
             my $error = $@;
 
@@ -137,9 +151,9 @@ register jsonrpc => sub {
                     : error_response(
                             error_code    => -32500,
                             error_message => $error,
-                            error_data    => $method_args[0],
+                            error_data    => $method_args,
                     );
-                status $error_response->return_status('jsonrpc');
+                status $error_response->return_status(PLUGIN_NAME);
                 push @responses, jsonrpc_response(
                     $request->{id},
                     %{ $error_response->as_jsonrpc_error },
@@ -208,7 +222,7 @@ sub build_dispatcher_from_pod {
     debug("[build_dispatcher_from_pod]");
 
     return dispatch_table_from_pod(
-        plugin   => 'jsonrpc',
+        plugin   => PLUGIN_NAME,
         packages => $pkgs,
         endpoint => $endpoint,
     );
@@ -219,7 +233,7 @@ sub build_dispatcher_from_config {
     debug("[build_dispatcher_from_config] $endpoint");
 
     return dispatch_table_from_config(
-        plugin   => 'jsonrpc',
+        plugin   => PLUGIN_NAME,
         config   => $config,
         endpoint => $endpoint,
     );
@@ -274,7 +288,7 @@ The callback will be called just before the actual rpc-code is called from the
 dispatch table. The arguments are positional: (full_request, method_name).
 
     my Dancer::RPCPlugin::CallbackResult $continue = $callback
-        ? $callback->(request(), $method_name, @method_args)
+        ? $callback->(request(), $method_name, $method_args)
         : callback_success();
 
 The callback should return a L<Dancer::RPCPlugin::CallbackResult> instance:
