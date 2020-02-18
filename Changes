@@ -1,18 +1,22 @@
-Changes on 2020-02-12 for repository at:
+Changes on 2020-02-18 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.07_05 2020-02-12T20:16:18+01:00 (179ee7d => Abe Timmerman)
+1.08 2020-02-18T18:06:42+01:00 (20964a7 => Abe Timmerman)
  - (Abe Timmerman, 6 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.08 (minor)
+
+1.07_05 2020-02-12T20:16:18+01:00 (3dae8b4 => Abe Timmerman)
+ - (Abe Timmerman, 6 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_05 (test)
 
 1.07_04 2019-11-05T14:55:42+01:00 (9a71d61 => Abe Timmerman)
- - (Abe Timmerman, 3 months ago) Autocommit for distribution
+ - (Abe Timmerman, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_04 (test)
 
- - (Abe Timmerman, 11 minutes ago) Set $Dancer::RPCPlugin::ROUTE_INFO for
+ - (Abe Timmerman, 6 days ago) Set $Dancer::RPCPlugin::ROUTE_INFO for
    callback-scope
  -     This introduces $Dancer::RPCPlugin::ROUTE_INFO in the scope of the
  -     callback-function. It has some information about how this
@@ -25,10 +29,10 @@ Enjoy!
  -     - add $VERSION to all the plugins
 
 1.07_03 2019-11-04T19:53:50+01:00 (ed5dd64 => Abe Timmerman)
- - (Abe Timmerman, 3 months ago) Autocommit for distribution
+ - (Abe Timmerman, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_03 (test)
 
- - (Abe Timmerman, 3 months ago) Handle `die error_response()` correctly
+ - (Abe Timmerman, 4 months ago) Handle `die error_response()` correctly
  -     One should be able to die() with een error_response instead of using
  -     return(). This case is now handled correctly.
 
@@ -36,7 +40,7 @@ Enjoy!
  - (Abe Timmerman, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_02 (test)
 
- - (Abe Timmerman, 3 months ago) Makefile.PL: add Params::Validate
+ - (Abe Timmerman, 4 months ago) Makefile.PL: add Params::Validate
  -     Missing dependency
 
 1.07_01 2019-08-08T14:51:20+03:00 (a828753 => Abe Timmerman)
@@ -123,10 +127,10 @@ Enjoy!
  -	   =for <plugin> <rpc-name> <code-name>[ <endpoint>]
 
 1.04_05 2017-09-02T20:03:22+02:00 (e763554 => abeltje)
- - (abeltje, 2 years, 5 months ago) Autocommit for distribution
+ - (abeltje, 2 years, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.04_05 (same)
 
- - (abeltje, 2 years, 5 months ago) Fix
+ - (abeltje, 2 years, 6 months ago) Fix
    Dancer::RPCPlugin::MethodList::list_methods interface
  -     Now it is like the Dancer2 version with positional parameters.
 
@@ -138,7 +142,7 @@ Enjoy!
  - (abeltje, 2 years, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.04_04 (same)
 
- - (abeltje, 2 years, 5 months ago) Use Params::ValidationCompiler rather
+ - (abeltje, 2 years, 6 months ago) Use Params::ValidationCompiler rather
    than Params::Validate
  -     As of June 2017 the author recommends this change.
  -     Change the interface of ::DispatchMethodList so it's in sync with
@@ -182,7 +186,7 @@ Enjoy!
  -     Keep it in sync with Dancer2::Plugin::RPC
 
 1.03_01 2017-05-02T14:52:24+02:00 (6114ed2 => abeltje)
- - (abeltje, 2 years, 9 months ago) Commit for Dancer-Plugin-RPC 1.03_01
+ - (abeltje, 2 years, 10 months ago) Commit for Dancer-Plugin-RPC 1.03_01
 
  - (abeltje, 2 years, 9 months ago) Update Changes file
 
@@ -190,7 +194,7 @@ Enjoy!
  - (abeltje, 2 years, 10 months ago) Merge branch 'master' of
    github.com:abeltje/Dancer-Plugin-RPC
 
- - (abeltje, 2 years, 9 months ago) Better checks on callback and
+ - (abeltje, 2 years, 10 months ago) Better checks on callback and
    code_wrapper results
  -     - callback-result must be a 'Dancer::RPCPlugin::CallbackResult',
    otherwise
@@ -205,8 +209,8 @@ Enjoy!
    Dancer::Plugin::RPC 1.03 (minor)
 
 1.02 2017-02-28T19:51:06+01:00 (2aed027 => abeltje)
- - (abeltje, 2 years, 11 months ago) Autocommit for distribution
-   Dancer::Plugin::RPC 1.02 (minor)
+ - (abeltje, 3 years ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.02 (minor)
 
  - (abeltje, 2 years, 11 months ago) Add support for RESTRPC and an example
    app
@@ -223,7 +227,7 @@ Enjoy!
    1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
- - (abeltje, 3 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 3 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01 (minor)
 
  - (abeltje, 3 years ago) Introduce a general way to return a complete
@@ -235,7 +239,7 @@ Enjoy!
  - (abeltje, 3 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_04 (same)
 
- - (abeltje, 3 years, 6 months ago) Dunno why :(
+ - (abeltje, 3 years, 7 months ago) Dunno why :(
 
 1.00_03 2016-06-12T17:09:13+02:00 (dcd5949 => abeltje)
  - (abeltje, 3 years, 8 months ago) Autocommit for distribution
@@ -282,18 +286,19 @@ Enjoy!
    methods.
 
 0.99_09 2016-02-01T21:15:13+01:00 (66bed13 => abeltje)
- - (abeltje, 4 years ago) Autocommit for distribution Dancer::Plugin::RPC
-   0.99_09 (test)
+ - (abeltje, 4 years, 1 month ago) Autocommit for distribution
+   Dancer::Plugin::RPC 0.99_09 (test)
 
- - (abeltje, 4 years ago) Last POD fixes
+ - (abeltje, 4 years, 1 month ago) Last POD fixes
  -     POD fixes
  -     Depend on higher version of Dancer (1.32)
 
 0.99_08 2016-01-29T13:14:34+01:00 (7431695 => abeltje)
- - (abeltje, 4 years ago) Autocommit for distribution Dancer::Plugin::RPC
-   0.99_08 (test)
+ - (abeltje, 4 years, 1 month ago) Autocommit for distribution
+   Dancer::Plugin::RPC 0.99_08 (test)
 
- - (abeltje, 4 years ago) Introduce DispatchItem and CallbackResult
+ - (abeltje, 4 years, 1 month ago) Introduce DispatchItem and
+   CallbackResult
  -     CallbackResult: callback_success(), callback_fail()
  -     DispatchItem: dispatch_item()
  -     'config' is now the default publishing-method
@@ -302,7 +307,8 @@ Enjoy!
  - (abeltje, 4 years, 1 month ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_07 (test)
 
- - (abeltje, 4 years ago) FIX: use the Dancer json-(de)serializer (again)
+ - (abeltje, 4 years, 1 month ago) FIX: use the Dancer json-(de)serializer
+   (again)
  -     No explicit use of JSON.pm; Dancer knows what to do.
 
 0.99_06 2016-01-29T00:07:12+01:00 (b3a0012 => abeltje)
