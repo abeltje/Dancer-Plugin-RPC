@@ -1,6 +1,5 @@
-#! perl -w
-use strict;
-use Test::More;
+#! perl -I. -w
+use t::Test::abeltje;
 
 use Dancer qw/:syntax !pass/;
 use Dancer::Plugin::RPC::JSONRPC;
