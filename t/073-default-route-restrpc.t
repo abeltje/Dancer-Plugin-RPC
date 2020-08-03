@@ -7,9 +7,8 @@ use Dancer::RPCPlugin::DefaultRoute;
 use Dancer::Plugin::RPC::RESTRPC;
 use Dancer::Test;
 
-use Readonly;
-Readonly my $ENDPOINT         => '/system/code_wrapper';
-Readonly my $UNKNOWN_ENDPOINT => '/system/code_wrapper/undefined_endpoint';
+my $ENDPOINT         = '/system/code_wrapper';
+my $UNKNOWN_ENDPOINT = '/system/code_wrapper/undefined_endpoint';
 
 
 use MyTest::API;

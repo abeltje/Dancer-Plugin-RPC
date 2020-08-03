@@ -16,9 +16,8 @@ use RPC::XML;
 use RPC::XML::ParserFactory;
 $RPC::XML::ENCODING = 'utf-8';
 
-use Readonly;
-Readonly my $ENDPOINT         => '/system/code_wrapper';
-Readonly my $UNKNOWN_ENDPOINT => '/system/code_wrapper/undefined_endpoint';
+my $ENDPOINT         = '/system/code_wrapper';
+my $UNKNOWN_ENDPOINT = '/system/code_wrapper/undefined_endpoint';
 
 use MyTest::API;
 use MyTest::Client;
