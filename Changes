@@ -4,15 +4,21 @@ Changes on 2020-08-03 for repository at:
 
 Enjoy!
 
-1.08_02 2020-08-03T10:36:24+02:00 (7866d9b => Abe Timmerman)
- - (Abe Timmerman, 5 seconds ago) Autocommit for distribution
+1.08_03 2020-08-03T11:16:21+02:00 (1a37ca9 => Abe Timmerman)
+ - (Abe Timmerman, 4 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.08_03 (test)
+
+1.08_02 2020-08-03T10:36:24+02:00 (8103248 => Abe Timmerman)
+ - (Abe Timmerman, 40 minutes ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_02 (test)
+
+ - (Abe Timmerman, 3 minutes ago) use Moo; not Moose...
 
 1.08_01 2020-08-01T21:47:57+02:00 (d97e49c => Abe Timmerman)
  - (Abe Timmerman, 2 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_01 (test)
 
- - (Abe Timmerman, 2 minutes ago) Remove the need for 'Readonly'
+ - (Abe Timmerman, 42 minutes ago) Remove the need for 'Readonly'
 
 1.08 2020-02-18T18:06:42+01:00 (1b6c844 => Abe Timmerman)
  - (Abe Timmerman, 6 months ago) Autocommit for distribution
