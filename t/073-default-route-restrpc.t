@@ -1,5 +1,4 @@
 #! perl -I. -w
-use v5.14;
 use t::Test::abeltje;
 
 use Dancer qw/!pass/;
