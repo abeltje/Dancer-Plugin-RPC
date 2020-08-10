@@ -1,33 +1,42 @@
-Changes on 2020-08-03 for repository at:
-  Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
-  Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
+Changes on 2020-08-10 for repository at:
+  Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+  Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.08_03 2020-08-03T11:16:21+02:00 (1a37ca9 => Abe Timmerman)
- - (Abe Timmerman, 4 seconds ago) Autocommit for distribution
+1.08_04 2020-08-10T20:07:05+02:00 (f68e02c => Abe Timmerman)
+ - (Abe Timmerman, 6 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.08_04 (test)
+
+1.08_03 2020-08-03T11:16:21+02:00 (817af42 => Abe Timmerman)
+ - (Abe Timmerman, 7 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_03 (test)
 
+ - (Abe Timmerman, 15 minutes ago) Remove dependency on perl-5.14*
+
+ - (Abe Timmerman, 82 seconds ago) It sucks to have to add internal
+   constants to POD
+
 1.08_02 2020-08-03T10:36:24+02:00 (8103248 => Abe Timmerman)
- - (Abe Timmerman, 40 minutes ago) Autocommit for distribution
+ - (Abe Timmerman, 7 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_02 (test)
 
- - (Abe Timmerman, 3 minutes ago) use Moo; not Moose...
+ - (Abe Timmerman, 7 days ago) use Moo; not Moose...
 
 1.08_01 2020-08-01T21:47:57+02:00 (d97e49c => Abe Timmerman)
- - (Abe Timmerman, 2 days ago) Autocommit for distribution
+ - (Abe Timmerman, 9 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_01 (test)
 
- - (Abe Timmerman, 42 minutes ago) Remove the need for 'Readonly'
+ - (Abe Timmerman, 7 days ago) Remove the need for 'Readonly'
 
 1.08 2020-02-18T18:06:42+01:00 (1b6c844 => Abe Timmerman)
  - (Abe Timmerman, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08 (minor)
 
- - (Abe Timmerman, 2 days ago) Add a note about the port for the example
+ - (Abe Timmerman, 9 days ago) Add a note about the port for the example
    daemon in README
 
- - (Abe Timmerman, 2 days ago) Add 'Dancer::RPCPlugin::DefaultRoute'
+ - (Abe Timmerman, 9 days ago) Add 'Dancer::RPCPlugin::DefaultRoute'
  -     This new helper module offers to install a "catch all" handler that
  -     sends an appropriate response for "non serviceable" requests. This
    may
@@ -69,7 +78,7 @@ Enjoy!
  -     Missing dependency
 
 1.07_01 2019-08-08T14:51:20+03:00 (a828753 => Abe Timmerman)
- - (Abe Timmerman, 12 months ago) Autocommit for distribution
+ - (Abe Timmerman, 1 year ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_01 (test)
 
  - (Abe Timmerman, 10 months ago) .travis.yml: Remove unsupported perl
@@ -86,11 +95,11 @@ Enjoy!
  - (abeltje, 2 years, 8 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07 (minor)
 
- - (Abe Timmerman, 1 year, 4 months ago) Various minor fixes
+ - (Abe Timmerman, 1 year, 5 months ago) Various minor fixes
  -	 - include the local-lib in the do-rpc script
  -	 - fix typo in log-message in Dancer::Plugin::RPC::JSONRPC
 
- - (Abe Timmerman, 12 months ago) Rewrite the example-code
+ - (Abe Timmerman, 1 year ago) Rewrite the example-code
  -     It now uses Bread::Board to set up the application.
  -     Some fixes in the Moo-based code.
 
@@ -98,13 +107,13 @@ Enjoy!
  - (abeltje, 2 years, 9 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.06 (minor)
 
- - (abeltje, 2 years, 8 months ago)  Add .travis.yml file for automated
+ - (abeltje, 2 years, 9 months ago)  Add .travis.yml file for automated
    testing from GitHub
 
  - (abeltje, 2 years, 8 months ago) Add PREREQ_PM to BUILD_REQUIRES
 
 1.05_03 2017-10-22T10:24:47+02:00 (9d232c6 => abeltje)
- - (abeltje, 2 years, 9 months ago) Autocommit for distribution
+ - (abeltje, 2 years, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.05_03 (test)
 
  - (abeltje, 2 years, 9 months ago) Change mode example/bin/app.psgi to
@@ -114,7 +123,7 @@ Enjoy!
  - (abeltje, 2 years, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.05_02 (test)
 
- - (abeltje, 2 years, 9 months ago) Restore backward compatiblity for
+ - (abeltje, 2 years, 10 months ago) Restore backward compatiblity for
    list_methods()
 
 1.05_01 2017-10-18T20:04:06+02:00 (a54c02f => abeltje)
@@ -126,7 +135,7 @@ Enjoy!
    anyway.
 
 1.05 2017-09-25T20:22:52+02:00 (0367b23 => abeltje)
- - (abeltje, 2 years, 10 months ago) Autocommit for distribution
+ - (abeltje, 2 years, 11 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.05 (minor)
 
  - (abeltje, 2 years, 10 months ago) Introduce a way to add to the
@@ -185,7 +194,7 @@ Enjoy!
  - (abeltje, 3 years ago) Fix regex for determining protocol
 
 1.04_01 2017-06-26T20:11:57+02:00 (0775c84 => abeltje)
- - (abeltje, 3 years, 1 month ago) Autocommit for distribution
+ - (abeltje, 3 years, 2 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.04_01 (test)
 
  - (abeltje, 3 years, 1 month ago) Rename tests to resemble their Dancer2
@@ -206,7 +215,7 @@ Enjoy!
  - (abeltje, 3 years, 3 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.04 (minor)
 
- - (abeltje, 3 years, 1 month ago) Update the example application
+ - (abeltje, 3 years, 2 months ago) Update the example application
  -     Keep it in sync with Dancer2::Plugin::RPC
 
 1.03_01 2017-05-02T14:52:24+02:00 (6114ed2 => abeltje)
@@ -236,7 +245,7 @@ Enjoy!
  - (abeltje, 3 years, 5 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.02 (minor)
 
- - (abeltje, 3 years, 4 months ago) Add support for RESTRPC and an example
+ - (abeltje, 3 years, 5 months ago) Add support for RESTRPC and an example
    app
  -     RESTRPC is a simple protocol that uses HTTP-POST to send a JSON
    string
@@ -247,14 +256,14 @@ Enjoy!
  -     the outside world.
 
 1.01_01 2017-02-20T21:18:38+01:00 (7496a72 => abeltje)
- - (abeltje, 3 years, 5 months ago) Autocommit for distribution
+ - (abeltje, 3 years, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
  - (abeltje, 4 years ago) Autocommit for distribution Dancer::Plugin::RPC
    1.01 (minor)
 
- - (abeltje, 3 years, 5 months ago) Introduce a general way to return a
+ - (abeltje, 3 years, 6 months ago) Introduce a general way to return a
    complete error-response
  -     Dancer::RPCPlugin::ErrorResponse should be a way to return a full
  -     error-response as valid response without knowlage of the protocol.
@@ -290,7 +299,7 @@ Enjoy!
    from_json()
 
 1.00 2016-03-22T21:35:21+01:00 (7e62f40 => abeltje)
- - (abeltje, 4 years, 4 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 5 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00 (minor)
 
  - (abeltje, 4 years, 2 months ago) Try to fix test-failures
@@ -301,7 +310,7 @@ Enjoy!
  - (abeltje, 4 years, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_10 (test)
 
- - (Larion Garaczi, 4 years, 4 months ago) Handle unhandled exceptions in
+ - (Larion Garaczi, 4 years, 5 months ago) Handle unhandled exceptions in
    callbacks
  -     Runtime exceptions in the 'callback' functions were not caught. Now
    we
@@ -358,41 +367,41 @@ Enjoy!
    'jsonrpc'
 
 0.99_03 2016-01-26T18:54:01+01:00 (303b015 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_03 (test)
 
  - (abeltje, 4 years, 6 months ago) Add dependency: Params::Validate
 
 0.99_02 2016-01-26T14:24:13+01:00 (9159494 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_02 (test)
 
- - (Larion Garaczi, 4 years, 6 months ago) Bail out early when given an
+ - (Larion Garaczi, 4 years, 7 months ago) Bail out early when given an
    non-existing target function in the dispatch table
  -     This prevents strange runtime errors ("use of uninitialized value on
  -     subroutine entry") resulting from trying to call a non-function.
 
- - (Larion Garaczi, 4 years, 6 months ago) Replace Test::Exception with
+ - (Larion Garaczi, 4 years, 7 months ago) Replace Test::Exception with
    Test::Fatal
 
- - (abeltje, 4 years, 6 months ago) Merge remote-tracking branch
+ - (abeltje, 4 years, 7 months ago) Merge remote-tracking branch
    'larion/bugfix_dont_call_nonexistent_handler' into
    feature/die_on_bad_dispatch
 
- - (abeltje, 4 years, 6 months ago) Fix MANIFEST after pull-request.
+ - (abeltje, 4 years, 7 months ago) Fix MANIFEST after pull-request.
 
 0.99_01 2016-01-25T12:22:42+01:00 (6993bdc => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_01 (test)
 
- - (abeltje, 4 years, 6 months ago) Renamed
+ - (abeltje, 4 years, 7 months ago) Renamed
    lib/Dancer/RPCPlugin/DispatchFromPod.pm
 
 0.00_00 2015-06-15T09:07:42+02:00 (99373c1 => abeltje)
  - (abeltje, 5 years ago) Initial commit, working XMLRPC code...
 
- - (abeltje, 4 years, 6 months ago) First real commit.
+ - (abeltje, 4 years, 7 months ago) First real commit.
  -     Both plugins now have the same interface.
 
- - (abeltje, 4 years, 6 months ago) Add Changes after running deployment
+ - (abeltje, 4 years, 7 months ago) Add Changes after running deployment
    script.
