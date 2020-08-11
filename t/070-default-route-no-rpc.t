@@ -6,7 +6,7 @@ BEGIN {
     $ENV{DANCER_APPDIR}      = '.';
 }
 
-use Dancer qw( :tests );
+use Dancer qw/:syntax !pass !warning/;
 use Dancer::Test;
 
 use MyTest::API;

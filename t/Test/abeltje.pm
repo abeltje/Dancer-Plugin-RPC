@@ -9,13 +9,15 @@ use parent 'Test::Builder::Module';
 
 use Test::Builder::Module;
 use Test::More;
-use Test::Fatal;
-use Test::Warnings;
+use Test::Fatal qw( exception success dies_ok lives_ok );
+use Test::Warnings qw( :all );
 
 our @EXPORT = (
+    'abeltje_done_testing',
+
     @Test::More::EXPORT,
-    @Test::Fatal::EXPORT,
-    @Test::Warnings::EXPORT
+    @Test::Fatal::EXPORT_OK,
+    @Test::Warnings::EXPORT_OK
 );
 
 sub import_extra {
@@ -28,6 +30,8 @@ sub import_extra {
     require lib;
     lib->import('t/lib');
 }
+
+*abeltje_done_testing = \&Test::More::done_testing;
 
 1;
 
@@ -43,6 +47,8 @@ t::Test::abeltje - Helper Test module that imports useful stuf.
     # Don't forget -I. on the shebang line
     # this is where you have your Fav. test-routines.
 
+    abeltje_done_testing();
+
 =head1 DESCRIPTION
 
 Mostly nicked from other modules (like L<Modern::Perl>)...
@@ -50,6 +56,14 @@ Mostly nicked from other modules (like L<Modern::Perl>)...
 This gives you L<Test::More>, L<Test::Fatal>, L<Test::Warnings> and also imports
 for you: L<strict>, L<warnings>, the L<feature> with the C<:5.10> tag and L<lib>
 with the C<t/lib> path.
+
+=head2 abeltje_done_testing
+
+Just for fun, an alias for L<Test::More/done_testing()>.
+
+=head2 import_extra
+
+This module works by the use of L<Test::Builder::Module/import_extra()>.
 
 =head1 COPYRIGHT
 

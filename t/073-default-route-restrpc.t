@@ -1,7 +1,7 @@
 #! perl -I. -w
 use t::Test::abeltje;
 
-use Dancer qw/!pass/;
+use Dancer qw/!pass !warning/;
 use Dancer::RPCPlugin::DefaultRoute;
 use Dancer::Plugin::RPC::RESTRPC;
 use Dancer::Test;

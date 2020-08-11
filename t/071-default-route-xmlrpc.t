@@ -6,7 +6,7 @@ BEGIN {
 }
 
 
-use Dancer qw/:syntax !pass/;
+use Dancer qw/:syntax !pass !warning/;
 use Dancer::Test;
 
 use Dancer::RPCPlugin::DefaultRoute;

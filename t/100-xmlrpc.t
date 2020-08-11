@@ -1,7 +1,7 @@
 #! perl -I. -w
 use t::Test::abeltje;
 
-use Dancer qw/:syntax !pass/;
+use Dancer qw/:syntax !pass !warning/;
 use Dancer::Plugin::RPC::XMLRPC;
 use TestProject;
 use Dancer::Test;
