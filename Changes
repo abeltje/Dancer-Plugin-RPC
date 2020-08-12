@@ -1,42 +1,55 @@
-Changes on 2020-08-10 for repository at:
+Changes on 2020-08-12 for repository at:
   Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
   Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.08_04 2020-08-10T20:07:05+02:00 (f68e02c => Abe Timmerman)
- - (Abe Timmerman, 6 seconds ago) Autocommit for distribution
+1.08_05 2020-08-12T15:43:34+02:00 (ef49da7 => Abe Timmerman)
+ - (Abe Timmerman, 5 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.08_05 (test)
+
+1.08_04 2020-08-10T20:07:05+02:00 (29a6f50 => Abe Timmerman)
+ - (Abe Timmerman, 2 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_04 (test)
 
+ - (Abe Timmerman, 21 hours ago) Update t::Test::abeltje
+ -     The newer version of t::Test::abeltje imports all from
+   L<Test::Warning>,
+ -     which includes 'warning', so we'll exclude that from the tests as we
+ -     don't need it...
+
+ - (Abe Timmerman, 3 hours ago) Switch to Types::Standard in the Example
+   app.
+
 1.08_03 2020-08-03T11:16:21+02:00 (817af42 => Abe Timmerman)
- - (Abe Timmerman, 7 days ago) Autocommit for distribution
+ - (Abe Timmerman, 9 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_03 (test)
 
- - (Abe Timmerman, 15 minutes ago) Remove dependency on perl-5.14*
+ - (Abe Timmerman, 2 days ago) Remove dependency on perl-5.14*
 
- - (Abe Timmerman, 82 seconds ago) It sucks to have to add internal
-   constants to POD
+ - (Abe Timmerman, 2 days ago) It sucks to have to add internal constants
+   to POD
 
 1.08_02 2020-08-03T10:36:24+02:00 (8103248 => Abe Timmerman)
- - (Abe Timmerman, 7 days ago) Autocommit for distribution
+ - (Abe Timmerman, 9 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_02 (test)
 
- - (Abe Timmerman, 7 days ago) use Moo; not Moose...
+ - (Abe Timmerman, 9 days ago) use Moo; not Moose...
 
 1.08_01 2020-08-01T21:47:57+02:00 (d97e49c => Abe Timmerman)
- - (Abe Timmerman, 9 days ago) Autocommit for distribution
+ - (Abe Timmerman, 11 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_01 (test)
 
- - (Abe Timmerman, 7 days ago) Remove the need for 'Readonly'
+ - (Abe Timmerman, 9 days ago) Remove the need for 'Readonly'
 
 1.08 2020-02-18T18:06:42+01:00 (1b6c844 => Abe Timmerman)
  - (Abe Timmerman, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08 (minor)
 
- - (Abe Timmerman, 9 days ago) Add a note about the port for the example
+ - (Abe Timmerman, 11 days ago) Add a note about the port for the example
    daemon in README
 
- - (Abe Timmerman, 9 days ago) Add 'Dancer::RPCPlugin::DefaultRoute'
+ - (Abe Timmerman, 11 days ago) Add 'Dancer::RPCPlugin::DefaultRoute'
  -     This new helper module offers to install a "catch all" handler that
  -     sends an appropriate response for "non serviceable" requests. This
    may
@@ -81,7 +94,7 @@ Enjoy!
  - (Abe Timmerman, 1 year ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_01 (test)
 
- - (Abe Timmerman, 10 months ago) .travis.yml: Remove unsupported perl
+ - (Abe Timmerman, 11 months ago) .travis.yml: Remove unsupported perl
    versions
 
  - (Abe Timmerman, 10 months ago) Change the way ErrorResponse works
@@ -336,7 +349,7 @@ Enjoy!
  -     'config' is now the default publishing-method
 
 0.99_07 2016-01-29T00:15:07+01:00 (24e4e49 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_07 (test)
 
  - (abeltje, 4 years, 6 months ago) FIX: use the Dancer json-(de)serializer
@@ -344,24 +357,24 @@ Enjoy!
  -     No explicit use of JSON.pm; Dancer knows what to do.
 
 0.99_06 2016-01-29T00:07:12+01:00 (b3a0012 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_06 (same)
 
- - (abeltje, 4 years, 6 months ago) FIX: use the Dancer json-(de)serializer
+ - (abeltje, 4 years, 7 months ago) FIX: use the Dancer json-(de)serializer
  -     No explicit use of JSON.pm; Dancer knows what to do.
 
 0.99_05 2016-01-28T23:31:59+01:00 (4310179 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_05 (same)
 
- - (abeltje, 4 years, 6 months ago) FIX: remove test problem with JSON.pm
+ - (abeltje, 4 years, 7 months ago) FIX: remove test problem with JSON.pm
  -     JSON 2.90 serializes booleans different from v2.61 :(
 
 0.99_04 2016-01-27T17:45:25+01:00 (2e32854 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_04 (test)
 
- - (abeltje, 4 years, 6 months ago) FIX: jsonrpc_error_response must return
+ - (abeltje, 4 years, 7 months ago) FIX: jsonrpc_error_response must return
    Â«jsonrpc => '2.0'
  -     jsonrpc_error_response() did not return the correct key for
    'jsonrpc'
@@ -370,7 +383,7 @@ Enjoy!
  - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_03 (test)
 
- - (abeltje, 4 years, 6 months ago) Add dependency: Params::Validate
+ - (abeltje, 4 years, 7 months ago) Add dependency: Params::Validate
 
 0.99_02 2016-01-26T14:24:13+01:00 (9159494 => abeltje)
  - (abeltje, 4 years, 7 months ago) Autocommit for distribution
