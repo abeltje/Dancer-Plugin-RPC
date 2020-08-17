@@ -1,59 +1,71 @@
-Changes on 2020-08-13 for repository at:
-  Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
-  Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+Changes on 2020-08-17 for repository at:
+  Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
+  Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
 
 Enjoy!
 
-1.09 2020-08-13T13:21:24+02:00 (3be271d => Abe Timmerman)
+1.09_01 2020-08-18T00:21:43+02:00 (1dcdd1b => Abe Timmerman)
  - (Abe Timmerman, 6 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.09_01 (test)
+
+1.09 2020-08-13T13:21:24+02:00 (5e6f9df => Abe Timmerman)
+ - (Abe Timmerman, 4 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.09 (minor)
 
+ - (Abe Timmerman, 5 minutes ago) Update the tester-module (play nice with
+   coverage)
+
+ - (Abe Timmerman, 5 minutes ago) Standardise request-handling-logging over
+   the Plugins
+ -     All three plugins had different logging on the subject of request
+ -     handling,  they are now all the same.
+
 1.08_05 2020-08-12T15:43:34+02:00 (b9b6a62 => Abe Timmerman)
- - (Abe Timmerman, 22 hours ago) Autocommit for distribution
+ - (Abe Timmerman, 5 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_05 (test)
 
 1.08_04 2020-08-10T20:07:05+02:00 (29a6f50 => Abe Timmerman)
- - (Abe Timmerman, 3 days ago) Autocommit for distribution
+ - (Abe Timmerman, 7 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_04 (test)
 
- - (Abe Timmerman, 2 days ago) Update t::Test::abeltje
+ - (Abe Timmerman, 6 days ago) Update t::Test::abeltje
  -     The newer version of t::Test::abeltje imports all from
    L<Test::Warning>,
  -     which includes 'warning', so we'll exclude that from the tests as we
  -     don't need it...
 
- - (Abe Timmerman, 24 hours ago) Switch to Types::Standard in the Example
+ - (Abe Timmerman, 6 days ago) Switch to Types::Standard in the Example
    app.
 
 1.08_03 2020-08-03T11:16:21+02:00 (817af42 => Abe Timmerman)
- - (Abe Timmerman, 10 days ago) Autocommit for distribution
+ - (Abe Timmerman, 2 weeks ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_03 (test)
 
- - (Abe Timmerman, 3 days ago) Remove dependency on perl-5.14*
+ - (Abe Timmerman, 7 days ago) Remove dependency on perl-5.14*
 
- - (Abe Timmerman, 3 days ago) It sucks to have to add internal constants
+ - (Abe Timmerman, 7 days ago) It sucks to have to add internal constants
    to POD
 
 1.08_02 2020-08-03T10:36:24+02:00 (8103248 => Abe Timmerman)
- - (Abe Timmerman, 10 days ago) Autocommit for distribution
+ - (Abe Timmerman, 2 weeks ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_02 (test)
 
- - (Abe Timmerman, 10 days ago) use Moo; not Moose...
+ - (Abe Timmerman, 2 weeks ago) use Moo; not Moose...
 
 1.08_01 2020-08-01T21:47:57+02:00 (d97e49c => Abe Timmerman)
- - (Abe Timmerman, 12 days ago) Autocommit for distribution
+ - (Abe Timmerman, 2 weeks ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08_01 (test)
 
- - (Abe Timmerman, 10 days ago) Remove the need for 'Readonly'
+ - (Abe Timmerman, 2 weeks ago) Remove the need for 'Readonly'
 
 1.08 2020-02-18T18:06:42+01:00 (1b6c844 => Abe Timmerman)
  - (Abe Timmerman, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.08 (minor)
 
- - (Abe Timmerman, 12 days ago) Add a note about the port for the example
+ - (Abe Timmerman, 2 weeks ago) Add a note about the port for the example
    daemon in README
 
- - (Abe Timmerman, 12 days ago) Add 'Dancer::RPCPlugin::DefaultRoute'
+ - (Abe Timmerman, 2 weeks ago) Add 'Dancer::RPCPlugin::DefaultRoute'
  -     This new helper module offers to install a "catch all" handler that
  -     sends an appropriate response for "non serviceable" requests. This
    may
@@ -64,7 +76,7 @@ Enjoy!
    Dancer::Plugin::RPC 1.07_05 (test)
 
 1.07_04 2019-11-05T14:55:42+01:00 (9a71d61 => Abe Timmerman)
- - (Abe Timmerman, 9 months ago) Autocommit for distribution
+ - (Abe Timmerman, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_04 (test)
 
  - (Abe Timmerman, 6 months ago) Set $Dancer::RPCPlugin::ROUTE_INFO for
@@ -80,10 +92,10 @@ Enjoy!
  -     - add $VERSION to all the plugins
 
 1.07_03 2019-11-04T19:53:50+01:00 (ed5dd64 => Abe Timmerman)
- - (Abe Timmerman, 9 months ago) Autocommit for distribution
+ - (Abe Timmerman, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_03 (test)
 
- - (Abe Timmerman, 9 months ago) Handle `die error_response()` correctly
+ - (Abe Timmerman, 10 months ago) Handle `die error_response()` correctly
  -     One should be able to die() with een error_response instead of using
  -     return(). This case is now handled correctly.
 
@@ -91,7 +103,7 @@ Enjoy!
  - (Abe Timmerman, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.07_02 (test)
 
- - (Abe Timmerman, 9 months ago) Makefile.PL: add Params::Validate
+ - (Abe Timmerman, 10 months ago) Makefile.PL: add Params::Validate
  -     Missing dependency
 
 1.07_01 2019-08-08T14:51:20+03:00 (a828753 => Abe Timmerman)
@@ -178,11 +190,11 @@ Enjoy!
  -	   =for <plugin> <rpc-name> <code-name>[ <endpoint>]
 
 1.04_05 2017-09-02T20:03:22+02:00 (e763554 => abeltje)
- - (abeltje, 2 years, 11 months ago) Autocommit for distribution
-   Dancer::Plugin::RPC 1.04_05 (same)
+ - (abeltje, 3 years ago) Autocommit for distribution Dancer::Plugin::RPC
+   1.04_05 (same)
 
- - (abeltje, 2 years, 11 months ago) Fix
-   Dancer::RPCPlugin::MethodList::list_methods interface
+ - (abeltje, 3 years ago) Fix Dancer::RPCPlugin::MethodList::list_methods
+   interface
  -     Now it is like the Dancer2 version with positional parameters.
 
  - (abeltje, 2 years, 11 months ago) Fix agent-identifier in http-client.
@@ -193,8 +205,8 @@ Enjoy!
  - (abeltje, 3 years ago) Autocommit for distribution Dancer::Plugin::RPC
    1.04_04 (same)
 
- - (abeltje, 2 years, 11 months ago) Use Params::ValidationCompiler rather
-   than Params::Validate
+ - (abeltje, 3 years ago) Use Params::ValidationCompiler rather than
+   Params::Validate
  -     As of June 2017 the author recommends this change.
  -     Change the interface of ::DispatchMethodList so it's in sync with
    the
@@ -236,7 +248,7 @@ Enjoy!
  -     Keep it in sync with Dancer2::Plugin::RPC
 
 1.03_01 2017-05-02T14:52:24+02:00 (6114ed2 => abeltje)
- - (abeltje, 3 years, 3 months ago) Commit for Dancer-Plugin-RPC 1.03_01
+ - (abeltje, 3 years, 4 months ago) Commit for Dancer-Plugin-RPC 1.03_01
 
  - (abeltje, 3 years, 3 months ago) Update Changes file
 
@@ -244,7 +256,7 @@ Enjoy!
  - (abeltje, 3 years, 4 months ago) Merge branch 'master' of
    github.com:abeltje/Dancer-Plugin-RPC
 
- - (abeltje, 3 years, 3 months ago) Better checks on callback and
+ - (abeltje, 3 years, 4 months ago) Better checks on callback and
    code_wrapper results
  -     - callback-result must be a 'Dancer::RPCPlugin::CallbackResult',
    otherwise
@@ -259,7 +271,7 @@ Enjoy!
    Dancer::Plugin::RPC 1.03 (minor)
 
 1.02 2017-02-28T19:51:06+01:00 (2aed027 => abeltje)
- - (abeltje, 3 years, 5 months ago) Autocommit for distribution
+ - (abeltje, 3 years, 6 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.02 (minor)
 
  - (abeltje, 3 years, 5 months ago) Add support for RESTRPC and an example
@@ -289,7 +301,7 @@ Enjoy!
  - (abeltje, 4 years, 1 month ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00_04 (same)
 
- - (abeltje, 4 years ago) Dunno why :(
+ - (abeltje, 4 years, 1 month ago) Dunno why :(
 
 1.00_03 2016-06-12T17:09:13+02:00 (dcd5949 => abeltje)
  - (abeltje, 4 years, 2 months ago) Autocommit for distribution
@@ -335,10 +347,10 @@ Enjoy!
    methods.
 
 0.99_09 2016-02-01T21:15:13+01:00 (66bed13 => abeltje)
- - (abeltje, 4 years, 6 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_09 (test)
 
- - (abeltje, 4 years, 6 months ago) Last POD fixes
+ - (abeltje, 4 years, 7 months ago) Last POD fixes
  -     POD fixes
  -     Depend on higher version of Dancer (1.32)
 
@@ -346,7 +358,7 @@ Enjoy!
  - (abeltje, 4 years, 7 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_08 (test)
 
- - (abeltje, 4 years, 6 months ago) Introduce DispatchItem and
+ - (abeltje, 4 years, 7 months ago) Introduce DispatchItem and
    CallbackResult
  -     CallbackResult: callback_success(), callback_fail()
  -     DispatchItem: dispatch_item()
