@@ -68,7 +68,6 @@ register PLUGIN_NAME ,=> sub {
         my $p = RPC::XML::ParserFactory->new();
         my $request = $p->parse(request->body);
         my $method_name = $request->name;
-        debug("[handle_xmlrpc_call($method_name)] ", $request->args);
 
         if (! exists $dispatcher->{$method_name}) {
             warning("$endpoint/#$method_name not found, pass()");
@@ -78,6 +77,8 @@ register PLUGIN_NAME ,=> sub {
         content_type 'text/xml';
         my $response;
         my @method_args = map $_->value, @{$request->args};
+
+        debug("[handle_xmlrpc_call($method_name)] ", \@method_args);
         my Dancer::RPCPlugin::CallbackResult $continue = eval {
             local $Dancer::RPCPlugin::ROUTE_INFO = {
                 plugin        => PLUGIN_NAME,
@@ -125,7 +126,7 @@ register PLUGIN_NAME ,=> sub {
                 $code_wrapper->($handler, $package, $method_name, @method_args);
             };
 
-            debug("[handling_xmlrpc_response($method_name)] ", $response);
+            debug("[handled_xmlrpc_request($method_name)] ", flatten_data($response));
             if (my $error = $@) {
                 my $error_response = blessed($error) && $error->can('as_xmlrpc_fault')
                     ? $error

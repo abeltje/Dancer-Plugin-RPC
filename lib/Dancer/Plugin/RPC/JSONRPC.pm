@@ -71,7 +71,6 @@ register PLUGIN_NAME ,=> sub {
         my @responses;
         for my $request (@requests) {
             my $method_name = $request->{method};
-            debug("[handle_jsonrpc_call($method_name)] $method_name ", $request);
 
             if (!exists $dispatcher->{$method_name}) {
                 push(
@@ -88,6 +87,8 @@ register PLUGIN_NAME ,=> sub {
             }
 
             my $method_args = $request->{params};
+
+            debug("[handle_jsonrpc_call($method_name)] ", $method_args);
             my Dancer::RPCPlugin::CallbackResult $continue = eval {
                 local $Dancer::RPCPlugin::ROUTE_INFO = {
                     plugin        => PLUGIN_NAME,
@@ -144,7 +145,7 @@ register PLUGIN_NAME ,=> sub {
             };
             my $error = $@;
 
-            debug("[handled_jsonrpc_call($method_name)] ", flatten_data($result));
+            debug("[handled_jsonrpc_request($method_name)] ", flatten_data($result));
             if ($error) {
                 my $error_response = blessed($error) && $error->can('as_jsonrpc_error')
                     ? $error
@@ -186,6 +187,7 @@ register PLUGIN_NAME ,=> sub {
             $response = to_json([grep {defined($_->{id})} @responses], $jsonise_options);
         }
 
+        debug("[jsonrpc_response] ", $response);
         return $response;
     };
 

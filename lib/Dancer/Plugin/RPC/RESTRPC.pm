@@ -75,6 +75,8 @@ register PLUGIN_NAME ,=> sub {
         my $method_args = request->body
             ? from_json(request->body)
             : undef;
+
+        debug("[handle_restrpc_call($method_name)] ", $method_args);
         my Dancer::RPCPlugin::CallbackResult $continue = eval {
             local $Dancer::RPCPlugin::ROUTE_INFO = {
                 plugin        => PLUGIN_NAME,
@@ -121,7 +123,7 @@ register PLUGIN_NAME ,=> sub {
                 $code_wrapper->($handler, $package, $method_name, $method_args);
             };
 
-            debug("[handling_jsonrpc_response($method_name)] ", $response);
+            debug("[handled_restrpc_request($method_name)] ", flatten_data($response));
             if (my $error = $@) {
                 my $error_response = blessed($error) && $error->can('as_restrpc_error')
                     ? $error
