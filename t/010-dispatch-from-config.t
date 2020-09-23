@@ -68,7 +68,7 @@ use Dancer::RPCPlugin::DispatchItem;
                 },
             );
         },
-        qr/Handler not found for system.nonexistent: TestProject::SystemCalls::nonexistent doesn't seem to exist.*possibly becuase loading [^ ]* failed with/,
+        qr/^Handler not found for system.nonexistent: TestProject::NotValidPerl::nonexistent doesn't seem to exist... possibly because loading TestProject::NotValidPerl failed with "no" not allowed in expression at/,
         "Setting a non-compiling module as a dispatch target throws an exception"
     );
 }
