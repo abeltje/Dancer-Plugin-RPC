@@ -53,4 +53,25 @@ use Dancer::RPCPlugin::DispatchItem;
     );
 }
 
+{
+    like(
+        exception {
+            dispatch_table_from_config(
+                plugin   => 'xmlrpc',
+                endpoint => '/xmlrpc',
+                config   => {
+                    '/xmlrpc' => {
+                         'TestProject::NotValidPerl' => {
+                            'system.nonexistent' => 'nonexistent',
+                        }
+                    }
+                },
+            );
+        },
+        qr/Handler not found for system.nonexistent: TestProject::SystemCalls::nonexistent doesn't seem to exist.*possibly becuase loading [^ ]* failed with/,
+        "Setting a non-compiling module as a dispatch target throws an exception"
+    );
+}
+
+
 done_testing();
