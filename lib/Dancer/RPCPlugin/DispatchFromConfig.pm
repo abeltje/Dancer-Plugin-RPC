@@ -43,7 +43,7 @@ sub dispatch_table_from_config {
                 );
             }
             else {
-                die sprintf "Handler not found for %s: %s doesn't seem to exist.%s\n";
+                die sprintf "Handler not found for %s: %s doesn't seem to exist.%s\n",
                             $rpc_method, join('::', $pkg, $subname),
                             $require_error ? ".. possibly becuase loading $pkg failed with $require_error" : ''
 
