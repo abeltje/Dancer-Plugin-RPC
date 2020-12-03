@@ -148,6 +148,10 @@ route_doesnt_exist([GET => '/'], "no GET /");
             message => qr{^\Q[handled_xmlrpc_request(api.uppercase)]}
         },
         {
+            level   => 'info',
+            message => qr{^\Q[RPC::XMLRPC]\E request for api.uppercase took 0\.\d+s},
+        },
+        {
             level   => 'debug',
             message => qr{^\Q[xmlrpc_response] }
         },

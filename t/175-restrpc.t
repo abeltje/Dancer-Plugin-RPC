@@ -91,6 +91,10 @@ route_exists([POST => '/rest/system/ping'], "system/ping exsits");
             message => qr{^\Q[handled_restrpc_request(uppercase)]}
         },
         {
+            level   => 'info',
+            message => qr{^\Q[RPC::RESTRPC]\E request for uppercase took 0\.\d+s},
+        },
+        {
             level   => 'debug',
             message => qr{^\Q[restrpc_response] }
         },

@@ -3,8 +3,9 @@ use v5.10;
 use Dancer ':syntax';
 use Dancer::Plugin;
 use Scalar::Util 'blessed';
+use Time::HiRes 'time';
 
-our $VERSION = '1.08';
+our $VERSION = '1.09';
 
 no if $] >= 5.018, warnings => 'experimental::smartmatch';
 
@@ -77,6 +78,7 @@ register PLUGIN_NAME ,=> sub {
             : undef;
 
         debug("[handle_restrpc_call($method_name)] ", $method_args);
+        my $start_request = time();
         my Dancer::RPCPlugin::CallbackResult $continue = eval {
             local $Dancer::RPCPlugin::ROUTE_INFO = {
                 plugin        => PLUGIN_NAME,
@@ -147,6 +149,10 @@ register PLUGIN_NAME ,=> sub {
         if (config->{encoding} && config->{encoding} =~ m{^utf-?8$}i) {
             $jsonise_options->{utf8} = 1;
         }
+        info( sprintf(
+            "[RPC::RESTRPC] request for %s took %.4fs",
+            $method_name, time() - $start_request
+        ));
         return to_json($response, $jsonise_options);
     };
 

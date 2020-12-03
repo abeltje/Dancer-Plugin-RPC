@@ -55,6 +55,10 @@ route_doesnt_exist([GET => '/'], "no GET /");
             message => qr{^\Q[handled_jsonrpc_request(api.uppercase)]}
         },
         {
+            level   => 'info',
+            message => qr{^\Q[RPC::JSONRPC]\E request for api.uppercase took 0\.\d+s},
+        },
+        {
             level   => 'debug',
             message => qr{^\Q[jsonrpc_response] }
         },
