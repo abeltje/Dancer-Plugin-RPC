@@ -1,19 +1,22 @@
-Changes on 2020-12-03 for repository at:
-  Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
-  Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
+Changes on 2020-12-08 for repository at:
+  Fetch URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
+  Push  URL: git@github.com:abeltje/Dancer-Plugin-RPC.git
 
 Enjoy!
 
-1.09_02 2020-12-03T14:05:26+01:00 (1e282dc => Abe Timmerman)
- - (Abe Timmerman, 6 seconds ago) Autocommit for distribution
+1.10 2020-12-08T08:52:03+01:00 (a0cc1a5 => Abe Timmerman)
+ - (Abe Timmerman, 5 seconds ago) Autocommit for distribution
+   Dancer::Plugin::RPC 1.10 (minor)
+
+1.09_02 2020-12-03T14:05:26+01:00 (dafd25e => Abe Timmerman)
+ - (Abe Timmerman, 5 days ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.09_02 (same)
 
 1.09_01 2020-08-18T00:21:43+02:00 (8e271e2 => Abe Timmerman)
  - (Abe Timmerman, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.09_01 (test)
 
- - (Abe Timmerman, 8 minutes ago) Also add handling-time per call to the
-   logs.
+ - (Abe Timmerman, 5 days ago) Also add handling-time per call to the logs.
 
 1.09 2020-08-13T13:21:24+02:00 (5e6f9df => Abe Timmerman)
  - (Abe Timmerman, 4 months ago) Autocommit for distribution
@@ -132,7 +135,7 @@ Enjoy!
  - (abeltje, 3 years ago) Autocommit for distribution Dancer::Plugin::RPC
    1.07 (minor)
 
- - (Abe Timmerman, 1 year, 8 months ago) Various minor fixes
+ - (Abe Timmerman, 1 year, 9 months ago) Various minor fixes
  -	 - include the local-lib in the do-rpc script
  -	 - fix typo in log-message in Dancer::Plugin::RPC::JSONRPC
 
@@ -144,13 +147,13 @@ Enjoy!
  - (abeltje, 3 years, 1 month ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.06 (minor)
 
- - (abeltje, 3 years ago)  Add .travis.yml file for automated testing from
-   GitHub
+ - (abeltje, 3 years, 1 month ago)  Add .travis.yml file for automated
+   testing from GitHub
 
  - (abeltje, 3 years ago) Add PREREQ_PM to BUILD_REQUIRES
 
 1.05_03 2017-10-22T10:24:47+02:00 (9d232c6 => abeltje)
- - (abeltje, 3 years, 1 month ago) Autocommit for distribution
+ - (abeltje, 3 years, 2 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.05_03 (test)
 
  - (abeltje, 3 years, 1 month ago) Change mode example/bin/app.psgi to
@@ -160,7 +163,7 @@ Enjoy!
  - (abeltje, 3 years, 2 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.05_02 (test)
 
- - (abeltje, 3 years, 1 month ago) Restore backward compatiblity for
+ - (abeltje, 3 years, 2 months ago) Restore backward compatiblity for
    list_methods()
 
 1.05_01 2017-10-18T20:04:06+02:00 (a54c02f => abeltje)
@@ -294,14 +297,14 @@ Enjoy!
  -     the outside world.
 
 1.01_01 2017-02-20T21:18:38+01:00 (7496a72 => abeltje)
- - (abeltje, 3 years, 9 months ago) Autocommit for distribution
+ - (abeltje, 3 years, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01_01 (test)
 
 1.01 2016-08-03T18:40:56+02:00 (084ef5f => abeltje)
  - (abeltje, 4 years, 4 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.01 (minor)
 
- - (abeltje, 3 years, 9 months ago) Introduce a general way to return a
+ - (abeltje, 3 years, 10 months ago) Introduce a general way to return a
    complete error-response
  -     Dancer::RPCPlugin::ErrorResponse should be a way to return a full
  -     error-response as valid response without knowlage of the protocol.
@@ -338,7 +341,7 @@ Enjoy!
    from_json()
 
 1.00 2016-03-22T21:35:21+01:00 (7e62f40 => abeltje)
- - (abeltje, 4 years, 8 months ago) Autocommit for distribution
+ - (abeltje, 4 years, 9 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 1.00 (minor)
 
  - (abeltje, 4 years, 6 months ago) Try to fix test-failures
@@ -349,7 +352,7 @@ Enjoy!
  - (abeltje, 4 years, 10 months ago) Autocommit for distribution
    Dancer::Plugin::RPC 0.99_10 (test)
 
- - (Larion Garaczi, 4 years, 8 months ago) Handle unhandled exceptions in
+ - (Larion Garaczi, 4 years, 9 months ago) Handle unhandled exceptions in
    callbacks
  -     Runtime exceptions in the 'callback' functions were not caught. Now
    we
