@@ -26,8 +26,11 @@ sub dispatch_table_from_config {
 
     my $dispatch;
     for my $pkg (@pkgs) {
+       
         eval "require $pkg" if $pkg ne 'main';
-        error("Loading $pkg: $@") if $@;
+        my $require_error = $@;
+
+        error("Loading $pkg: $require_error") if $require_error;
 
         my @rpc_methods = keys %{ $config->{$pkg} };
         for my $rpc_method (@rpc_methods) {
@@ -40,7 +43,10 @@ sub dispatch_table_from_config {
                 );
             }
             else {
-                die "Handler not found for $rpc_method: $pkg\::$subname doesn't seem to exist.\n";
+                die sprintf "Handler not found for %s: %s doesn't seem to exist.%s\n",
+                            $rpc_method, join('::', $pkg, $subname),
+                            $require_error ? ".. possibly because loading $pkg failed with $require_error" : ''
+
             }
         }
     }
