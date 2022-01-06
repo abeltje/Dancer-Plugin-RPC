@@ -5,6 +5,7 @@ blib/
 pm_to_blib
 cover_db/
 MYMETA.*
+META.*
 Makefile
 Makefile.bak
 example/local

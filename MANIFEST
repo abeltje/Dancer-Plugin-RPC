@@ -38,6 +38,9 @@ lib/Dancer/RPCPlugin/PluginNames.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
+META.json
+META.yml
+README.md
 t/010-dispatch-from-config.t
 t/015-dispatch-from-pod.t
 t/020-callbackresult.t
