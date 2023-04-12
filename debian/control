@@ -1,0 +1,32 @@
+Source: libdancer-plugin-rpc-perl
+Maintainer: Abe Timmerman <abeltje@cpan.org>
+Section: perl
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+	libtest-fatal-perl,
+	libtest-warnings-perl,
+	libdancer-perl,
+	libmoo-perl,
+	libnamespace-autoclean-perl,
+	libparams-validationcompiler-perl,
+	librpc-xml-perl,
+	libtype-tiny-perl,
+	libyaml-perl,
+	libjson-perl
+Build-Depends-Indep: perl
+Standards-Version: 4.6.0
+Homepage: https://metacpan.org/pod/Dancer::Plugin::RPC
+Rules-Requires-Root: no
+
+Package: libdancer-plugin-rpc-perl
+Architecture: all
+Depends: ${misc:Depends},
+         ${perl:Depends},
+	libdancer-perl,
+	libparams-validationcompiler-perl,
+	librpc-xml-perl,
+	libtype-tiny-perl,
+	libyaml-perl,
+	libjson-perl
+Description: Configure endpoints for XMLRPC, JSONRPC and RESTRPC procedures.
+ .

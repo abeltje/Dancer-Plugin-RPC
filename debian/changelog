@@ -1,0 +1,5 @@
+libdancer-plugin-rpc-perl (1.10) stable; urgency=medium
+
+  * Initial release.
+
+ -- Abe Timmerman <abeltje@cpan.org>  Wed, 12 Apr 2023 18:53:30 +0200
