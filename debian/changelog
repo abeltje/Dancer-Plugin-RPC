@@ -1,3 +1,9 @@
+libdancer-plugin-rpc-perl (1.10-01) stable; urgency=low
+
+    * Add the debian directory to the repository
+
+ -- Abe Timmerman <abeltje@cpan.org>  Wed, 12 Apr 2023 19:10:18 +0200
+
 libdancer-plugin-rpc-perl (1.10) stable; urgency=medium
 
   * Initial release.
