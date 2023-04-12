@@ -28,15 +28,16 @@ register PLUGIN_NAME ,=> sub {
     my($self, $base_url, $arguments) = plugin_args(@_);
 
     my $publisher;
-    given ($arguments->{publish} // 'config') {
-        when (exists $dispatch_builder_map{$_}) {
+    GIVEN: {
+        local $_ = $arguments->{publish} // 'config';
+        exists($dispatch_builder_map{$_}) && do {
             $publisher = $dispatch_builder_map{$_};
-
             $arguments->{arguments} = plugin_setting() if $_ eq 'config';
-        }
-        default {
+            last GIVEN;
+        };
+        do {
             $publisher = $_;
-        }
+        };
     }
     my $dispatcher = $publisher->($arguments->{arguments}, $base_url);
 
