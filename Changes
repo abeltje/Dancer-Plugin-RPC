@@ -1,12 +1,24 @@
-Changes on 2023-04-12 for repository at:
+Changes on 2023-04-13 for repository at:
   Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
   Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
 
 Enjoy!
 
-1.10_01 2023-04-12T19:23:07+02:00 (5c1dbe8 => Abe Timmerman)
+1.10_02 2023-04-13T15:36:15+02:00 (478aede => Abe Timmerman)
+ - (Abe Timmerman, Thu, 13 Apr 2023 15:36:15 +0200) Autocommit for
+   distribution Dancer::Plugin::RPC 1.10_02 (test)
+
+1.10_01 2023-04-12T19:23:07+02:00 (3d0f76e => Abe Timmerman)
  - (Abe Timmerman, Wed, 12 Apr 2023 19:23:07 +0200) Autocommit for
    distribution Dancer::Plugin::RPC 1.10_01 (test)
+
+ - (Abe Timmerman, Thu, 13 Apr 2023 15:13:58 +0200) No
+   given/when/smartmatch, so no 'no warnings experimental::smartmatch'
+ -     perl 5.38+ will deprecate the given/when/smartmatch stuff so we can
+   no
+ -     longer use it in the code, and there is no need to disable the
+   warnings
+ -     about it as well.
 
 1.10 2020-12-08T08:52:03+01:00 (f17779c => Abe Timmerman)
  - (Abe Timmerman, Tue, 8 Dec 2020 08:52:03 +0100) Autocommit for

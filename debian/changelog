@@ -1,3 +1,13 @@
+libdancer-plugin-rpc-perl (1.10-02) stable; urgency=low
+
+    * No given/when/smartmatch, so no 'no warnings experimental::smartmatch'
+    
+    perl 5.38+ will deprecate the given/when/smartmatch stuff so we can no
+    longer use it in the code, and there is no need to disable the warnings
+    about it as well.
+
+ -- Abe Timmerman <abeltje@cpan.org>  Thu, 13 Apr 2023 15:13:58 +0200
+
 libdancer-plugin-rpc-perl (1.10-01) stable; urgency=low
 
     * Add the debian directory to the repository
