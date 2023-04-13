@@ -7,8 +7,6 @@ use Time::HiRes 'time';
 
 our $VERSION = '1.09';
 
-no if $] >= 5.018, warnings => 'experimental::smartmatch';
-
 use constant PLUGIN_NAME => 'xmlrpc';
 
 use Dancer::RPCPlugin::CallbackResult;
