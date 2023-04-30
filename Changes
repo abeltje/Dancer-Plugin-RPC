@@ -1,10 +1,14 @@
-Changes on 2023-04-13 for repository at:
+Changes on 2023-04-30 for repository at:
   Fetch URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
   Push  URL: ssh://git@source.test-smoke.org:9999/~/Dancer-Plugin-RPC
 
 Enjoy!
 
-1.10_02 2023-04-13T15:36:15+02:00 (478aede => Abe Timmerman)
+1.11 2023-04-30T14:16:38+02:00 (a794f10 => Abe Timmerman)
+ - (Abe Timmerman, Sun, 30 Apr 2023 14:16:38 +0200) Autocommit for
+   distribution Dancer::Plugin::RPC 1.11 (minor)
+
+1.10_02 2023-04-13T15:36:15+02:00 (44edb26 => Abe Timmerman)
  - (Abe Timmerman, Thu, 13 Apr 2023 15:36:15 +0200) Autocommit for
    distribution Dancer::Plugin::RPC 1.10_02 (test)
 

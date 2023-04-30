@@ -1,3 +1,9 @@
+libdancer-plugin-rpc-perl (1.11) stable; urgency=low
+
+    * Autocommit for distribution Dancer::Plugin::RPC 1.10_02 (test)
+
+ -- Abe Timmerman <abeltje@cpan.org>  Thu, 13 Apr 2023 15:36:15 +0200
+
 libdancer-plugin-rpc-perl (1.10-02) stable; urgency=low
 
     * No given/when/smartmatch, so no 'no warnings experimental::smartmatch'
